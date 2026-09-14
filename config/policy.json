@@ -1,0 +1,195 @@
+{
+  "_about": "Machine version of config/policy.md. Change both together. Venue inventory (how many tables, chairs, bar spots) lives in config/tables.json, not here.",
+  "version": "1.0",
+  "policy_md_version": "September 2026",
+
+  "venue": {
+    "name": "Venue X",
+    "city": "Greek island",
+    "timezone": "Europe/Athens",
+    "currency": "EUR",
+    "channels": ["phone", "whatsapp", "email"],
+    "system_of_record": "i-host"
+  },
+
+  "languages": {
+    "supported": ["el", "en", "fr", "it"],
+    "unsupported_reply": "template",
+    "escalate_after_messages": 2
+  },
+
+  "products": ["dinner", "bottle_service", "both"],
+
+  "calendar": {
+    "season_open": "05-01",
+    "season_close": "10-05",
+    "high_season_start": "05-25",
+    "high_season_end": "09-15",
+    "books_open_month": 2,
+    "same_season_only": true
+  },
+
+  "hours": {
+    "venue_open": "19:30",
+    "venue_close": "03:00",
+    "kitchen_open": "20:00",
+    "kitchen_close": "01:00",
+    "show_start": "00:00",
+    "show_end": "03:00",
+    "agent_always_on": true,
+    "manager_from": "10:00",
+    "manager_to": "23:00"
+  },
+
+  "booking": {
+    "duration_minutes": 120,
+    "bill_at_minutes": 105,
+    "start_step_minutes": 30,
+    "earliest_start": {
+      "dinner": "19:30",
+      "bottle_service": "21:30"
+    },
+    "latest_start": {
+      "dinner": "00:00",
+      "bottle_service": "01:00"
+    },
+    "arrive_minutes_early": 15,
+    "late_grace_minutes": 15,
+    "required_fields": [
+      "name",
+      "party_size",
+      "date",
+      "start_time",
+      "product",
+      "phone",
+      "email"
+    ]
+  },
+
+  "slots": [
+    { "id": 1, "from": "19:30", "to": "21:00" },
+    { "id": 2, "from": "21:30", "to": "23:00" },
+    { "id": 3, "from": "23:30", "to": "01:00" }
+  ],
+
+  "party_size": {
+    "min": 2,
+    "escalate_above": 20
+  },
+
+  "capacity": {
+    "check_step_minutes": 30,
+    "per_product": {
+      "dinner": { "table_limit_key": "dinner", "counts_chairs": true },
+      "bottle_service": { "table_limit_key": "bottle_service", "counts_chairs": false },
+      "both": { "table_limit_key": "dinner", "counts_chairs": true }
+    },
+    "overbooking": {
+      "tables_allowed": false
+    }
+  },
+
+  "areas": {
+    "search_order": ["main", "bar"],
+    "bar": {
+      "joinable": false,
+      "allowed_slots": {
+        "dinner": { "high": [1], "low": [1, 2] },
+        "bottle_service": { "high": [2, 3], "low": [2, 3] }
+      }
+    }
+  },
+
+  "minimum_spend": {
+    "seasons_with_minimum": ["high"],
+    "extra_slot_pp": 200,
+    "dinner_by_slot_pp": { "1": 0, "2": 250, "3": 250 },
+    "bottle_service_by_start_pp": [
+      { "from": "21:30", "to": "23:00", "pp": 250 },
+      { "from": "23:30", "to": "00:30", "pp": 400 },
+      { "from": "01:00", "to": "01:00", "pp": 200 }
+    ],
+    "both": { "base": "dinner", "then": "extra_slot_pp" },
+    "bar": { "dinner_pp": 0, "bottle_service_same_as_main": true },
+    "is_a_floor_not_a_charge": true
+  },
+
+  "discounts": {
+    "allowed": false,
+    "escalate_when_guest_insists": false
+  },
+
+  "deposit": {
+    "per_person": 50,
+    "method": "payment_link",
+    "deducted_from_bill": true,
+    "waiver_flag": "deposit_required",
+    "negotiable": false,
+    "escalate_when_guest_insists": true
+  },
+
+  "pending": {
+    "status": "pending_deposit",
+    "holds_capacity": true,
+    "hold_hours": 6,
+    "hold_never_past_start_time": true,
+    "status_on_expiry": "cancelled",
+    "no_expiry_when_deposit_not_required": true
+  },
+
+  "modify": {
+    "deadline_days": { "high": 4, "low": 0 },
+    "deposit_carries_over": true,
+    "refund_when_party_shrinks": false,
+    "extra_deposit_when_party_grows": true
+  },
+
+  "cancel": {
+    "refund_deadline_days": 4,
+    "refund_on_no_show": false
+  },
+
+  "no_availability": {
+    "waitlist": false,
+    "alternative_days_window": 3
+  },
+
+  "inform": {
+    "sources": [
+      "config/policy.json",
+      "config/faq.md",
+      "config/menu.md",
+      "config/allergens.md"
+    ],
+    "answer_only_from_sources": true
+  },
+
+  "escalate": {
+    "to": "reservation_manager",
+    "same_channel_as_guest": true,
+    "conversation_status": "handed_to_human",
+    "agent_stops_after_handover": true,
+    "reasons": [
+      "party_wants_a_specific_table",
+      "guest_insists_on_deposit_waiver",
+      "forgiving_a_late_arrival",
+      "party_over_20",
+      "private_hire_of_the_venue",
+      "no_answer_in_sources",
+      "unsupported_language_repeated",
+      "not_covered_by_policy"
+    ],
+    "case_contains": [
+      "guest_request_verbatim",
+      "collected_fields",
+      "rule_that_triggered",
+      "agent_recommendation",
+      "what_agent_already_told_the_guest"
+    ]
+  },
+
+  "statuses": {
+    "booking": ["pending_deposit", "confirmed", "cancelled"],
+    "conversation": ["agent", "handed_to_human"]
+  }
+}

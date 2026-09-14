@@ -19,7 +19,7 @@
 - If an approach gets messy, explain the better one before changing code.
 
 ## Project facts
-- Target venue: Interni (Mykonos). Uses i-host. No API available yet.
+- Target venue: Venue X (Greek island). Uses i-host. No API available yet.
 - Channels: email, WhatsApp, phone. Text first, voice last.
 - A dialogue can be 10-15 turns. State must persist across turns.
 - Must be re-skinnable to another restaurant by editing config files only.
