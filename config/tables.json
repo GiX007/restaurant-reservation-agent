@@ -1,0 +1,24 @@
+{
+  "_about": "Venue inventory. The rules live in policy.json. Change either without touching code.",
+  "venue": "Venue X",
+
+  "tables": [
+    { "id": "T1", "area": "main" },
+    { "id": "T2", "area": "main" },
+    { "id": "T3", "area": "main" },
+    { "id": "B1", "area": "bar" }
+  ],
+
+  "total_chairs": 10,
+  "chair_buffer_percent": 20,
+
+  "max_per_table": {
+    "dinner": 4,
+    "bottle_service": 6
+  },
+
+  "bar_max_party": {
+    "dinner": 3,
+    "bottle_service": 4
+  }
+}
