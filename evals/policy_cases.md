@@ -6,6 +6,16 @@ computed by hand.
 These are the test for `config/policy.json` and for the functions that read
 it. If the code does not reproduce these numbers, the code is wrong.
 
+These cases test the **rules**, not the fake data in `db/seed.py`. Many invent
+their own venue and their own premise ("the main area is full", "2 tables and
+12 chairs"), and that is fine.
+
+When you edit:
+- change a number in `policy.json` or `tables.json` → recompute the cases that
+  use it, by hand
+- a case that assumes a table was free must not name a night `seed.py` fills
+- dates are otherwise illustrative. Leave them alone.
+
 ---
 
 ### BOOK
@@ -40,9 +50,9 @@ Not a valid start time → agent offers **22:00 or 22:30**.
 Past the latest dinner start → agent offers **bottle service at 00:30**, or
 **dinner at 00:00**.
 
-**BOOK-9.** Guest asks for 14 July, venue is full.
+**BOOK-9.** Guest asks for 12 July, venue is full.
 Agent says it is full, asks which days they are on the island, and offers
-the nearest free slot **within 2–3 days** of 14 July.
+the nearest free slot **within 2–3 days** of 12 July.
 
 **BOOK-10.** Venue has 2 tables and 12 chairs, buffer 20% → 14 countable chairs,
 `max_per_table.dinner` = 4. A booking exists 21:00–23:00 for 4 people on
@@ -70,16 +80,16 @@ counted for bottle service, so 6 guests standing around a table with 4
 chairs is fine. → **confirmed**. Exactly the request that failed in BOOK-10,
 but on bottle service it fits.
 
-**BOOK-14.** 3 people, dinner, 14 July, 21:00. The main area is full at that
+**BOOK-14.** 3 people, dinner, 12 July, 21:00. The main area is full at that
 time, the bar has a free spot.
 3 is under the bar dinner cap → the agent offers **the bar**, and says so.
 It does not pretend it is a normal table.
 
-**BOOK-15.** 5 people, bottle service, 14 July, 23:30. Only the bar is free.
+**BOOK-15.** 5 people, bottle service, 12 July, 23:30. Only the bar is free.
 The bar bottle service cap is 4, and bar spots cannot be joined → **full**.
 The agent offers another date, per §9.
 
-**BOOK-16.** 4 people ask for the bar by name, dinner, 14 July.
+**BOOK-16.** 4 people ask for the bar by name, dinner, 12 July.
 4 is over the bar dinner cap of 3 → the bar is not possible. The agent
 offers a normal table if one is free, and says why.
 
@@ -94,7 +104,7 @@ bottle service.
 6 is over the bar bottle service cap of 4 → not possible. The agent offers
 to keep their table instead, at the same +200 pp per extra slot.
 
-**BOOK-19.** 2 people, dinner at the bar, 14 July (high season), 21:30.
+**BOOK-19.** 2 people, dinner at the bar, 12 July (high season), 21:30.
 High season allows bar dinner in slot 1 only, and 21:30 is slot 2 →
 **refused**. The agent offers the bar at 19:30 to 21:00, or a normal table
 at 21:30.
@@ -103,7 +113,7 @@ at 21:30.
 Low season allows slot 2 at the bar → **allowed**, and no minimum spend
 because it is low season. Deposit **€100**.
 
-**BOOK-21.** 30 people, dinner, 14 July, 20:30.
+**BOOK-21.** 30 people, dinner, 12 July, 20:30.
 More than 20 → **escalate**. No confirmation, no price. A person will offer
 a set menu.
 
@@ -151,6 +161,16 @@ Extra deposit 2 × 50 = **€100**. Minimum spend recalculated: 6 × 250 =
 Deposit **kept in full**, €300, no refund. Minimum spend recalculated:
 4 × 250 = **€1,000**.
 
+**MODIFY-7.** A WhatsApp message from `+306940000002` on **13 July at 18:00**:
+"can we move our booking?"
+Elena Marino has two bookings, 12 July 20:00 and 13 July 20:00. The 12 July
+night has finished, so only one is live → the agent works on **13 July** and
+does not need to ask.
+
+**MODIFY-8.** The same message from the same number, but on **12 July at 11:00**.
+Now both nights are still ahead → **two matches**. The agent asks which one she
+means, by date. It does not pick one.
+
 ### CANCEL
 
 **CANCEL-1.** Booking 14 July, guest cancels 9 July (5 days before).
@@ -178,8 +198,9 @@ have lost the table, and it does not promise the table is still there.
 Answer from `faq.md`. If it is not there → **escalate**.
 
 **INFORM-2.** "Is the octopus gluten free?"
-Answer from `allergens.md` only. If it is not there → **escalate**. The
-agent never guesses about food.
+There is no `allergens.md` and no `menu.md` (§12), so no source can answer
+this → **always escalates**. The agent never guesses about food, and it does
+not answer from general knowledge about octopus.
 
 ### ESCALATE
 
@@ -228,4 +249,25 @@ person**.
 
 **ESCALATE-11.** The same call at 04:00.
 Nobody is reachable. The agent takes the name, number and request, says a
-person will call back after 10:00, and puts the case in the queue.
+person will call back after 10:00, and puts the case in the queue. **No
+booking and no customer record are created** — those details live in the
+escalation queue, which is why a customer row can always require an email.
+
+### IDENT
+
+**IDENT-1.** A WhatsApp message from `+306940000001`.
+Found: Nikos Pappas. The agent greets him by name and does **not** ask for a
+name, a phone or an email. It asks only for date, time, product and party size.
+
+**IDENT-2.** A WhatsApp message from a number not in `customers`.
+Not found. The agent asks for name and email, and **not** for a phone number -
+it already has one from the channel.
+
+**IDENT-3.** An email from `jean@example.com`.
+Found: Jean Dupont. The agent does not ask for an email, and does not ask for a
+phone either - the record has one.
+
+**IDENT-4.** A WhatsApp message from `+306940000002` (Elena Marino) that says
+"booking for Maria, it's her birthday".
+The booking is made in the name **Maria**. The agent does not correct the guest
+with the record, and the record is not changed.

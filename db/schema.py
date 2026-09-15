@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS customers (
     id               INTEGER PRIMARY KEY,
     name             TEXT NOT NULL,
     phone            TEXT NOT NULL UNIQUE,   -- how the agent recognises a returning guest
-    email            TEXT,
+    email            TEXT NOT NULL UNIQUE,   -- the other lookup key; the payment link goes here
 
     -- §8: only a person sets this. The agent reads it and never writes it.
     deposit_required INTEGER NOT NULL DEFAULT 1 CHECK (deposit_required IN (0, 1)),

@@ -1,0 +1,186 @@
+{
+  "dialogue_id": "DLG-10",
+  "goal": "An allergen question lands in the middle of a booking. No source can answer it, so the agent escalates and goes silent even for an easy follow-up. The manager answers, sorts it out and hands the conversation back - and the agent carries on from where it stopped, without asking for a single thing it already had.",
+  "channel": "whatsapp",
+  "from": "+447700900123",
+  "language": "en",
+  "db": "seed_v1",
+  "now": "2026-07-22T17:45:00+03:00",
+  "policy_refs": [
+    "policy.md #12 if the answer is not in a source",
+    "policy.md #13 the agent stops",
+    "policy.md #13 only a person hands it back",
+    "policy_cases.md INFORM-2",
+    "policy_cases.md ESCALATE-8",
+    "policy_cases.md ESCALATE-9",
+    "policy_cases.md IDENT-2"
+  ],
+
+  "turns": [
+    {
+      "turn_id": 0,
+      "speaker": "USER",
+      "utterance": "hello, do you have a table for 2 on Friday the 24th at 21:30? for dinner",
+      "intent": "book",
+      "state": {
+        "name": null,
+        "party_size": 2,
+        "date": "2026-07-24",
+        "start_time": "21:30",
+        "product": "dinner",
+        "phone": "+447700900123",
+        "email": null
+      }
+    },
+    {
+      "turn_id": 1,
+      "speaker": "SYSTEM",
+      "utterance": "Hello! Friday 24 July at 21:30 for 2, dinner - that is free. It is the late sitting, so the minimum spend is EUR 250 per person, EUR 500 for two. I need a name and an email address to hold it.",
+      "action": "book",
+      "facts": {
+        "customer_found": false,
+        "minimum_spend_pp": 250,
+        "minimum_spend_total": 500,
+        "buffer_wait_disclosed": false,
+        "booking_created": false
+      },
+      "must_say": ["500", "name", "email"],
+      "must_not_say": ["phone number", "your number", "confirmed"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 2,
+      "speaker": "USER",
+      "utterance": "Sarah Whitfield, s.whitfield@gmail.com. one thing though - my partner is coeliac. is the octopus gluten free?",
+      "intent": "inform",
+      "state": {
+        "name": "Sarah Whitfield",
+        "party_size": 2,
+        "date": "2026-07-24",
+        "start_time": "21:30",
+        "product": "dinner",
+        "phone": "+447700900123",
+        "email": "s.whitfield@gmail.com"
+      }
+    },
+    {
+      "turn_id": 3,
+      "speaker": "SYSTEM",
+      "utterance": "That one I will not answer from memory - it is the kitchen's to confirm, not mine. I have passed it to our reservation manager and she will come back to you here shortly, with everything you have told me so far. I have not put the booking in yet.",
+      "action": "escalate",
+      "facts": {
+        "escalated": true,
+        "escalation_reason": "no_answer_in_sources",
+        "booking_created": false
+      },
+      "must_say": [],
+      "must_not_say": ["it is safe", "naturally gluten", "does not contain gluten", "there is no gluten", "yes, the octopus", "should be fine"],
+      "conversation_status": "handed_to_human"
+    },
+    {
+      "turn_id": 4,
+      "speaker": "USER",
+      "utterance": "ok thanks. also, can we sit outside?",
+      "intent": "inform",
+      "state": {
+        "name": "Sarah Whitfield",
+        "party_size": 2,
+        "date": "2026-07-24",
+        "start_time": "21:30",
+        "product": "dinner",
+        "phone": "+447700900123",
+        "email": "s.whitfield@gmail.com"
+      }
+    },
+    {
+      "turn_id": 5,
+      "speaker": "SYSTEM",
+      "utterance": "",
+      "action": "none",
+      "facts": {
+        "agent_replied": false
+      },
+      "must_say": [],
+      "must_not_say": [],
+      "conversation_status": "handed_to_human"
+    },
+    {
+      "turn_id": 6,
+      "speaker": "HUMAN",
+      "at": "2026-07-22T18:20:00+03:00",
+      "utterance": "Hello Sarah, this is Maria from the restaurant. I checked with the chef: the octopus is marinated in soy, so it is not gluten free as it comes, but he will do it plain with olive oil and lemon. I have put a coeliac note on your reservation, and yes, we can seat you outside. I am handing you back to my colleague to finish the booking."
+    },
+    {
+      "turn_id": 7,
+      "speaker": "SYSTEM",
+      "utterance": "Thank you Maria. Mrs Whitfield, back to me - so that is 2 people, dinner, Friday 24 July at 21:30, minimum spend EUR 500. Shall I put it in?",
+      "action": "book",
+      "facts": {
+        "escalated": false,
+        "minimum_spend_total": 500,
+        "booking_created": false
+      },
+      "must_say": ["21:30", "500"],
+      "must_not_say": ["your name", "email address", "what date", "which date", "how many people", "what time would you like", "let us start"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 8,
+      "speaker": "USER",
+      "utterance": "yes please",
+      "intent": "book",
+      "state": {
+        "name": "Sarah Whitfield",
+        "party_size": 2,
+        "date": "2026-07-24",
+        "start_time": "21:30",
+        "product": "dinner",
+        "phone": "+447700900123",
+        "email": "s.whitfield@gmail.com"
+      }
+    },
+    {
+      "turn_id": 9,
+      "speaker": "SYSTEM",
+      "utterance": "Done. Here is the link for the EUR 100 deposit: {payment_link}. I am holding the table for 6 hours, until 00:20 tonight. It is confirmed once the deposit is paid.",
+      "action": "book",
+      "facts": {
+        "booking_created": true,
+        "booking_status": "pending_deposit",
+        "booking_party_size": 2,
+        "deposit_eur": 100,
+        "payment_link_sent": true,
+        "hold_hours": 6,
+        "hold_expires_at": "2026-07-23T00:20:00+03:00"
+      },
+      "must_say": ["100", "6 hours"],
+      "must_not_say": ["your table is confirmed", "500 deposit"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 10,
+      "speaker": "USER",
+      "utterance": "paid. thank you both!",
+      "intent": "bye",
+      "state": {
+        "name": "Sarah Whitfield",
+        "party_size": 2,
+        "date": "2026-07-24",
+        "start_time": "21:30",
+        "product": "dinner",
+        "phone": "+447700900123",
+        "email": "s.whitfield@gmail.com"
+      }
+    },
+    {
+      "turn_id": 11,
+      "speaker": "SYSTEM",
+      "utterance": "Thank you Mrs Whitfield. Please arrive about 15 minutes before 21:30. See you on Friday.",
+      "action": "none",
+      "facts": {},
+      "must_say": ["15 minutes"],
+      "must_not_say": [],
+      "conversation_status": "agent"
+    }
+  ]
+}

@@ -39,6 +39,63 @@ in the same unsupported language → **escalate** (§13).
 The list is in `policy.json`. A different venue changes the list without
 touching code.
 
+### Who is writing
+
+Every message arrives on a channel, and the channel says who sent it. The
+agent looks the guest up **before** it asks for anything.
+
+| channel | what identifies the guest |
+|---|---|
+| WhatsApp | the phone number |
+| email | the from address |
+| phone | the caller ID |
+
+`customers.phone` and `customers.email` are both unique: one number is one
+record, one address is one record. A guest is found by **either** key — a
+WhatsApp guest whose email is already on file is that same customer, not a new
+one.
+
+**Found.** The record supplies four things and nothing else: `name`, `phone`,
+`email`, `deposit_required`. The agent treats those as already collected and
+asks only for what is still missing. Asking a returning guest for their name
+is the fastest way to look broken.
+
+**Not found.** The agent collects the fields normally (§9) — but it still has
+the channel's own field. A guest on WhatsApp is never asked for a phone
+number. A guest on email is never asked for an email address.
+
+**Every booking needs an email, on every channel.** The payment link is sent by
+email, so a guest who calls or writes on WhatsApp is still asked for one. A
+customer record therefore always carries all four fields.
+
+**The agent reads the record. It never writes to it.** `deposit_required`
+above all: only a person sets that flag (§8).
+
+**The conversation beats the record.** If the name on file and the name the
+guest gives are different — a shared phone, someone booking for a friend — the
+name given in the conversation is the one used for this booking. The agent
+does not correct the guest with the record.
+
+Knowing who a guest is does not mean knowing what they did. The agent never
+mentions a past booking it has not read.
+
+### Which booking they mean
+
+MODIFY (§10), CANCEL (§11) and a late arrival all act on a booking that
+already exists. The agent finds it the same way it found the guest: by who
+they are.
+
+- **Whose.** Only bookings belonging to the customer the channel identified.
+- **Which.** Only `confirmed` and `pending_deposit`. A cancelled booking is
+  history and cannot be changed.
+- **When.** Only nights that have not finished. Tonight's table still counts at
+  20:12; last Tuesday's does not.
+- **One match** → that is the one.
+- **More than one** → the agent asks which, by date and time. It never picks.
+- **None** → it says so plainly and offers to make one.
+
+The agent never changes a booking it has not read, and never invents one.
+
 ---
 
 ## 2. What Venue X sells
@@ -203,6 +260,18 @@ Bookings start every 30 minutes and last 2 hours, so windows overlap. The
 check walks the requested window in 30-minute steps and counts what every
 overlapping booking is using at each step. If one step fails, the answer is
 full.
+
+The bookings come from the reservations database, and **status decides whether
+a row is counted**:
+
+| status | counted? |
+|---|---|
+| `confirmed` | yes |
+| `pending_deposit` | yes — it holds tables and chairs like a confirmed one (§8) |
+| `cancelled` | **never** |
+
+A cancelled row is history. Counting one makes the venue look full when it is
+not, and a guest is turned away from a table nobody is sitting at.
 
 ### The chair buffer
 
@@ -398,6 +467,9 @@ agent, and i-host holds the confirmed plan for the night.
 
 ### What the agent must collect before it can create a booking
 
+**First identify the guest (§1).** The channel and the customer record may
+already supply some of the seven below.
+
 1. name
 2. number of guests
 3. date
@@ -501,15 +573,17 @@ sources:
 |---|---|
 | `config/policy.json` | the rules in this file |
 | `config/faq.md` | dress code, children, payment methods, accessibility |
-| `config/menu.md` | what is served, and prices |
-| `config/allergens.md` | allergens and dietary options |
+
+Venue X's menu is not published, so there is no `menu.md` and no
+`allergens.md`. Every question about a dish, an ingredient or an allergen has
+no source, and therefore **escalates**. That is deliberate, not a gap.
 
 **If the answer is not in a source, the agent does not answer.** It says it
 will check and **escalates**. It never guesses about food, allergies,
 prices, or anything a guest could be harmed by or charged for.
 
-Menu and FAQ live in their own files, not in `policy.json`. The menu changes
-during a season; the rules do not.
+`faq.md` lives in its own file, not in `policy.json`. What the venue offers
+changes during a season; the rules do not.
 
 ---
 

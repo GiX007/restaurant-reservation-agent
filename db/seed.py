@@ -29,7 +29,6 @@ CUSTOMERS = [
     ("Jean Dupont",     "+306940000003", "jean@example.com",    1),
     ("Sofia Ricci",     "+306940000004", "sofia@example.com",   1),
     ("Yiannis Alexiou", "+306940000005", "yiannis@example.com", 0),   # the regular: no deposit
-    ("Anna Weber",      "+306940000006", None,                  1),   # phone-only, from a call
 ]
 
 # (customer_id, service_date, start_at, party_size, product, status, hold_expires_at, cancel_reason)
@@ -37,10 +36,10 @@ BOOKINGS = [
     # 12 July - the busy night. Tables run out at 21:00.
     (1, "2026-07-12", "2026-07-12 19:30", 4, "dinner",         "confirmed",       None,               None),
     (2, "2026-07-12", "2026-07-12 20:00", 2, "dinner",         "confirmed",       None,               None),
-    (3, "2026-07-12", "2026-07-12 21:00", 4, "dinner",         "pending_deposit", "2026-07-01 18:00", None),
+    (3, "2026-07-12", "2026-07-12 21:00", 4, "dinner",         "pending_deposit", "2026-07-12 21:00", None),
     (4, "2026-07-12", "2026-07-12 20:00", 4, "dinner",         "cancelled",       None,               "guest_cancelled"),
     (5, "2026-07-12", "2026-07-12 23:30", 6, "bottle_service", "confirmed",       None,               None),
-    (6, "2026-07-12", "2026-07-13 00:00", 5, "bottle_service", "confirmed",       None,               None),
+    (1, "2026-07-12", "2026-07-13 00:00", 5, "bottle_service", "confirmed",       None,               None),
 
     # 13 July - two parties of 4. A third one only fits inside the chair buffer.
     (2, "2026-07-13", "2026-07-13 20:00", 4, "dinner", "confirmed", None, None),

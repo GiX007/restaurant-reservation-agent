@@ -1,0 +1,107 @@
+{
+  "dialogue_id": "DLG-08",
+  "goal": "A guest writes in Dutch. The agent replies in Dutch with the stored sentence and takes no booking details at all. The guest writes in Dutch again, so it escalates. Then the guest switches to English - and the agent still says nothing, because the conversation now belongs to a person.",
+  "channel": "whatsapp",
+  "from": "+31612345678",
+  "language": "nl",
+  "db": "seed_v1",
+  "now": "2026-07-20T18:00:00+03:00",
+  "policy_refs": [
+    "policy.md #1 any other language",
+    "policy.md #13 a guest keeps writing in an unsupported language",
+    "policy.md #13 the agent stops",
+    "policy_cases.md ESCALATE-4",
+    "policy_cases.md ESCALATE-5",
+    "policy_cases.md IDENT-2"
+  ],
+
+  "turns": [
+    {
+      "turn_id": 0,
+      "speaker": "USER",
+      "utterance": "Goedenavond, hebben jullie zaterdag een tafel voor 4 personen rond 21:00?",
+      "intent": "book",
+      "state": {
+        "name": null,
+        "party_size": null,
+        "date": null,
+        "start_time": null,
+        "product": null,
+        "phone": "+31612345678",
+        "email": null
+      }
+    },
+    {
+      "turn_id": 1,
+      "speaker": "SYSTEM",
+      "utterance": "Goedenavond! Wij kunnen u helpen in het Grieks, Engels, Frans of Italiaans. Kunt u ons in een van deze talen schrijven?",
+      "action": "inform",
+      "facts": {
+        "customer_found": false,
+        "reply_language": "nl",
+        "escalated": false,
+        "booking_created": false
+      },
+      "must_say": ["Engels"],
+      "must_not_say": ["zaterdag", "4 personen", "21:00", "EUR", "250", "beschikbaar", "gereserveerd"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 2,
+      "speaker": "USER",
+      "utterance": "Maar ik spreek die talen niet goed. Kunnen jullie mij niet gewoon in het Nederlands helpen?",
+      "intent": "book",
+      "state": {
+        "name": null,
+        "party_size": null,
+        "date": null,
+        "start_time": null,
+        "product": null,
+        "phone": "+31612345678",
+        "email": null
+      }
+    },
+    {
+      "turn_id": 3,
+      "speaker": "SYSTEM",
+      "utterance": "Ik geef uw bericht door aan een collega. Iemand neemt binnenkort contact met u op via deze weg.",
+      "action": "escalate",
+      "facts": {
+        "reply_language": "nl",
+        "escalated": true,
+        "escalation_reason": "unsupported_language_repeated",
+        "booking_created": false
+      },
+      "must_say": [],
+      "must_not_say": ["zaterdag", "4 personen", "21:00", "EUR", "250", "gereserveerd", "bevestigd"],
+      "conversation_status": "handed_to_human"
+    },
+    {
+      "turn_id": 4,
+      "speaker": "USER",
+      "utterance": "ok sorry, I try in english. Do you have a table for 4 on Saturday at 21:00?",
+      "intent": "book",
+      "state": {
+        "name": null,
+        "party_size": null,
+        "date": null,
+        "start_time": null,
+        "product": null,
+        "phone": "+31612345678",
+        "email": null
+      }
+    },
+    {
+      "turn_id": 5,
+      "speaker": "SYSTEM",
+      "utterance": "",
+      "action": "none",
+      "facts": {
+        "agent_replied": false
+      },
+      "must_say": [],
+      "must_not_say": [],
+      "conversation_status": "handed_to_human"
+    }
+  ]
+}

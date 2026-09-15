@@ -1,0 +1,165 @@
+{
+  "dialogue_id": "DLG-06",
+  "goal": "A confirmed booking for 13 July. The guest asks on 11 July to move it - 2 days out, inside the 4-day high-season deadline, so it is refused. He then tries to cancel and rebook instead, and learns that costs him the deposit twice: the EUR 200 on the old booking is kept, and it does NOT carry over to a new one. He keeps the original.",
+  "channel": "email",
+  "from": "jean@example.com",
+  "language": "en",
+  "db": "seed_v1",
+  "now": "2026-07-11T10:15:00+03:00",
+  "policy_refs": [
+    "policy.md #1 who is writing",
+    "policy.md #10 when a change is allowed",
+    "policy.md #10 the deposit carries over",
+    "policy.md #11 cancellation",
+    "policy.md #13 refuse is not escalate",
+    "policy_cases.md MODIFY-2",
+    "policy_cases.md CANCEL-4",
+    "policy_cases.md IDENT-3"
+  ],
+
+  "turns": [
+    {
+      "turn_id": 0,
+      "speaker": "USER",
+      "utterance": "Hello, we have a table booked for Monday 13 July. Could we move it to Wednesday the 15th instead, same time? Best regards, Jean Dupont",
+      "intent": "modify",
+      "state": {
+        "name": "Jean Dupont",
+        "party_size": 4,
+        "date": "2026-07-15",
+        "start_time": "20:30",
+        "product": "dinner",
+        "phone": "+306940000003",
+        "email": "jean@example.com"
+      }
+    },
+    {
+      "turn_id": 1,
+      "speaker": "SYSTEM",
+      "utterance": "Dear Mr Dupont, I found your booking - 4 people, dinner, Monday 13 July at 20:30. I am sorry, I cannot move it. In high season a booking can only be changed 4 or more days before the date, and Monday is 2 days away. Your table on 13 July stands exactly as it is.",
+      "action": "modify",
+      "facts": {
+        "customer_found": true,
+        "booking_found": true,
+        "modify_allowed": false,
+        "booking_status": "confirmed"
+      },
+      "must_say": ["13 July", "20:30"],
+      "must_not_say": ["I have moved", "15 July is booked", "moved to the 15th", "I will check", "the manager", "let me ask"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 2,
+      "speaker": "USER",
+      "utterance": "That is a shame. In that case please cancel the 13th and I will make a new booking for the 15th.",
+      "intent": "cancel",
+      "state": {
+        "name": "Jean Dupont",
+        "party_size": 4,
+        "date": "2026-07-13",
+        "start_time": "20:30",
+        "product": "dinner",
+        "phone": "+306940000003",
+        "email": "jean@example.com"
+      }
+    },
+    {
+      "turn_id": 3,
+      "speaker": "SYSTEM",
+      "utterance": "I can do that, but I want you to know the cost first. Cancelling 3 days before or later means the deposit is kept - so the EUR 200 on the 13th would not come back to you. Shall I still cancel it?",
+      "action": "cancel",
+      "facts": {
+        "booking_found": true,
+        "deposit_kept": true,
+        "refund_eur": 0,
+        "booking_status": "confirmed"
+      },
+      "must_say": ["200", "kept"],
+      "must_not_say": ["you will get it back", "we will refund", "fully refunded", "returned to you", "no charge"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 4,
+      "speaker": "USER",
+      "utterance": "And if I cancel and rebook the 15th, do I pay a second deposit?",
+      "intent": "inform",
+      "state": {
+        "name": "Jean Dupont",
+        "party_size": 4,
+        "date": "2026-07-13",
+        "start_time": "20:30",
+        "product": "dinner",
+        "phone": "+306940000003",
+        "email": "jean@example.com"
+      }
+    },
+    {
+      "turn_id": 5,
+      "speaker": "SYSTEM",
+      "utterance": "Yes. A deposit only follows a booking when it is changed, and a change is not possible this close to the date. If you cancel, the EUR 200 stays with the old booking and a new one for the 15th needs its own EUR 200.",
+      "action": "inform",
+      "facts": {
+        "deposit_kept": true,
+        "deposit_eur": 200
+      },
+      "must_say": ["200"],
+      "must_not_say": ["carries over", "carry over", "we can move the deposit", "transfer", "no, only one", "it follows you"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 6,
+      "speaker": "USER",
+      "utterance": "So cancelling costs me 400 in total. Forget it - leave the Monday booking as it is.",
+      "intent": "inform",
+      "state": {
+        "name": "Jean Dupont",
+        "party_size": 4,
+        "date": "2026-07-13",
+        "start_time": "20:30",
+        "product": "dinner",
+        "phone": "+306940000003",
+        "email": "jean@example.com"
+      }
+    },
+    {
+      "turn_id": 7,
+      "speaker": "SYSTEM",
+      "utterance": "Understood - nothing has changed. Your booking is still 4 people, dinner, Monday 13 July at 20:30, and the EUR 200 you have already paid comes off the bill that night. There is nothing more to pay in advance.",
+      "action": "inform",
+      "facts": {
+        "booking_found": true,
+        "booking_status": "confirmed",
+        "modify_allowed": false,
+        "deposit_deducted_from_bill": true
+      },
+      "must_say": ["13 July", "20:30"],
+      "must_not_say": ["cancelled", "I have cancelled", "15 July", "the 15th", "a new deposit"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 8,
+      "speaker": "USER",
+      "utterance": "Thank you, see you Monday.",
+      "intent": "bye",
+      "state": {
+        "name": "Jean Dupont",
+        "party_size": 4,
+        "date": "2026-07-13",
+        "start_time": "20:30",
+        "product": "dinner",
+        "phone": "+306940000003",
+        "email": "jean@example.com"
+      }
+    },
+    {
+      "turn_id": 9,
+      "speaker": "SYSTEM",
+      "utterance": "Thank you Mr Dupont. Please arrive about 15 minutes before 20:30. We look forward to seeing you on Monday.",
+      "action": "none",
+      "facts": {},
+      "must_say": ["15 minutes"],
+      "must_not_say": [],
+      "conversation_status": "agent"
+    }
+  ]
+}

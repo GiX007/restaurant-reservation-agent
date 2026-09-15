@@ -1,0 +1,214 @@
+{
+  "dialogue_id": "DLG-02",
+  "goal": "12 July is full. Agent asks the guest's island dates, silently skips 13 July (looks free, but a party of 6 needs 2 tables and only 1 is left), offers 11 and 14 July, refuses a waitlist, and books 14 July at 21:00 - slot 1, so no minimum spend, and no chair buffer involved.",
+  "channel": "email",
+  "from": "c.dubois@orange.fr",
+  "language": "en",
+  "db": "seed_v1",
+  "now": "2026-07-09T11:30:00+03:00",
+  "policy_refs": [
+    "policy.md #6 tables have no buffer",
+    "policy.md #7 dinner slot 1 has no minimum",
+    "policy.md #9 when there is no table",
+    "policy_cases.md BOOK-9",
+    "policy_cases.md BOOK-10"
+  ],
+
+  "turns": [
+    {
+      "turn_id": 0,
+      "speaker": "USER",
+      "utterance": "Good morning, I would like to book a table for 6 people for dinner on Sunday 12 July, around 21:00. Best regards, Claire Dubois",
+      "intent": "book",
+      "state": {
+        "name": "Claire Dubois",
+        "party_size": 6,
+        "date": "2026-07-12",
+        "start_time": "21:00",
+        "product": "dinner",
+        "phone": null,
+        "email": "c.dubois@orange.fr"
+      }
+    },
+    {
+      "turn_id": 1,
+      "speaker": "SYSTEM",
+      "utterance": "Dear Mrs Dubois, thank you for writing. I am sorry, we are fully booked on Sunday 12 July. I would be glad to look at the days around it - which days are you on the island?",
+      "action": "book",
+      "facts": { "customer_found": false },
+      "must_say": ["fully booked"],
+      "must_not_say": ["waiting list", "I will let you know if", "we have space on the 12th", "your name"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 2,
+      "speaker": "USER",
+      "utterance": "We arrive on the 11th and fly home on the 15th.",
+      "intent": "book",
+      "state": {
+        "name": "Claire Dubois",
+        "party_size": 6,
+        "date": "2026-07-12",
+        "start_time": "21:00",
+        "product": "dinner",
+        "phone": null,
+        "email": "c.dubois@orange.fr"
+      }
+    },
+    {
+      "turn_id": 3,
+      "speaker": "SYSTEM",
+      "utterance": "Thank you. For 6 people I can offer Saturday 11 July or Tuesday 14 July, both at 21:00. Would either of those work for you?",
+      "action": "book",
+      "facts": {
+        "alternative_dates": ["2026-07-11", "2026-07-14"]
+      },
+      "must_say": ["11", "14"],
+      "must_not_say": ["13 July", "the 13th", "Monday", "10 July", "the 10th", "16 July", "the 16th"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 4,
+      "speaker": "USER",
+      "utterance": "Is there a waiting list for the 12th? We would really prefer that evening.",
+      "intent": "inform",
+      "state": {
+        "name": "Claire Dubois",
+        "party_size": 6,
+        "date": "2026-07-12",
+        "start_time": "21:00",
+        "product": "dinner",
+        "phone": null,
+        "email": "c.dubois@orange.fr"
+      }
+    },
+    {
+      "turn_id": 5,
+      "speaker": "SYSTEM",
+      "utterance": "We do not keep a waiting list, so I am not able to hold anything for the 12th. The 11th and the 14th are both free at 21:00 if either suits you.",
+      "action": "inform",
+      "facts": {},
+      "must_say": [],
+      "must_not_say": ["I will add you", "put you on the list", "let you know if something", "contact you if", "check with the manager"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 6,
+      "speaker": "USER",
+      "utterance": "The 14th then, 21:00 please.",
+      "intent": "book",
+      "state": {
+        "name": "Claire Dubois",
+        "party_size": 6,
+        "date": "2026-07-14",
+        "start_time": "21:00",
+        "product": "dinner",
+        "phone": null,
+        "email": "c.dubois@orange.fr"
+      }
+    },
+    {
+      "turn_id": 7,
+      "speaker": "SYSTEM",
+      "utterance": "Tuesday 14 July at 21:00 for 6, dinner. That is our early sitting, so there is no minimum spend. I only need a phone number to hold the table.",
+      "action": "book",
+      "facts": {
+        "minimum_spend_pp": 0,
+        "minimum_spend_total": 0,
+        "buffer_wait_disclosed": false,
+        "booking_created": false
+      },
+      "must_say": ["no minimum spend", "phone"],
+      "must_not_say": ["250", "1,500", "1500", "your name", "email address", "wait at the door", "short wait"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 8,
+      "speaker": "USER",
+      "utterance": "+33612345678",
+      "intent": "book",
+      "state": {
+        "name": "Claire Dubois",
+        "party_size": 6,
+        "date": "2026-07-14",
+        "start_time": "21:00",
+        "product": "dinner",
+        "phone": "+33612345678",
+        "email": "c.dubois@orange.fr"
+      }
+    },
+    {
+      "turn_id": 9,
+      "speaker": "SYSTEM",
+      "utterance": "To go over it: 6 people, dinner, Tuesday 14 July at 21:00. No minimum spend. The deposit is EUR 50 per person, EUR 300 in total, and it comes off your bill. Shall I go ahead?",
+      "action": "book",
+      "facts": {
+        "minimum_spend_total": 0,
+        "deposit_eur": 300,
+        "deposit_deducted_from_bill": true,
+        "booking_created": false
+      },
+      "must_say": ["300"],
+      "must_not_say": ["confirmed", "250"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 10,
+      "speaker": "USER",
+      "utterance": "Yes, please go ahead.",
+      "intent": "book",
+      "state": {
+        "name": "Claire Dubois",
+        "party_size": 6,
+        "date": "2026-07-14",
+        "start_time": "21:00",
+        "product": "dinner",
+        "phone": "+33612345678",
+        "email": "c.dubois@orange.fr"
+      }
+    },
+    {
+      "turn_id": 11,
+      "speaker": "SYSTEM",
+      "utterance": "Here is the link for the EUR 300 deposit: {payment_link}. I am holding the table for 6 hours, until 17:30 today. It is confirmed once the deposit is paid.",
+      "action": "book",
+      "facts": {
+        "booking_created": true,
+        "booking_status": "pending_deposit",
+        "booking_party_size": 6,
+        "deposit_eur": 300,
+        "payment_link_sent": true,
+        "hold_hours": 6,
+        "hold_expires_at": "2026-07-09T17:30:00+03:00"
+      },
+      "must_say": ["300", "6 hours"],
+      "must_not_say": ["your table is confirmed", "12 July", "the 12th"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 12,
+      "speaker": "USER",
+      "utterance": "Thank you, payment sent.",
+      "intent": "bye",
+      "state": {
+        "name": "Claire Dubois",
+        "party_size": 6,
+        "date": "2026-07-14",
+        "start_time": "21:00",
+        "product": "dinner",
+        "phone": "+33612345678",
+        "email": "c.dubois@orange.fr"
+      }
+    },
+    {
+      "turn_id": 13,
+      "speaker": "SYSTEM",
+      "utterance": "Thank you Mrs Dubois. Please arrive about 15 minutes before 21:00. We look forward to seeing you on Tuesday.",
+      "action": "none",
+      "facts": {},
+      "must_say": ["15 minutes"],
+      "must_not_say": [],
+      "conversation_status": "agent"
+    }
+  ]
+}

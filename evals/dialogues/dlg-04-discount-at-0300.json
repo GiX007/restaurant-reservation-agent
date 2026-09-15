@@ -1,0 +1,253 @@
+{
+  "dialogue_id": "DLG-04",
+  "goal": "At 03:00 a guest asks for a discount, twice, and claims to be a regular. The agent refuses immediately both times, never escalates and never says it will check. It then answers a genuine question about cheaper times - slot 1 dinner has no minimum - and books that instead.",
+  "channel": "whatsapp",
+  "from": "+306945556677",
+  "language": "en",
+  "db": "seed_v1",
+  "now": "2026-07-18T03:00:00+03:00",
+  "policy_refs": [
+    "policy.md #2 product before price",
+    "policy.md #4 the agent has no office hours",
+    "policy.md #7 no discounts",
+    "policy.md #7 dinner slot 1 has no minimum",
+    "policy.md #13 refuse is not escalate",
+    "policy_cases.md ESCALATE-7",
+    "policy_cases.md ESCALATE-6",
+    "policy_cases.md IDENT-2"
+  ],
+
+  "turns": [
+    {
+      "turn_id": 0,
+      "speaker": "USER",
+      "utterance": "yiasou, we are 6 for saturday night, around 10. what's the damage?",
+      "intent": "book",
+      "state": {
+        "name": null,
+        "party_size": 6,
+        "date": "2026-07-18",
+        "start_time": "22:00",
+        "product": null,
+        "phone": "+306945556677",
+        "email": null
+      }
+    },
+    {
+      "turn_id": 1,
+      "speaker": "SYSTEM",
+      "utterance": "Yiasou! Before I can give you a figure I need to know which one you want: dinner, or bottle service? They are priced differently.",
+      "action": "book",
+      "facts": {
+        "customer_found": false
+      },
+      "must_say": ["dinner", "bottle service"],
+      "must_not_say": ["250", "400", "after 10:00", "in the morning", "we are closed"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 2,
+      "speaker": "USER",
+      "utterance": "dinner",
+      "intent": "book",
+      "state": {
+        "name": null,
+        "party_size": 6,
+        "date": "2026-07-18",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306945556677",
+        "email": null
+      }
+    },
+    {
+      "turn_id": 3,
+      "speaker": "SYSTEM",
+      "utterance": "Saturday 18 July at 22:00 for 6, dinner. That is our late sitting, so the minimum spend is EUR 250 per person - EUR 1,500 for six. The deposit is EUR 50 per person, EUR 300, and it comes off your bill.",
+      "action": "book",
+      "facts": {
+        "minimum_spend_pp": 250,
+        "minimum_spend_total": 1500,
+        "deposit_eur": 300,
+        "deposit_deducted_from_bill": true,
+        "booking_created": false
+      },
+      "must_say": ["1,500", "300"],
+      "must_not_say": ["confirmed"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 4,
+      "speaker": "USER",
+      "utterance": "1500?? that is a lot. we come every summer, any chance of a better price for a group that size?",
+      "intent": "book",
+      "state": {
+        "name": null,
+        "party_size": 6,
+        "date": "2026-07-18",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306945556677",
+        "email": null
+      }
+    },
+    {
+      "turn_id": 5,
+      "speaker": "SYSTEM",
+      "utterance": "I am sorry, no - our minimum spends are fixed and we do not do group prices. It is EUR 250 per person at 22:00, for everyone.",
+      "action": "inform",
+      "facts": {
+        "minimum_spend_pp": 250,
+        "escalated": false
+      },
+      "must_say": ["fixed"],
+      "must_not_say": ["I will check", "I will ask", "let me see what I can do", "pass this on", "the manager", "after 10:00", "get back to you", "maybe", "special price"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 6,
+      "speaker": "USER",
+      "utterance": "come on, for six people? even 200 each and we book right now",
+      "intent": "book",
+      "state": {
+        "name": null,
+        "party_size": 6,
+        "date": "2026-07-18",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306945556677",
+        "email": null
+      }
+    },
+    {
+      "turn_id": 7,
+      "speaker": "SYSTEM",
+      "utterance": "Still no, and I would rather tell you straight than leave you hoping. 250 per person is the figure at that hour and I cannot change it.",
+      "action": "inform",
+      "facts": {
+        "minimum_spend_pp": 250,
+        "escalated": false
+      },
+      "must_say": ["250"],
+      "must_not_say": ["I will check", "I will ask", "let me see what I can do", "pass this on", "the manager", "after 10:00", "get back to you", "this once", "exception"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 8,
+      "speaker": "USER",
+      "utterance": "is there any time that is cheaper then?",
+      "intent": "inform",
+      "state": {
+        "name": null,
+        "party_size": 6,
+        "date": "2026-07-18",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306945556677",
+        "email": null
+      }
+    },
+    {
+      "turn_id": 9,
+      "speaker": "SYSTEM",
+      "utterance": "Yes - the early sitting. Anything from 19:30 to 21:00 for dinner has no minimum spend at all. You would only pay for what you eat.",
+      "action": "inform",
+      "facts": {
+        "minimum_spend_pp": 0,
+        "escalated": false
+      },
+      "must_say": ["19:30", "21:00", "no minimum spend"],
+      "must_not_say": ["I cannot", "prices are fixed", "no", "discount", "250 per person is the only"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 10,
+      "speaker": "USER",
+      "utterance": "ah ok, 20:00 then. Petros Laskaris, p.laskaris@outlook.com",
+      "intent": "book",
+      "state": {
+        "name": "Petros Laskaris",
+        "party_size": 6,
+        "date": "2026-07-18",
+        "start_time": "20:00",
+        "product": "dinner",
+        "phone": "+306945556677",
+        "email": "p.laskaris@outlook.com"
+      }
+    },
+    {
+      "turn_id": 11,
+      "speaker": "SYSTEM",
+      "utterance": "Saturday 18 July at 20:00 for 6, dinner. No minimum spend. The deposit is still EUR 50 per person, EUR 300. Shall I go ahead?",
+      "action": "book",
+      "facts": {
+        "minimum_spend_pp": 0,
+        "minimum_spend_total": 0,
+        "deposit_eur": 300,
+        "buffer_wait_disclosed": false,
+        "booking_created": false
+      },
+      "must_say": ["no minimum spend", "300"],
+      "must_not_say": ["1,500", "1500", "250", "confirmed"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 12,
+      "speaker": "USER",
+      "utterance": "yes",
+      "intent": "book",
+      "state": {
+        "name": "Petros Laskaris",
+        "party_size": 6,
+        "date": "2026-07-18",
+        "start_time": "20:00",
+        "product": "dinner",
+        "phone": "+306945556677",
+        "email": "p.laskaris@outlook.com"
+      }
+    },
+    {
+      "turn_id": 13,
+      "speaker": "SYSTEM",
+      "utterance": "Done. Here is the link for the EUR 300 deposit: {payment_link}. I am holding the table for 6 hours, until 09:00 this morning. It is confirmed once the deposit is paid.",
+      "action": "book",
+      "facts": {
+        "booking_created": true,
+        "booking_status": "pending_deposit",
+        "booking_party_size": 6,
+        "deposit_eur": 300,
+        "payment_link_sent": true,
+        "hold_hours": 6,
+        "hold_expires_at": "2026-07-18T09:00:00+03:00"
+      },
+      "must_say": ["300", "6 hours"],
+      "must_not_say": ["your table is confirmed", "1,500", "22:00"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 14,
+      "speaker": "USER",
+      "utterance": "paid, kalinixta",
+      "intent": "bye",
+      "state": {
+        "name": "Petros Laskaris",
+        "party_size": 6,
+        "date": "2026-07-18",
+        "start_time": "20:00",
+        "product": "dinner",
+        "phone": "+306945556677",
+        "email": "p.laskaris@outlook.com"
+      }
+    },
+    {
+      "turn_id": 15,
+      "speaker": "SYSTEM",
+      "utterance": "Kalinixta Mr Laskaris. Please arrive about 15 minutes before 20:00. See you on Saturday.",
+      "action": "none",
+      "facts": {},
+      "must_say": ["15 minutes"],
+      "must_not_say": [],
+      "conversation_status": "agent"
+    }
+  ]
+}

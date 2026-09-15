@@ -18,6 +18,26 @@
     "escalate_after_messages": 2
   },
 
+  "identity": {
+    "lookup_key_by_channel": {
+      "whatsapp": "phone",
+      "email": "email",
+      "phone": "phone"
+    },
+    "unique_keys": ["phone", "email"],
+    "fields_from_record": ["name", "phone", "email", "deposit_required"],
+    "conversation_overrides_record": true,
+    "agent_writes_record": false
+  },
+  
+  "booking_lookup": {
+    "by": "customer_id",
+    "statuses": ["confirmed", "pending_deposit"],
+    "exclude_finished_nights": true,
+    "ask_when_more_than_one": true,
+    "never_guess": true
+  },  
+
   "products": ["dinner", "bottle_service", "both"],
 
   "calendar": {
@@ -79,6 +99,7 @@
 
   "capacity": {
     "check_step_minutes": 30,
+    "statuses_that_count": ["confirmed", "pending_deposit"],
     "per_product": {
       "dinner": { "table_limit_key": "dinner", "counts_chairs": true },
       "bottle_service": { "table_limit_key": "bottle_service", "counts_chairs": false },
@@ -157,9 +178,7 @@
   "inform": {
     "sources": [
       "config/policy.json",
-      "config/faq.md",
-      "config/menu.md",
-      "config/allergens.md"
+      "config/faq.md"
     ],
     "answer_only_from_sources": true
   },

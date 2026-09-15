@@ -1,0 +1,217 @@
+{
+  "dialogue_id": "DLG-07",
+  "goal": "A new guest books, gets the payment link, and does not pay. Six hours later the hold runs out on its own: the agent cancels the booking, tells the guest unprompted, and keeps nothing - no deposit was ever paid. When the guest comes back 40 minutes late the table is gone, and it has to be booked again from scratch with a fresh deposit and a fresh hold.",
+  "channel": "whatsapp",
+  "from": "+306977001122",
+  "language": "en",
+  "db": "seed_v1",
+  "now": "2026-07-17T14:30:00+03:00",
+  "policy_refs": [
+    "policy.md #8 pending bookings",
+    "policy.md #8 an expired hold makes the booking cancelled",
+    "policy.md #9 required fields",
+    "policy_cases.md BOOK-23",
+    "policy_cases.md BOOK-26",
+    "policy_cases.md IDENT-2"
+  ],
+
+  "turns": [
+    {
+      "turn_id": 0,
+      "speaker": "USER",
+      "utterance": "hi, do you have a table for 2 on Tuesday the 21st at 22:00? dinner",
+      "intent": "book",
+      "state": {
+        "name": null,
+        "party_size": 2,
+        "date": "2026-07-21",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306977001122",
+        "email": null
+      }
+    },
+    {
+      "turn_id": 1,
+      "speaker": "SYSTEM",
+      "utterance": "Hello! Tuesday 21 July at 22:00 for 2, dinner - that is free. It is the late sitting, so the minimum spend is EUR 250 per person, EUR 500 for two. I need a name and an email address to hold it.",
+      "action": "book",
+      "facts": {
+        "customer_found": false,
+        "minimum_spend_pp": 250,
+        "minimum_spend_total": 500,
+        "buffer_wait_disclosed": false,
+        "booking_created": false
+      },
+      "must_say": ["500", "name", "email"],
+      "must_not_say": ["phone number", "your number", "confirmed"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 2,
+      "speaker": "USER",
+      "utterance": "Marco Bianchi, m.bianchi@libero.it",
+      "intent": "book",
+      "state": {
+        "name": "Marco Bianchi",
+        "party_size": 2,
+        "date": "2026-07-21",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306977001122",
+        "email": "m.bianchi@libero.it"
+      }
+    },
+    {
+      "turn_id": 3,
+      "speaker": "SYSTEM",
+      "utterance": "Done. Here is the link for the EUR 100 deposit: {payment_link}. I am holding the table for 6 hours, until 20:30 today. It is confirmed once the deposit is paid.",
+      "action": "book",
+      "facts": {
+        "booking_created": true,
+        "booking_status": "pending_deposit",
+        "booking_party_size": 2,
+        "deposit_eur": 100,
+        "payment_link_sent": true,
+        "hold_hours": 6,
+        "hold_expires_at": "2026-07-17T20:30:00+03:00"
+      },
+      "must_say": ["100", "6 hours"],
+      "must_not_say": ["your table is confirmed", "500 deposit"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 4,
+      "speaker": "USER",
+      "utterance": "ok thanks, I will pay tonight when I am back at the hotel",
+      "intent": "inform",
+      "state": {
+        "name": "Marco Bianchi",
+        "party_size": 2,
+        "date": "2026-07-21",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306977001122",
+        "email": "m.bianchi@libero.it"
+      }
+    },
+    {
+      "turn_id": 5,
+      "speaker": "SYSTEM",
+      "utterance": "Just so you know, the hold ends at 20:30 this evening. If the deposit has not arrived by then the table goes back into the pool and I will let you know.",
+      "action": "inform",
+      "facts": {
+        "booking_status": "pending_deposit",
+        "hold_expires_at": "2026-07-17T20:30:00+03:00"
+      },
+      "must_say": ["20:30"],
+      "must_not_say": ["take your time", "no rush", "whenever you like", "it will be there"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 6,
+      "speaker": "SYSTEM",
+      "at": "2026-07-17T20:30:00+03:00",
+      "utterance": "Mr Bianchi, the 6 hours have passed and no deposit arrived, so I have released the table for Tuesday 21 July. Nothing was charged and there is nothing to pay. If you still want that evening, tell me and I will look again.",
+      "action": "cancel",
+      "facts": {
+        "booking_found": true,
+        "booking_status": "cancelled",
+        "cancel_reason": "hold_expired",
+        "deposit_kept": false,
+        "refund_eur": 0
+      },
+      "must_say": ["released"],
+      "must_not_say": ["you owe", "we have charged", "cancellation fee", "we kept your deposit", "your table is still"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 7,
+      "speaker": "USER",
+      "at": "2026-07-17T21:10:00+03:00",
+      "utterance": "sorry! I am paying right now",
+      "intent": "book",
+      "state": {
+        "name": "Marco Bianchi",
+        "party_size": 2,
+        "date": "2026-07-21",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306977001122",
+        "email": "m.bianchi@libero.it"
+      }
+    },
+    {
+      "turn_id": 8,
+      "speaker": "SYSTEM",
+      "utterance": "That link is dead now, I am afraid - the booking was cancelled at 20:30 and nothing can be paid against it. The good news is that 22:00 on Tuesday is still free. Shall I put it in again?",
+      "action": "book",
+      "facts": {
+        "booking_status": "cancelled",
+        "booking_created": false
+      },
+      "must_say": [],
+      "must_not_say": ["your table is still there", "I have restored", "reinstated", "the payment went through", "I will reopen the old"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 9,
+      "speaker": "USER",
+      "utterance": "yes please, same as before",
+      "intent": "book",
+      "state": {
+        "name": "Marco Bianchi",
+        "party_size": 2,
+        "date": "2026-07-21",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306977001122",
+        "email": "m.bianchi@libero.it"
+      }
+    },
+    {
+      "turn_id": 10,
+      "speaker": "SYSTEM",
+      "utterance": "Booked again - 2 people, dinner, Tuesday 21 July at 22:00. Here is a new link for the EUR 100 deposit: {payment_link}. This one holds the table for 6 hours, until 03:10.",
+      "action": "book",
+      "facts": {
+        "booking_created": true,
+        "booking_status": "pending_deposit",
+        "booking_party_size": 2,
+        "minimum_spend_total": 500,
+        "deposit_eur": 100,
+        "payment_link_sent": true,
+        "hold_hours": 6,
+        "hold_expires_at": "2026-07-18T03:10:00+03:00"
+      },
+      "must_say": ["100", "6 hours"],
+      "must_not_say": ["your table is confirmed", "20:30", "the same link"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 11,
+      "speaker": "USER",
+      "utterance": "paid. grazie!",
+      "intent": "bye",
+      "state": {
+        "name": "Marco Bianchi",
+        "party_size": 2,
+        "date": "2026-07-21",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306977001122",
+        "email": "m.bianchi@libero.it"
+      }
+    },
+    {
+      "turn_id": 12,
+      "speaker": "SYSTEM",
+      "utterance": "Thank you Mr Bianchi. Please arrive about 15 minutes before 22:00. See you on Tuesday.",
+      "action": "none",
+      "facts": {},
+      "must_say": ["15 minutes"],
+      "must_not_say": [],
+      "conversation_status": "agent"
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "dialogue_id": "DLG-03",
+  "goal": "A known customer books 4 for dinner on 13 July at 21:30. It fits only inside the 20% chair buffer, so the wait must be disclosed. Being a regular does not skip the deposit. He then asks for a specific table, which is escalated, and the agent goes silent.  It then stays silent even when the next question is one it could answer straight from faq.md.",
+  "channel": "whatsapp",
+  "from": "+306940000001",
+  "language": "en",
+  "db": "seed_v1",
+  "now": "2026-07-13T10:20:00+03:00",
+  "policy_refs": [
+    "policy.md #1 who is writing", "policy_cases.md IDENT-1",
+    "policy.md #6 the chair buffer",
+    "policy.md #8 no waiver on request",
+    "policy.md #13 party wants a specific table",
+    "policy.md #13 the agent stops",
+    "policy_cases.md BOOK-12",
+    "policy_cases.md ESCALATE-8"
+  ],
+
+  "turns": [
+    {
+      "turn_id": 0,
+      "speaker": "USER",
+      "utterance": "Kalimera! Any chance of a table for 4 tonight?",
+      "intent": "book",
+      "state": {
+        "name": "Nikos Pappas",
+        "party_size": 4,
+        "date": "2026-07-13",
+        "start_time": null,
+        "product": null,
+        "phone": "+306940000001",
+        "email": "nikos@example.com"
+      }
+    },
+    {
+      "turn_id": 1,
+      "speaker": "SYSTEM",
+      "utterance": "Kalimera Mr Pappas, good to hear from you. I have your details. For tonight - dinner or bottle service, and what time were you thinking?",
+      "action": "book",
+      "facts": { "customer_found": true },
+      "must_say": ["dinner", "bottle service"],
+      "must_not_say": ["your name", "email address", "phone number", "250", "confirmed"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 2,
+      "speaker": "USER",
+      "utterance": "dinner, 21:30 if you have it",
+      "intent": "book",
+      "state": {
+        "name": "Nikos Pappas",
+        "party_size": 4,
+        "date": "2026-07-13",
+        "start_time": "21:30",
+        "product": "dinner",
+        "phone": "+306940000001",
+        "email": "nikos@example.com"
+      }
+    },
+    {
+      "turn_id": 3,
+      "speaker": "SYSTEM",
+      "utterance": "I can do 21:30 for 4 tonight, but I should be straight with you: we are tight on seating at that hour, so there may be a short wait at the door of about 15 minutes. The minimum spend at 21:30 is EUR 250 per person, so EUR 1,000, and the deposit is EUR 200. Shall I hold it?",
+      "action": "book",
+      "facts": {
+        "minimum_spend_pp": 250,
+        "minimum_spend_total": 1000,
+        "deposit_eur": 200,
+        "buffer_wait_disclosed": true,
+        "booking_created": false
+      },
+      "must_say": ["wait at the door", "1,000", "200"],
+      "must_not_say": ["no deposit", "waive", "since you are a regular", "confirmed"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 4,
+      "speaker": "USER",
+      "utterance": "a wait? we have a reservation, why would we wait",
+      "intent": "inform",
+      "state": {
+        "name": "Nikos Pappas",
+        "party_size": 4,
+        "date": "2026-07-13",
+        "start_time": "21:30",
+        "product": "dinner",
+        "phone": "+306940000001",
+        "email": "nikos@example.com"
+      }
+    },
+    {
+      "turn_id": 5,
+      "speaker": "SYSTEM",
+      "utterance": "Your table is yours, it is only the setting up. At 21:30 we are seating three parties close together and the staff may need a few minutes to bring chairs across. I would rather tell you now than have you standing there surprised.",
+      "action": "inform",
+      "facts": {
+        "buffer_wait_disclosed": true
+      },
+      "must_say": [],
+      "must_not_say": ["there will be no wait", "you will not wait", "guaranteed", "free drink", "on the house", "I will make sure"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 6,
+      "speaker": "USER",
+      "utterance": "ok fair enough, book it",
+      "intent": "book",
+      "state": {
+        "name": "Nikos Pappas",
+        "party_size": 4,
+        "date": "2026-07-13",
+        "start_time": "21:30",
+        "product": "dinner",
+        "phone": "+306940000001",
+        "email": "nikos@example.com"
+      }
+    },
+    {
+      "turn_id": 7,
+      "speaker": "SYSTEM",
+      "utterance": "Done. Here is the link for the EUR 200 deposit: {payment_link}. I am holding the table for 6 hours, until 16:20 today. It comes off your bill as always.",
+      "action": "book",
+      "facts": {
+        "booking_created": true,
+        "booking_status": "pending_deposit",
+        "booking_party_size": 4,
+        "deposit_eur": 200,
+        "deposit_deducted_from_bill": true,
+        "payment_link_sent": true,
+        "hold_hours": 6,
+        "hold_expires_at": "2026-07-13T16:20:00+03:00"
+      },
+      "must_say": ["200", "6 hours"],
+      "must_not_say": ["your table is confirmed", "no deposit needed"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 8,
+      "speaker": "USER",
+      "utterance": "paid. can we have our usual table by the window?",
+      "intent": "book",
+      "state": {
+        "name": "Nikos Pappas",
+        "party_size": 4,
+        "date": "2026-07-13",
+        "start_time": "21:30",
+        "product": "dinner",
+        "phone": "+306940000001",
+        "email": "nikos@example.com"
+      }
+    },
+    {
+      "turn_id": 9,
+      "speaker": "SYSTEM",
+      "utterance": "Which table you get is decided by the host on the night, not by me, so I have passed that to our reservation manager. Someone will come back to you here shortly. Your booking for 4 at 21:30 tonight stands.",
+      "action": "escalate",
+      "facts": {
+        "escalated": true,
+        "escalation_reason": "party_wants_a_specific_table",
+        "booking_status": "pending_deposit"
+      },
+      "must_say": [],
+      "must_not_say": ["of course", "I have noted the window", "I will reserve the window", "no problem"],
+      "conversation_status": "handed_to_human"
+    },
+    {
+      "turn_id": 10,
+      "speaker": "USER",
+      "utterance": "ok. and is there parking near you?", 
+      "intent": "inform",
+      "state": {
+        "name": "Nikos Pappas",
+        "party_size": 4,
+        "date": "2026-07-13",
+        "start_time": "21:30",
+        "product": "dinner",
+        "phone": "+306940000001",
+        "email": "nikos@example.com"
+      }
+    },
+    {
+      "turn_id": 11,
+      "speaker": "SYSTEM",
+      "utterance": "",
+      "action": "none",
+      "facts": {
+        "agent_replied": false
+      },
+      "must_say": [],
+      "must_not_say": [],
+      "conversation_status": "handed_to_human"
+    }
+  ]
+}

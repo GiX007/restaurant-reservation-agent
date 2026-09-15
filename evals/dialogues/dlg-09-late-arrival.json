@@ -1,0 +1,137 @@
+{
+  "dialogue_id": "DLG-09",
+  "goal": "At 20:12 a guest with a 20:00 booking says she will be 20 minutes late - past the 15 minute grace. By the rule the table and the deposit are lost, but forgiving it is a person's call, so the agent escalates without telling her either way. She asks about her EUR 200 and the agent stays silent, because the conversation now belongs to a person.",
+  "channel": "whatsapp",
+  "from": "+306940000002",
+  "language": "en",
+  "db": "seed_v1",
+  "now": "2026-07-13T20:12:00+03:00",
+  "policy_refs": [
+    "policy.md #1 who is writing",
+    "policy.md #11 arrival",
+    "policy.md #13 forgiving a late arrival",
+    "policy.md #13 the agent stops",
+    "policy.md #13 what an escalation contains",
+    "policy_cases.md CANCEL-5",
+    "policy_cases.md IDENT-1"
+  ],
+
+  "turns": [
+    {
+      "turn_id": 0,
+      "speaker": "USER",
+      "utterance": "we are stuck in traffic coming to you for our 20:00 table, it is not moving at all",
+      "intent": "inform",
+      "state": {
+        "name": "Elena Marino",
+        "party_size": 4,
+        "date": "2026-07-13",
+        "start_time": "20:00",
+        "product": "dinner",
+        "phone": "+306940000002",
+        "email": "elena@example.com"
+      }
+    },
+    {
+      "turn_id": 1,
+      "speaker": "SYSTEM",
+      "utterance": "Thank you for telling us, Mrs Marino - I have your table for 4 at 20:00 tonight. How late do you think you will be?",
+      "action": "inform",
+      "facts": {
+        "customer_found": true,
+        "booking_found": true,
+        "booking_status": "confirmed",
+        "escalated": false
+      },
+      "must_say": [],
+      "must_not_say": ["you have lost", "the table is gone", "your deposit is lost", "we will hold it", "take your time", "no problem at all"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 2,
+      "speaker": "USER",
+      "utterance": "about 20 minutes I think, so 20:20",
+      "intent": "inform",
+      "state": {
+        "name": "Elena Marino",
+        "party_size": 4,
+        "date": "2026-07-13",
+        "start_time": "20:00",
+        "product": "dinner",
+        "phone": "+306940000002",
+        "email": "elena@example.com"
+      }
+    },
+    {
+      "turn_id": 3,
+      "speaker": "SYSTEM",
+      "utterance": "I have passed this straight to our reservation manager with your booking details - 4 people, 20:00 tonight, arriving around 20:20. She will come back to you here shortly. Please keep coming.",
+      "action": "escalate",
+      "facts": {
+        "customer_found": true,
+        "booking_found": true,
+        "booking_status": "confirmed",
+        "escalated": true,
+        "escalation_reason": "forgiving_a_late_arrival"
+      },
+      "must_say": [],
+      "must_not_say": ["you have lost", "the table is gone", "your deposit is lost", "we will hold it", "your table is waiting", "no problem", "of course", "do not worry"],
+      "conversation_status": "handed_to_human"
+    },
+    {
+      "turn_id": 4,
+      "speaker": "USER",
+      "utterance": "but we paid a 200 deposit! do we lose that?",
+      "intent": "inform",
+      "state": {
+        "name": "Elena Marino",
+        "party_size": 4,
+        "date": "2026-07-13",
+        "start_time": "20:00",
+        "product": "dinner",
+        "phone": "+306940000002",
+        "email": "elena@example.com"
+      }
+    },
+    {
+      "turn_id": 5,
+      "speaker": "SYSTEM",
+      "utterance": "",
+      "action": "none",
+      "facts": {
+        "agent_replied": false
+      },
+      "must_say": [],
+      "must_not_say": [],
+      "conversation_status": "handed_to_human"
+    },
+    {
+      "turn_id": 6,
+      "speaker": "USER",
+      "at": "2026-07-13T20:15:00+03:00",
+      "utterance": "hello?? we are 10 minutes away",
+      "intent": "inform",
+      "state": {
+        "name": "Elena Marino",
+        "party_size": 4,
+        "date": "2026-07-13",
+        "start_time": "20:00",
+        "product": "dinner",
+        "phone": "+306940000002",
+        "email": "elena@example.com"
+      }
+    },
+    {
+      "turn_id": 7,
+      "speaker": "SYSTEM",
+      "utterance": "",
+      "action": "none",
+      "facts": {
+        "agent_replied": false
+      },
+      "must_say": [],
+      "must_not_say": [],
+      "conversation_status": "handed_to_human"
+    }
+  ]
+}

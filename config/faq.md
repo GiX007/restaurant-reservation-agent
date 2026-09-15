@@ -10,7 +10,7 @@ If a question is not answered here, the agent escalates. It never guesses.
 
 ## Where are you and how do I get there?
 
-Venue X is at [STREET], [AREA], Mykonos 84600, Greece.
+Venue X is at [STREET], [AREA], [ISLAND] 84600, Greece.
 
 Taxis and ride apps drop off at the main entrance. There is a free car park
 across the road with about 30 spaces, unattended. Many guests arrive by

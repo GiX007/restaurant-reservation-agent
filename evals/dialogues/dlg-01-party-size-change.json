@@ -1,0 +1,273 @@
+{
+  "dialogue_id": "DLG-01",
+  "goal": "Guest books 6 for dinner, is quoted, then drops to 4 before the booking is created. Agent must recompute and never repeat the old figures.",
+  "channel": "whatsapp",
+  "from": "+306941234567",
+  "language": "en",
+  "db": "seed_v1",
+  "now": "2026-07-15T21:14:00+03:00",
+  "policy_refs": [
+    "policy.md #2 product before price",
+    "policy.md #5 valid start times",
+    "policy.md #7 slot 2 minimum spend",
+    "policy.md #8 deposit and pending hold",
+    "policy.md #9 required fields",
+    "policy_cases.md BOOK-2",
+    "policy_cases.md BOOK-7",
+    "policy_cases.md BOOK-23"
+  ],
+
+  "turns": [
+    {
+      "turn_id": 0,
+      "speaker": "USER",
+      "utterance": "Kalispera! Do you have a table for 6 on the 20th at 22:15?",
+      "intent": "book",
+      "state": {
+        "name": null,
+        "party_size": 6,
+        "date": "2026-07-20",
+        "start_time": "22:15",
+        "product": null,
+        "phone": "+306941234567",
+        "email": null
+      }
+    },
+    {
+      "turn_id": 1,
+      "speaker": "SYSTEM",
+      "utterance": "Kalispera! We start on the hour or the half hour, so 22:15 is not possible. I can do 22:00 or 22:30 on Monday 20 July. Which suits you?",
+      "action": "book",
+      "facts": { "customer_found": false },
+      "must_say": ["22:00", "22:30"],
+      "must_not_say": ["22:15 is available", "confirmed"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 2,
+      "speaker": "USER",
+      "utterance": "22:00 is good",
+      "intent": "book",
+      "state": {
+        "name": null,
+        "party_size": 6,
+        "date": "2026-07-20",
+        "start_time": "22:00",
+        "product": null,
+        "phone": "+306941234567",
+        "email": null
+      }
+    },
+    {
+      "turn_id": 3,
+      "speaker": "SYSTEM",
+      "utterance": "Perfect. One thing first: is this dinner, or bottle service? The two are priced differently.",
+      "action": "book",
+      "facts": {},
+      "must_say": ["dinner", "bottle service"],
+      "must_not_say": ["250", "400", "minimum spend"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 4,
+      "speaker": "USER",
+      "utterance": "dinner, we want to eat",
+      "intent": "book",
+      "state": {
+        "name": null,
+        "party_size": 6,
+        "date": "2026-07-20",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306941234567",
+        "email": null
+      }
+    },
+    {
+      "turn_id": 5,
+      "speaker": "SYSTEM",
+      "utterance": "We have space for 6 at 22:00 on 20 July. That is our late dinner slot, where the minimum spend is EUR 250 per person, so EUR 1,500 for six. To hold it I need a name and an email address.",
+      "action": "book",
+      "facts": {
+        "minimum_spend_pp": 250,
+        "minimum_spend_total": 1500,
+        "buffer_wait_disclosed": false,
+        "booking_created": false
+      },
+      "must_say": ["name", "email"],
+      "must_not_say": ["phone number", "your number", "confirmed", "discount"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 6,
+      "speaker": "USER",
+      "utterance": "Dimi Raptis",
+      "intent": "book",
+      "state": {
+        "name": "Dimi Raptis",
+        "party_size": 6,
+        "date": "2026-07-20",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306941234567",
+        "email": null
+      }
+    },
+    {
+      "turn_id": 7,
+      "speaker": "SYSTEM",
+      "utterance": "Thank you Mr Raptis. I still need an email address.",
+      "action": "book",
+      "facts": {},
+      "must_say": ["email"],
+      "must_not_say": ["phone number", "your number", "confirmed", "booking is made"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 8,
+      "speaker": "USER",
+      "utterance": "d.raptis@gmail.com",
+      "intent": "book",
+      "state": {
+        "name": "Dimi Raptis",
+        "party_size": 6,
+        "date": "2026-07-20",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306941234567",
+        "email": "d.raptis@gmail.com"
+      }
+    },
+    {
+      "turn_id": 9,
+      "speaker": "SYSTEM",
+      "utterance": "To go over it before I put it in: 6 people, dinner, Monday 20 July at 22:00. Minimum spend EUR 1,500, deposit EUR 300. Shall I go ahead?",
+      "action": "book",
+      "facts": {
+        "minimum_spend_pp": 250,
+        "minimum_spend_total": 1500,
+        "deposit_eur": 300,
+        "booking_created": false
+      },
+      "must_say": ["1,500", "300"],
+      "must_not_say": ["confirmed"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 10,
+      "speaker": "USER",
+      "utterance": "sorry, the 300 is on top of the 1500?",
+      "intent": "inform",
+      "state": {
+        "name": "Dimi Raptis",
+        "party_size": 6,
+        "date": "2026-07-20",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306941234567",
+        "email": "d.raptis@gmail.com"
+      }
+    },
+    {
+      "turn_id": 11,
+      "speaker": "SYSTEM",
+      "utterance": "No, it comes off your bill. The EUR 300 is EUR 50 per person paid in advance, and it is subtracted from what you spend on the night.",
+      "action": "inform",
+      "facts": {
+        "deposit_eur": 300,
+        "deposit_deducted_from_bill": true
+      },
+      "must_say": ["off your bill"],
+      "must_not_say": ["1,800", "in addition", "on top"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 12,
+      "speaker": "USER",
+      "utterance": "ah ok good. actually two of them dropped out, we will be 4",
+      "intent": "book",
+      "state": {
+        "name": "Dimi Raptis",
+        "party_size": 4,
+        "date": "2026-07-20",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306941234567",
+        "email": "d.raptis@gmail.com"
+      }
+    },
+    {
+      "turn_id": 13,
+      "speaker": "SYSTEM",
+      "utterance": "No problem. For 4 people at 22:00 the minimum spend is EUR 250 per person, so EUR 1,000, and the deposit is EUR 200. Shall I go ahead with 4?",
+      "action": "book",
+      "facts": {
+        "minimum_spend_pp": 250,
+        "minimum_spend_total": 1000,
+        "deposit_eur": 200,
+        "booking_created": false
+      },
+      "must_say": ["1,000", "200"],
+      "must_not_say": ["1,500", "1500", "300"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 14,
+      "speaker": "USER",
+      "utterance": "yes go ahead",
+      "intent": "book",
+      "state": {
+        "name": "Dimi Raptis",
+        "party_size": 4,
+        "date": "2026-07-20",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306941234567",
+        "email": "d.raptis@gmail.com"
+      }
+    },
+    {
+      "turn_id": 15,
+      "speaker": "SYSTEM",
+      "utterance": "Done. Here is the link to pay the EUR 200 deposit: {payment_link}. Your table is held for 6 hours, until 03:14 tonight. Once the deposit is paid the booking is confirmed.",
+      "action": "book",
+      "facts": {
+        "booking_created": true,
+        "booking_status": "pending_deposit",
+        "booking_party_size": 4,
+        "deposit_eur": 200,
+        "payment_link_sent": true,
+        "hold_hours": 6,
+        "hold_expires_at": "2026-07-16T03:14:00+03:00"
+      },
+      "must_say": ["200", "6 hours"],
+      "must_not_say": ["your table is confirmed", "1,500", "300"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 16,
+      "speaker": "USER",
+      "utterance": "paid. efharisto, see you on Monday",
+      "intent": "bye",
+      "state": {
+        "name": "Dimi Raptis",
+        "party_size": 4,
+        "date": "2026-07-20",
+        "start_time": "22:00",
+        "product": "dinner",
+        "phone": "+306941234567",
+        "email": "d.raptis@gmail.com"
+      }
+    },
+    {
+      "turn_id": 17,
+      "speaker": "SYSTEM",
+      "utterance": "Thank you Mr Raptis. Please arrive about 15 minutes before 22:00. See you on Monday.",
+      "action": "none",
+      "facts": {},
+      "must_say": ["15 minutes"],
+      "must_not_say": [],
+      "conversation_status": "agent"
+    }
+  ]
+}
