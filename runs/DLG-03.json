@@ -1,0 +1,453 @@
+{
+  "dialogue_id": "DLG-03",
+  "source": "evals/dialogues/dlg-03-chair-buffer-disclosure.json",
+  "api_calls": 10,
+  "turns": [
+    {
+      "turn_id": 1,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "customer_found": {
+          "expected": true,
+          "got": true
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Nikos Pappas",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": null,
+          "product": null,
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        },
+        "got": {
+          "name": "Nikos Pappas",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": null,
+          "product": null,
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "dinner",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "bottle service",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "your name",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "email address",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "phone number",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "250",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "confirmed",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Kalimera Mr Pappas, good to hear from you. I have your details. For tonight - dinner or bottle service, and what time were you thinking?",
+      "got_message": "I have you on file, Nikos. Great to hear from you! For a table of 4 tonight (Monday, 13 July), I'll need to know what time you'd like to eat and whether you're thinking dinner, bottle service, or both. What suits you?"
+    },
+    {
+      "turn_id": 3,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "minimum_spend_pp": {
+          "expected": 250,
+          "got": 250
+        },
+        "minimum_spend_total": {
+          "expected": 1000,
+          "got": 1000
+        },
+        "deposit_eur": {
+          "expected": 200,
+          "got": 200
+        },
+        "buffer_wait_disclosed": {
+          "expected": true,
+          "got": true
+        },
+        "booking_created": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Nikos Pappas",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        },
+        "got": {
+          "name": "Nikos Pappas",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "wait at the door",
+          "appeared": false,
+          "ok": false
+        },
+        {
+          "phrase": "1,000",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "200",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "no deposit",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "waive",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "since you are a regular",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "confirmed",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "I can do 21:30 for 4 tonight, but I should be straight with you: we are tight on seating at that hour, so there may be a short wait at the door of about 15 minutes. The minimum spend at 21:30 is EUR 250 per person, so EUR 1,000, and the deposit is EUR 200. Shall I hold it?",
+      "got_message": "Good news \u2014 21:30 is yours. One thing to know: several parties are seated close together at that time, so there may be a short wait of about 15 minutes at the door while we set up your table. Your table itself is still there.\n\nMinimum spend is \u20ac1,000 for your party (\u20ac250 per person), and the deposit is \u20ac200. That comes off your bill on the night. Shall I go ahead?"
+    },
+    {
+      "turn_id": 5,
+      "action": {
+        "expected": "inform",
+        "got": "book"
+      },
+      "facts": {
+        "buffer_wait_disclosed": {
+          "expected": true,
+          "got": true
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Nikos Pappas",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        },
+        "got": {
+          "name": "Nikos Pappas",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [],
+      "must_not_say": [
+        {
+          "phrase": "there will be no wait",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "you will not wait",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "guaranteed",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "free drink",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "on the house",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I will make sure",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Your table is yours, it is only the setting up. At 21:30 we are seating three parties close together and the staff may need a few minutes to bring chairs across. I would rather tell you now than have you standing there surprised.",
+      "got_message": "You're right \u2014 your table is yours. It's just that when we have several parties seated close together at that time, our staff need to move chairs across to set up each table as guests arrive. It usually takes about 15 minutes. Your reservation is secure; it's only the timing at the door that's uncertain. But I understand if that does not work for you \u2014 would you like to try a different time instead?"
+    },
+    {
+      "turn_id": 7,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "booking_created": {
+          "expected": true,
+          "got": true
+        },
+        "booking_status": {
+          "expected": "pending_deposit",
+          "got": "pending_deposit"
+        },
+        "booking_party_size": {
+          "expected": 4,
+          "got": 4
+        },
+        "deposit_eur": {
+          "expected": 200,
+          "got": 200
+        },
+        "deposit_deducted_from_bill": {
+          "expected": true,
+          "got": true
+        },
+        "payment_link_sent": {
+          "expected": true,
+          "got": true
+        },
+        "hold_hours": {
+          "expected": 6,
+          "got": 6
+        },
+        "hold_expires_at": {
+          "expected": "2026-07-13T16:20:00+03:00",
+          "got": "2026-07-13T16:20:00+03:00"
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Nikos Pappas",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        },
+        "got": {
+          "name": "Nikos Pappas",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "200",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "6 hours",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "your table is confirmed",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "no deposit needed",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Done. Here is the link for the EUR 200 deposit: {payment_link}. I am holding the table for 6 hours, until 16:20 today. It comes off your bill as always.",
+      "got_message": "Perfect. Your table is held for 4 at 21:30 tonight. The deposit is \u20ac200 and I've sent you the payment link \u2014 it comes off your bill. The table is held for 6 hours, until 16:20 today. Once we have the deposit, you're all set.\n\nPlease arrive about 15 minutes early. Enjoy your evening!"
+    },
+    {
+      "turn_id": 9,
+      "action": {
+        "expected": "escalate",
+        "got": "escalate"
+      },
+      "facts": {
+        "escalated": {
+          "expected": true,
+          "got": true
+        },
+        "escalation_reason": {
+          "expected": "party_wants_a_specific_table",
+          "got": "party_wants_a_specific_table"
+        },
+        "booking_status": {
+          "expected": "pending_deposit",
+          "got": "pending_deposit"
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Nikos Pappas",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        },
+        "got": {
+          "name": "Nikos Pappas",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "handed_to_human",
+        "got": "handed_to_human"
+      },
+      "must_say": [],
+      "must_not_say": [
+        {
+          "phrase": "of course",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I have noted the window",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I will reserve the window",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "no problem",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Which table you get is decided by the host on the night, not by me, so I have passed that to our reservation manager. Someone will come back to you here shortly. Your booking for 4 at 21:30 tonight stands.",
+      "got_message": "Thank you for paying. I have passed your table request to our reservation manager and she will come back to you here. Your booking for 4 at 21:30 still stands."
+    },
+    {
+      "turn_id": 11,
+      "action": {
+        "expected": "none",
+        "got": "none"
+      },
+      "facts": {
+        "agent_replied": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Nikos Pappas",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        },
+        "got": {
+          "name": "Nikos Pappas",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "handed_to_human",
+        "got": "handed_to_human"
+      },
+      "must_say": [],
+      "must_not_say": [],
+      "expected_utterance": "",
+      "got_message": ""
+    }
+  ]
+}

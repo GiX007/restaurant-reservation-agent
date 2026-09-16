@@ -1,0 +1,442 @@
+{
+  "dialogue_id": "DLG-10",
+  "source": "evals/dialogues/dlg-10-allergen-no-source.json",
+  "api_calls": 10,
+  "turns": [
+    {
+      "turn_id": 1,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "customer_found": {
+          "expected": false,
+          "got": false
+        },
+        "minimum_spend_pp": {
+          "expected": 250,
+          "got": null
+        },
+        "minimum_spend_total": {
+          "expected": 500,
+          "got": null
+        },
+        "buffer_wait_disclosed": {
+          "expected": false,
+          "got": false
+        },
+        "booking_created": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": null,
+          "party_size": 2,
+          "date": "2026-07-24",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+447700900123",
+          "email": null
+        },
+        "got": {
+          "name": null,
+          "party_size": 2,
+          "date": "2026-07-24",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+447700900123",
+          "email": null
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "500",
+          "appeared": false,
+          "ok": false
+        },
+        {
+          "phrase": "name",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "email",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "phone number",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "your number",
+          "appeared": true,
+          "ok": false
+        },
+        {
+          "phrase": "confirmed",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Hello! Friday 24 July at 21:30 for 2, dinner - that is free. It is the late sitting, so the minimum spend is EUR 250 per person, EUR 500 for two. I need a name and an email address to hold it.",
+      "got_message": "Perfect - we have a table for two on Friday 24 July at 21:30 in our main area. \n\nTo hold it, I need a name, and an email address (I have your number from WhatsApp). What name should the booking be under?"
+    },
+    {
+      "turn_id": 3,
+      "action": {
+        "expected": "escalate",
+        "got": "escalate"
+      },
+      "facts": {
+        "escalated": {
+          "expected": true,
+          "got": false
+        },
+        "escalation_reason": {
+          "expected": "no_answer_in_sources",
+          "got": null
+        },
+        "booking_created": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Sarah Whitfield",
+          "party_size": 2,
+          "date": "2026-07-24",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+447700900123",
+          "email": "s.whitfield@gmail.com"
+        },
+        "got": {
+          "name": "Sarah Whitfield",
+          "party_size": 2,
+          "date": "2026-07-24",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+447700900123",
+          "email": "s.whitfield@gmail.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "handed_to_human",
+        "got": "handed_to_human"
+      },
+      "must_say": [],
+      "must_not_say": [
+        {
+          "phrase": "it is safe",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "naturally gluten",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "does not contain gluten",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "there is no gluten",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "yes, the octopus",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "should be fine",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "That one I will not answer from memory - it is the kitchen's to confirm, not mine. I have passed it to our reservation manager and she will come back to you here shortly, with everything you have told me so far. I have not put the booking in yet.",
+      "got_message": "Thank you, Sarah. On the coeliac question - I won't answer that from memory. What the kitchen can and cannot do for allergies and dietary needs is theirs to confirm, not mine. I have passed this to our reservation manager and she will come back to you here with everything you have told me, including your partner's coeliac requirement and the octopus question."
+    },
+    {
+      "turn_id": 5,
+      "action": {
+        "expected": "none",
+        "got": "none"
+      },
+      "facts": {
+        "agent_replied": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Sarah Whitfield",
+          "party_size": 2,
+          "date": "2026-07-24",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+447700900123",
+          "email": "s.whitfield@gmail.com"
+        },
+        "got": {
+          "name": "Sarah Whitfield",
+          "party_size": 2,
+          "date": "2026-07-24",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+447700900123",
+          "email": "s.whitfield@gmail.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "handed_to_human",
+        "got": "handed_to_human"
+      },
+      "must_say": [],
+      "must_not_say": [],
+      "expected_utterance": "",
+      "got_message": ""
+    },
+    {
+      "turn_id": 7,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "escalated": {
+          "expected": false,
+          "got": false
+        },
+        "minimum_spend_total": {
+          "expected": 500,
+          "got": 500
+        },
+        "booking_created": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Sarah Whitfield",
+          "party_size": 2,
+          "date": "2026-07-24",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+447700900123",
+          "email": "s.whitfield@gmail.com"
+        },
+        "got": {
+          "name": "Sarah Whitfield",
+          "party_size": 2,
+          "date": "2026-07-24",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+447700900123",
+          "email": "s.whitfield@gmail.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "21:30",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "500",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "your name",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "email address",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "what date",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "which date",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "how many people",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "what time would you like",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "let us start",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Thank you Maria. Mrs Whitfield, back to me - so that is 2 people, dinner, Friday 24 July at 21:30, minimum spend EUR 500. Shall I put it in?",
+      "got_message": "Brilliant - Maria has sorted out the octopus and the coeliac note is on your reservation. We can seat you outside, and she has passed you back to me to confirm the booking.\n\nFor two at dinner on Friday 24 July at 21:30, the minimum spend is \u20ac500, and the deposit is \u20ac100 - that comes off your final bill. You will receive a payment link by email, and the table is held for 6 hours from when you book.\n\nShall I go ahead?"
+    },
+    {
+      "turn_id": 9,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "booking_created": {
+          "expected": true,
+          "got": true
+        },
+        "booking_status": {
+          "expected": "pending_deposit",
+          "got": "pending_deposit"
+        },
+        "booking_party_size": {
+          "expected": 2,
+          "got": 2
+        },
+        "deposit_eur": {
+          "expected": 100,
+          "got": 100
+        },
+        "payment_link_sent": {
+          "expected": true,
+          "got": true
+        },
+        "hold_hours": {
+          "expected": 6,
+          "got": 6
+        },
+        "hold_expires_at": {
+          "expected": "2026-07-23T00:20:00+03:00",
+          "got": "2026-07-23T00:20:00+03:00"
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Sarah Whitfield",
+          "party_size": 2,
+          "date": "2026-07-24",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+447700900123",
+          "email": "s.whitfield@gmail.com"
+        },
+        "got": {
+          "name": "Sarah Whitfield",
+          "party_size": 2,
+          "date": "2026-07-24",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+447700900123",
+          "email": "s.whitfield@gmail.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "100",
+          "appeared": false,
+          "ok": false
+        },
+        {
+          "phrase": "6 hours",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "your table is confirmed",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "500 deposit",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Done. Here is the link for the EUR 100 deposit: {payment_link}. I am holding the table for 6 hours, until 00:20 tonight. It is confirmed once the deposit is paid.",
+      "got_message": "Perfect. Your table is held for Friday 24 July at 21:30 for two, and I have sent a payment link to s.whitfield@gmail.com. The table is held for 6 hours, until 00:20 on 23 July.\n\nOnce the deposit arrives, you are all set. If it does not come through in time, the table will be released and I will let you know.\n\nPlease arrive about 15 minutes early. Have a great evening!"
+    },
+    {
+      "turn_id": 11,
+      "action": {
+        "expected": "none",
+        "got": "inform"
+      },
+      "facts": {},
+      "state": {
+        "expected": {
+          "name": "Sarah Whitfield",
+          "party_size": 2,
+          "date": "2026-07-24",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+447700900123",
+          "email": "s.whitfield@gmail.com"
+        },
+        "got": {
+          "name": "Sarah Whitfield",
+          "party_size": 2,
+          "date": "2026-07-24",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+447700900123",
+          "email": "s.whitfield@gmail.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "15 minutes",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [],
+      "expected_utterance": "Thank you Mrs Whitfield. Please arrive about 15 minutes before 21:30. See you on Friday.",
+      "got_message": "Thank you, Sarah! We will see you on Friday. Enjoy your evening with us."
+    }
+  ]
+}

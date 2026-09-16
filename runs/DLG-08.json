@@ -1,0 +1,232 @@
+{
+  "dialogue_id": "DLG-08",
+  "source": "evals/dialogues/dlg-08-unsupported-language.json",
+  "api_calls": 3,
+  "turns": [
+    {
+      "turn_id": 1,
+      "action": {
+        "expected": "inform",
+        "got": "none"
+      },
+      "facts": {
+        "customer_found": {
+          "expected": false,
+          "got": null
+        },
+        "reply_language": {
+          "expected": "nl",
+          "got": "en"
+        },
+        "escalated": {
+          "expected": false,
+          "got": false
+        },
+        "booking_created": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": null,
+          "party_size": null,
+          "date": null,
+          "start_time": null,
+          "product": null,
+          "phone": "+31612345678",
+          "email": null
+        },
+        "got": {
+          "name": null,
+          "party_size": null,
+          "date": null,
+          "start_time": null,
+          "product": null,
+          "phone": "+31612345678",
+          "email": null
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "Engels",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "zaterdag",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "4 personen",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "21:00",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "EUR",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "250",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "beschikbaar",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "gereserveerd",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Goedenavond! Wij kunnen u helpen in het Grieks, Engels, Frans of Italiaans. Kunt u ons in een van deze talen schrijven?",
+      "got_message": "I appreciate you reaching out, but Venue X can help in Greek, English, French or Italian. Please write to us in one of those languages and we will be happy to assist with your reservation."
+    },
+    {
+      "turn_id": 3,
+      "action": {
+        "expected": "escalate",
+        "got": "escalate"
+      },
+      "facts": {
+        "reply_language": {
+          "expected": "nl",
+          "got": "en"
+        },
+        "escalated": {
+          "expected": true,
+          "got": true
+        },
+        "escalation_reason": {
+          "expected": "unsupported_language_repeated",
+          "got": "unsupported_language_repeated"
+        },
+        "booking_created": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": null,
+          "party_size": null,
+          "date": null,
+          "start_time": null,
+          "product": null,
+          "phone": "+31612345678",
+          "email": null
+        },
+        "got": {
+          "name": null,
+          "party_size": null,
+          "date": null,
+          "start_time": null,
+          "product": null,
+          "phone": "+31612345678",
+          "email": null
+        }
+      },
+      "conversation_status": {
+        "expected": "handed_to_human",
+        "got": "handed_to_human"
+      },
+      "must_say": [],
+      "must_not_say": [
+        {
+          "phrase": "zaterdag",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "4 personen",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "21:00",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "EUR",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "250",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "gereserveerd",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "bevestigd",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Ik geef uw bericht door aan een collega. Iemand neemt binnenkort contact met u op via deze weg.",
+      "got_message": "I have passed this to our reservation manager, who will come back to you here. They are reachable from 10:00 to 23:00 \u2014 if it is outside those hours, they will be in touch after 10:00."
+    },
+    {
+      "turn_id": 5,
+      "action": {
+        "expected": "none",
+        "got": "none"
+      },
+      "facts": {
+        "agent_replied": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": null,
+          "party_size": null,
+          "date": null,
+          "start_time": null,
+          "product": null,
+          "phone": "+31612345678",
+          "email": null
+        },
+        "got": {
+          "name": null,
+          "party_size": null,
+          "date": null,
+          "start_time": null,
+          "product": null,
+          "phone": "+31612345678",
+          "email": null
+        }
+      },
+      "conversation_status": {
+        "expected": "handed_to_human",
+        "got": "handed_to_human"
+      },
+      "must_say": [],
+      "must_not_say": [],
+      "expected_utterance": "",
+      "got_message": ""
+    }
+  ]
+}

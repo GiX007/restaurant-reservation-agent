@@ -1,0 +1,271 @@
+{
+  "dialogue_id": "DLG-09",
+  "source": "evals/dialogues/dlg-09-late-arrival.json",
+  "api_calls": 5,
+  "turns": [
+    {
+      "turn_id": 1,
+      "action": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "facts": {
+        "customer_found": {
+          "expected": true,
+          "got": true
+        },
+        "booking_found": {
+          "expected": true,
+          "got": true
+        },
+        "booking_status": {
+          "expected": "confirmed",
+          "got": "confirmed"
+        },
+        "escalated": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Elena Marino",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306940000002",
+          "email": "elena@example.com"
+        },
+        "got": {
+          "name": "Elena Marino",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306940000002",
+          "email": "elena@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [],
+      "must_not_say": [
+        {
+          "phrase": "you have lost",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "the table is gone",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "your deposit is lost",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "we will hold it",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "take your time",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "no problem at all",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Thank you for telling us, Mrs Marino - I have your table for 4 at 20:00 tonight. How late do you think you will be?",
+      "got_message": "Elena, I can see you have your table at 20:00 for 4. How late do you expect to arrive?"
+    },
+    {
+      "turn_id": 3,
+      "action": {
+        "expected": "escalate",
+        "got": "escalate"
+      },
+      "facts": {
+        "customer_found": {
+          "expected": true,
+          "got": true
+        },
+        "booking_found": {
+          "expected": true,
+          "got": true
+        },
+        "booking_status": {
+          "expected": "confirmed",
+          "got": "confirmed"
+        },
+        "escalated": {
+          "expected": true,
+          "got": true
+        },
+        "escalation_reason": {
+          "expected": "forgiving_a_late_arrival",
+          "got": "forgiving_a_late_arrival"
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Elena Marino",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306940000002",
+          "email": "elena@example.com"
+        },
+        "got": {
+          "name": "Elena Marino",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306940000002",
+          "email": "elena@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "handed_to_human",
+        "got": "handed_to_human"
+      },
+      "must_say": [],
+      "must_not_say": [
+        {
+          "phrase": "you have lost",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "the table is gone",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "your deposit is lost",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "we will hold it",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "your table is waiting",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "no problem",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "of course",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "do not worry",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "I have passed this straight to our reservation manager with your booking details - 4 people, 20:00 tonight, arriving around 20:20. She will come back to you here shortly. Please keep coming.",
+      "got_message": "Elena, thank you for letting me know. You are arriving about 20 minutes late, which is beyond our usual grace period. I am passing this to our reservation manager now, and they will come back to you here to confirm your table is held for you. Your booking is still in place."
+    },
+    {
+      "turn_id": 5,
+      "action": {
+        "expected": "none",
+        "got": "none"
+      },
+      "facts": {
+        "agent_replied": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Elena Marino",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306940000002",
+          "email": "elena@example.com"
+        },
+        "got": {
+          "name": "Elena Marino",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306940000002",
+          "email": "elena@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "handed_to_human",
+        "got": "handed_to_human"
+      },
+      "must_say": [],
+      "must_not_say": [],
+      "expected_utterance": "",
+      "got_message": ""
+    },
+    {
+      "turn_id": 7,
+      "action": {
+        "expected": "none",
+        "got": "none"
+      },
+      "facts": {
+        "agent_replied": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Elena Marino",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306940000002",
+          "email": "elena@example.com"
+        },
+        "got": {
+          "name": "Elena Marino",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306940000002",
+          "email": "elena@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "handed_to_human",
+        "got": "handed_to_human"
+      },
+      "must_say": [],
+      "must_not_say": [],
+      "expected_utterance": "",
+      "got_message": ""
+    }
+  ]
+}

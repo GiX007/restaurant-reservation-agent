@@ -1,0 +1,553 @@
+{
+  "dialogue_id": "DLG-07",
+  "source": "evals/dialogues/dlg-07-hold-expires.json",
+  "api_calls": 15,
+  "turns": [
+    {
+      "turn_id": 1,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "customer_found": {
+          "expected": false,
+          "got": false
+        },
+        "minimum_spend_pp": {
+          "expected": 250,
+          "got": null
+        },
+        "minimum_spend_total": {
+          "expected": 500,
+          "got": null
+        },
+        "buffer_wait_disclosed": {
+          "expected": false,
+          "got": false
+        },
+        "booking_created": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": null,
+          "party_size": 2,
+          "date": "2026-07-21",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306977001122",
+          "email": null
+        },
+        "got": {
+          "name": null,
+          "party_size": 2,
+          "date": "2026-07-21",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306977001122",
+          "email": null
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "500",
+          "appeared": false,
+          "ok": false
+        },
+        {
+          "phrase": "name",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "email",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "phone number",
+          "appeared": true,
+          "ok": false
+        },
+        {
+          "phrase": "your number",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "confirmed",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Hello! Tuesday 21 July at 22:00 for 2, dinner - that is free. It is the late sitting, so the minimum spend is EUR 250 per person, EUR 500 for two. I need a name and an email address to hold it.",
+      "got_message": "Great - we have a table for two on Tuesday 21 July at 22:00, in the main area. Before I quote it to you, I need your name, email address, and I already have your phone number from WhatsApp. What's your name and email?"
+    },
+    {
+      "turn_id": 3,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "booking_created": {
+          "expected": true,
+          "got": false
+        },
+        "booking_status": {
+          "expected": "pending_deposit",
+          "got": null
+        },
+        "booking_party_size": {
+          "expected": 2,
+          "got": null
+        },
+        "deposit_eur": {
+          "expected": 100,
+          "got": 100
+        },
+        "payment_link_sent": {
+          "expected": true,
+          "got": null
+        },
+        "hold_hours": {
+          "expected": 6,
+          "got": 6
+        },
+        "hold_expires_at": {
+          "expected": "2026-07-17T20:30:00+03:00",
+          "got": null
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Marco Bianchi",
+          "party_size": 2,
+          "date": "2026-07-21",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306977001122",
+          "email": "m.bianchi@libero.it"
+        },
+        "got": {
+          "name": "Marco Bianchi",
+          "party_size": 2,
+          "date": "2026-07-21",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306977001122",
+          "email": "m.bianchi@libero.it"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "100",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "6 hours",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "your table is confirmed",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "500 deposit",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Done. Here is the link for the EUR 100 deposit: {payment_link}. I am holding the table for 6 hours, until 20:30 today. It is confirmed once the deposit is paid.",
+      "got_message": "Perfect, Marco. Here's what you're looking at for two on Tuesday 21 July at 22:00:\n\n- Minimum spend: \u20ac500 total (\u20ac250 per person)\n- Deposit: \u20ac100 due now, which comes off your bill\n- The table is held for 6 hours from when you book\n\nShall I go ahead and put this in for you?"
+    },
+    {
+      "turn_id": 5,
+      "action": {
+        "expected": "inform",
+        "got": "book"
+      },
+      "facts": {
+        "booking_status": {
+          "expected": "pending_deposit",
+          "got": "pending_deposit"
+        },
+        "hold_expires_at": {
+          "expected": "2026-07-17T20:30:00+03:00",
+          "got": "2026-07-17T20:30:00+03:00"
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Marco Bianchi",
+          "party_size": 2,
+          "date": "2026-07-21",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306977001122",
+          "email": "m.bianchi@libero.it"
+        },
+        "got": {
+          "name": "Marco Bianchi",
+          "party_size": 2,
+          "date": "2026-07-21",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306977001122",
+          "email": "m.bianchi@libero.it"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "20:30",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "take your time",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "no rush",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "whenever you like",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "it will be there",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Just so you know, the hold ends at 20:30 this evening. If the deposit has not arrived by then the table goes back into the pool and I will let you know.",
+      "got_message": "Excellent - your table is held for two on Tuesday 21 July at 22:00. \n\nI've sent you a payment link by WhatsApp - the \u20ac100 deposit is due within 6 hours, until 20:30 today. Once that arrives, your booking is confirmed. If the deposit doesn't come through by then, the table will be released and we'll let you know.\n\nPlease arrive about 15 minutes early on the night. Looking forward to seeing you!"
+    },
+    {
+      "turn_id": 6,
+      "action": {
+        "expected": "cancel",
+        "got": "cancel"
+      },
+      "facts": {
+        "booking_found": {
+          "expected": true,
+          "got": true
+        },
+        "booking_status": {
+          "expected": "cancelled",
+          "got": "cancelled"
+        },
+        "cancel_reason": {
+          "expected": "hold_expired",
+          "got": "hold_expired"
+        },
+        "deposit_kept": {
+          "expected": false,
+          "got": false
+        },
+        "refund_eur": {
+          "expected": 0,
+          "got": 0
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Marco Bianchi",
+          "party_size": 2,
+          "date": "2026-07-21",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306977001122",
+          "email": "m.bianchi@libero.it"
+        },
+        "got": {
+          "name": "Marco Bianchi",
+          "party_size": 2,
+          "date": "2026-07-21",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306977001122",
+          "email": "m.bianchi@libero.it"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "released",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "you owe",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "we have charged",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "cancellation fee",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "we kept your deposit",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "your table is still",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Mr Bianchi, the 6 hours have passed and no deposit arrived, so I have released the table for Tuesday 21 July. Nothing was charged and there is nothing to pay. If you still want that evening, tell me and I will look again.",
+      "got_message": "Your table for Tuesday 21 July at 22:00 has been released - the 6-hour hold expired and the deposit didn't arrive. Nothing was charged and nothing is kept. You're welcome to book again if you'd still like that night."
+    },
+    {
+      "turn_id": 8,
+      "action": {
+        "expected": "book",
+        "got": "inform"
+      },
+      "facts": {
+        "booking_status": {
+          "expected": "cancelled",
+          "got": "cancelled"
+        },
+        "booking_created": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Marco Bianchi",
+          "party_size": 2,
+          "date": "2026-07-21",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306977001122",
+          "email": "m.bianchi@libero.it"
+        },
+        "got": {
+          "name": "Marco Bianchi",
+          "party_size": 2,
+          "date": "2026-07-21",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306977001122",
+          "email": "m.bianchi@libero.it"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [],
+      "must_not_say": [
+        {
+          "phrase": "your table is still there",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I have restored",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "reinstated",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "the payment went through",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I will reopen the old",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "That link is dead now, I am afraid - the booking was cancelled at 20:30 and nothing can be paid against it. The good news is that 22:00 on Tuesday is still free. Shall I put it in again?",
+      "got_message": "Thank you, but unfortunately the hold expired at 20:30 and the table has been released. However, you're welcome to book again - would you still like a table for two on Tuesday 21 July at 22:00?"
+    },
+    {
+      "turn_id": 10,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "booking_created": {
+          "expected": true,
+          "got": false
+        },
+        "booking_status": {
+          "expected": "pending_deposit",
+          "got": "cancelled"
+        },
+        "booking_party_size": {
+          "expected": 2,
+          "got": 2
+        },
+        "minimum_spend_total": {
+          "expected": 500,
+          "got": 500
+        },
+        "deposit_eur": {
+          "expected": 100,
+          "got": 100
+        },
+        "payment_link_sent": {
+          "expected": true,
+          "got": false
+        },
+        "hold_hours": {
+          "expected": 6,
+          "got": 6
+        },
+        "hold_expires_at": {
+          "expected": "2026-07-18T03:10:00+03:00",
+          "got": null
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Marco Bianchi",
+          "party_size": 2,
+          "date": "2026-07-21",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306977001122",
+          "email": "m.bianchi@libero.it"
+        },
+        "got": {
+          "name": "Marco Bianchi",
+          "party_size": 2,
+          "date": "2026-07-21",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306977001122",
+          "email": "m.bianchi@libero.it"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "100",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "6 hours",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "your table is confirmed",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "20:30",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "the same link",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Booked again - 2 people, dinner, Tuesday 21 July at 22:00. Here is a new link for the EUR 100 deposit: {payment_link}. This one holds the table for 6 hours, until 03:10.",
+      "got_message": "Perfect - the table is still available. Let me quote it again: \u20ac500 minimum spend (\u20ac250 per person), \u20ac100 deposit due now, and the table is held for 6 hours from when you book. Shall I go ahead?"
+    },
+    {
+      "turn_id": 12,
+      "action": {
+        "expected": "none",
+        "got": "book"
+      },
+      "facts": {},
+      "state": {
+        "expected": {
+          "name": "Marco Bianchi",
+          "party_size": 2,
+          "date": "2026-07-21",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306977001122",
+          "email": "m.bianchi@libero.it"
+        },
+        "got": {
+          "name": "Marco Bianchi",
+          "party_size": 2,
+          "date": "2026-07-21",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306977001122",
+          "email": "m.bianchi@libero.it"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "15 minutes",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [],
+      "expected_utterance": "Thank you Mr Bianchi. Please arrive about 15 minutes before 22:00. See you on Tuesday.",
+      "got_message": "Grazie! Your table is held for two on Tuesday 21 July at 22:00. The deposit has been received - once it clears, your booking is confirmed. Your table is held for 6 hours, until 03:10 tomorrow morning.\n\nPlease arrive about 15 minutes early on the night. See you then!"
+    }
+  ]
+}
