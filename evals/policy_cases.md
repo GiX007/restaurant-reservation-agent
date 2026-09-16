@@ -169,7 +169,29 @@ does not need to ask.
 
 **MODIFY-8.** The same message from the same number, but on **12 July at 11:00**.
 Now both nights are still ahead → **two matches**. The agent asks which one she
-means, by date. It does not pick one.
+means. It does not pick one.
+
+It asks by whatever tells the two apart. Elena's differ by **date**, so the date
+is enough. Nikos Pappas has two on the same night — dinner at 19:30 and bottle
+service at 00:00 — so the question has to name the **time and the product**.
+"Which date?" is not a question there.
+
+**MODIFY-9.** Booking for 5 becomes 7. Same night, same hour: bottle service at
+00:00 on the night of 12 July.
+The check measures the **new** shape only. Overlapping at 00:30: Yiannis's
+party of 6 uses 1 table, the new party of 7 uses 2. That is 3 of the 3 main
+tables → **fits**. The old row for 5 is not counted. Count it and the sum is 4
+tables against 3, and a change that fits is refused as full.
+
+**MODIFY-10.** The same booking is `confirmed` and now owes €100 more.
+Status stays **`confirmed`**. No new 6-hour hold starts. The extra deposit is a
+bill, not a countdown — a booking with a paid deposit is never cancelled
+because €100 arrived late.
+
+**MODIFY-11.** Booking made at 14:30, `pending_deposit`, hold until 20:30. The
+guest changes the party from 2 to 3 at 19:30.
+The hold still ends at **20:30**. Nothing restarts it. If the deposit has not
+arrived by then the booking is cancelled, exactly as if nothing had changed.
 
 ### CANCEL
 

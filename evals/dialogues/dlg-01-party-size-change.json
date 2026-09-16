@@ -241,7 +241,7 @@
         "hold_expires_at": "2026-07-16T03:14:00+03:00"
       },
       "must_say": ["200", "6 hours"],
-      "must_not_say": ["your table is confirmed", "1,500", "300"],
+      "must_not_say": ["your table is confirmed", "your booking is confirmed", "1,500", "300"],
       "conversation_status": "agent"
     },
     {

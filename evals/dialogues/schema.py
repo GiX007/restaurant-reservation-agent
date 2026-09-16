@@ -42,6 +42,7 @@ FACT_KEYS = {
     "minimum_spend_pp",
     "minimum_spend_total",
     "deposit_eur",
+    "deposit_extra_eur",
     "deposit_deducted_from_bill",
     "deposit_kept",
     "refund_eur",

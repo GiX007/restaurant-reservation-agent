@@ -162,7 +162,8 @@
     "deadline_days": { "high": 4, "low": 0 },
     "deposit_carries_over": true,
     "refund_when_party_shrinks": false,
-    "extra_deposit_when_party_grows": true
+    "extra_deposit_when_party_grows": true,
+    "restarts_hold": false
   },
 
   "cancel": {

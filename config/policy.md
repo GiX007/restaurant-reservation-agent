@@ -273,6 +273,14 @@ a row is counted**:
 A cancelled row is history. Counting one makes the venue look full when it is
 not, and a guest is turned away from a table nobody is sitting at.
 
+One more row is never counted: **a booking does not count against itself**.
+When the agent checks whether a change fits, it is asking about the new shape,
+and the old shape is about to disappear. Count both and a party of 5 growing
+to 7 is measured as 12, so every change is refused as full.
+
+This one is not a venue setting. It is true at every venue and in every
+season, so it stays here and does not appear in `policy.json`.
+
 ### The chair buffer
 
 Chairs are movable. In practice the staff find a few extra when a table runs
@@ -542,6 +550,21 @@ never cancels the old one before the new one is confirmed.
 - Changing the **product** (dinner → bottle service) or the **time** can
   change the minimum spend. The agent recalculates and tells the guest the
   new figure before confirming.
+
+**A change does not restart the hold.** A `confirmed` booking stays
+`confirmed` while the extra deposit is unpaid, and no new 6-hour hold begins.
+The change is already in the database and the table is already the guest's.
+
+Sending it back to `pending_deposit` would let the software cancel a booking
+the guest has already paid a deposit on, because €100 arrived an hour late.
+That is the same failure §6 refuses for tables — a confirmed guest turned away
+by software. Chasing a late €100 is a person's job, not the agent's.
+
+The same is true for a booking nobody has paid for yet. A `pending_deposit`
+booking keeps the expiry it was given when it was made. Booked at 14:30 with
+six hours, it dies at 20:30 — whether the guest changes it at 19:30 or never
+touches it. Restart the clock on every change and a guest keeps a table for
+ever by sending one small message every five hours, and never pays.
 
 ---
 

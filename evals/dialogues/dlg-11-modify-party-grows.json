@@ -1,0 +1,202 @@
+{
+  "dialogue_id": "DLG-11",
+  "goal": "The mirror of DLG-06: a modify that is ALLOWED. A confirmed bottle service booking for 5 on the night of 12 July. The guest writes 5 days out, inside high season but outside the 4-day deadline, and the party grows 5 -> 7. He has two live bookings on that same night, so the agent must ask which one before touching anything. The change goes through: the EUR 250 already paid carries over, only EUR 50 per extra head is added, and the minimum spend is recalculated on seven. The dinner booking earlier the same evening is left alone.",
+  "channel": "whatsapp",
+  "from": "+306940000001",
+  "language": "en",
+  "db": "seed_v1",
+  "now": "2026-07-07T18:40:00+03:00",
+  "policy_refs": [
+    "policy.md #1 who is writing",
+    "policy.md #1 which booking they mean",
+    "policy.md #6 when the venue is full",
+    "policy.md #7 minimum spend",
+    "policy.md #10 when a change is allowed",
+    "policy.md #10 what happens to the money",
+    "policy_cases.md IDENT-1",
+    "policy_cases.md MODIFY-3",
+    "policy_cases.md MODIFY-5",
+    "policy_cases.md MODIFY-8"
+  ],
+
+  "turns": [
+    {
+      "turn_id": 0,
+      "speaker": "USER",
+      "utterance": "hi! we need a bigger table for Sunday, we are going to be 7 now",
+      "intent": "modify",
+      "state": {
+        "name": "Nikos Pappas",
+        "party_size": 7,
+        "date": "2026-07-12",
+        "start_time": null,
+        "product": null,
+        "phone": "+306940000001",
+        "email": "nikos@example.com"
+      }
+    },
+    {
+      "turn_id": 1,
+      "speaker": "SYSTEM",
+      "utterance": "Hello Mr Pappas. You have two bookings that night - dinner at 19:30 for 4, and bottle service at 00:00 for 5. Which of the two should be 7?",
+      "action": "modify",
+      "facts": {
+        "customer_found": true
+      },
+      "must_say": ["19:30", "bottle service"],
+      "must_not_say": ["which date", "I have changed it", "I have updated it", "your booking is now 7", "I assume"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 2,
+      "speaker": "USER",
+      "utterance": "the bottle service one, the late table",
+      "intent": "modify",
+      "state": {
+        "name": "Nikos Pappas",
+        "party_size": 7,
+        "date": "2026-07-12",
+        "start_time": "00:00",
+        "product": "bottle_service",
+        "phone": "+306940000001",
+        "email": "nikos@example.com"
+      }
+    },
+    {
+      "turn_id": 3,
+      "speaker": "SYSTEM",
+      "utterance": "Found it - bottle service, Sunday 12 July at 00:00, currently 5 people. Sunday is 5 days away, so the change is allowed, and there is room for seven. Two figures move. The minimum spend at that hour is EUR 400 per person, so EUR 2,800 for seven. And the deposit goes from EUR 250 to EUR 350 - EUR 50 for each of the two extra people, so EUR 100 more. Shall I make the change?",
+      "action": "modify",
+      "facts": {
+        "booking_found": true,
+        "booking_status": "confirmed",
+        "modify_allowed": true,
+        "buffer_wait_disclosed": false,
+        "minimum_spend_pp": 400,
+        "minimum_spend_total": 2800,
+        "deposit_eur": 350,
+        "deposit_extra_eur": 100
+      },
+      "must_say": ["400", "100"],
+      "must_not_say": ["2,000", "2000", "I cannot change", "too close to the date", "I have changed it", "19:30", "a short wait"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 4,
+      "speaker": "USER",
+      "utterance": "yes please, go ahead",
+      "intent": "modify",
+      "state": {
+        "name": "Nikos Pappas",
+        "party_size": 7,
+        "date": "2026-07-12",
+        "start_time": "00:00",
+        "product": "bottle_service",
+        "phone": "+306940000001",
+        "email": "nikos@example.com"
+      }
+    },
+    {
+      "turn_id": 5,
+      "speaker": "SYSTEM",
+      "utterance": "Changed - bottle service for 7 on Sunday 12 July at 00:00. Your table was never released; it is the same booking, still confirmed. Here is the link for the extra EUR 100: {payment_link}. The whole EUR 350 comes off the bill that night.",
+      "action": "modify",
+      "facts": {
+        "booking_found": true,
+        "booking_status": "confirmed",
+        "booking_party_size": 7,
+        "deposit_eur": 350,
+        "deposit_extra_eur": 100,
+        "payment_link_sent": true,
+        "deposit_deducted_from_bill": true
+      },
+      "must_say": ["100", "350"],
+      "must_not_say": ["cancelled", "a new booking", "2,000", "2000", "back to pending", "no longer confirmed", "rebook"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 6,
+      "speaker": "USER",
+      "utterance": "so I am not paying the 250 twice?",
+      "intent": "inform",
+      "state": {
+        "name": "Nikos Pappas",
+        "party_size": 7,
+        "date": "2026-07-12",
+        "start_time": "00:00",
+        "product": "bottle_service",
+        "phone": "+306940000001",
+        "email": "nikos@example.com"
+      }
+    },
+    {
+      "turn_id": 7,
+      "speaker": "SYSTEM",
+      "utterance": "No. The EUR 250 you already paid stays on the booking - a deposit follows a booking when it is changed. You add EUR 100 for the two extra people, and all EUR 350 comes off the bill.",
+      "action": "inform",
+      "facts": {
+        "deposit_eur": 350,
+        "deposit_extra_eur": 100,
+        "deposit_deducted_from_bill": true
+      },
+      "must_say": ["250", "100", "350"],
+      "must_not_say": ["pay it again", "a second deposit", "250 again", "a new deposit", "non-refundable"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 8,
+      "speaker": "USER",
+      "utterance": "and the dinner at 19:30 that evening, still for 4?",
+      "intent": "inform",
+      "state": {
+        "name": "Nikos Pappas",
+        "party_size": 7,
+        "date": "2026-07-12",
+        "start_time": "00:00",
+        "product": "bottle_service",
+        "phone": "+306940000001",
+        "email": "nikos@example.com"
+      }
+    },
+    {
+      "turn_id": 9,
+      "speaker": "SYSTEM",
+      "utterance": "Untouched - dinner at 19:30 on Sunday 12 July, still for 4. I changed only the bottle service booking. The early sitting has no minimum spend.",
+      "action": "inform",
+      "facts": {
+        "booking_found": true,
+        "booking_party_size": 4,
+        "booking_status": "confirmed",
+        "minimum_spend_pp": 0
+      },
+      "must_say": ["19:30"],
+      "must_not_say": ["also changed", "I have updated both", "both bookings", "2,800", "2800", "400"],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 10,
+      "speaker": "USER",
+      "utterance": "perfect, paying the 100 now. thanks!",
+      "intent": "bye",
+      "state": {
+        "name": "Nikos Pappas",
+        "party_size": 7,
+        "date": "2026-07-12",
+        "start_time": "00:00",
+        "product": "bottle_service",
+        "phone": "+306940000001",
+        "email": "nikos@example.com"
+      }
+    },
+    {
+      "turn_id": 11,
+      "speaker": "SYSTEM",
+      "utterance": "Thank you Mr Pappas. Please arrive about 15 minutes before each sitting. See you on Sunday.",
+      "action": "none",
+      "facts": {},
+      "must_say": ["15 minutes"],
+      "must_not_say": [],
+      "conversation_status": "agent"
+    }
+  ]
+}

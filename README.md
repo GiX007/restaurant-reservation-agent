@@ -41,7 +41,7 @@ whether a table is free.
 | deterministic tools | money, availability, reading and writing bookings | `tools/` *(phase 5)* |
 | guardrails | check the request before acting, check the reply before sending | *(phase 5)* |
 | human handoff | pass everything known to a person, then go quiet | `config/policy.md` §13 |
-| evaluation | 47 policy cases, 10 dialogues, five metrics | `evals/` |
+| evaluation | 58 policy cases, 11 dialogues, five metrics | `evals/` |
 
 Re-skinning to another restaurant means editing the second row. Nothing else.
 
@@ -58,9 +58,9 @@ Re-skinning to another restaurant means editing the second row. Nothing else.
   schema.py          bookings + customers
   seed.py            a fake week, built to hit the hard cases
 - evals/
-  policy_cases.md    47 worked examples - the answer key for the functions
+  policy_cases.md    58 worked examples - the answer key for the functions
   schema.py          the frozen vocabulary for dialogue files
-  dialogues/         10 hand-written conversations, 121 turns
+  dialogues/         11 hand-written conversations, 121 turns
 - prompts/
   few_shot.md        four examples: refuse vs escalate vs just answer
 - tests/
@@ -82,7 +82,7 @@ Re-skinning to another restaurant means editing the second row. Nothing else.
 Reply wording is deliberately **not** scored. What matters is the figure and
 the decision, not the phrasing.
 
-The ten dialogues follow the shape of MultiWOZ 2.2. User turns carry a belief
+The eleven dialogues follow the shape of MultiWOZ 2.2. User turns carry a belief
 state, system turns carry an action. They are written by hand and kept unseen
 by the model, so they stay a test set.
 
@@ -103,7 +103,7 @@ by the model, so they stay a test set.
 - [x] 0 · Setup
 - [x] 1 · Policy rules
 - [x] 2 · Fake restaurant + reservations DB
-- [x] 3 · Test dialogues (10 hard cases, by hand)
+- [x] 3 · Test dialogues (11 hard cases, by hand)
 - [ ] 4 · Architecture
 - [ ] 5 · Engine
 - [ ] 6 · Evaluation metrics
