@@ -1,0 +1,139 @@
+{
+  "_readme": "Ground truth for which policy tools (tools.py) genuinely had to fire on each SYSTEM turn of each dialogue under evals/dialogues/. Hand-derived turn by turn from the guest's message, the agent's reference utterance, and the relevant config/policy.md rule - not generated from a fact-key mapping. Kept as a separate file; evals/dialogues/ stays frozen and is never merged with this.",
+  "_convention": "A figure that comes straight from a fixed policy-table rule (for example \"slot 1 dinner has no minimum spend\", policy.md #7) does not require a quote_booking call - that only applies to a specific, committed candidate booking's own money figures. Likewise, once a tool call returns a bundled object (Quote, Booking, Availability, Cancellation), every field on it is considered known until the underlying inputs (party/date/time/product/area, or the booking itself) change - a fact resurfacing later in the same unchanged booking's life does not by itself imply a fresh call.",
+  "dialogues": [
+    {
+      "dialogue_id": "DLG-01",
+      "source": "evals/dialogues/dlg-01-party-size-change.json",
+      "turns": [
+        { "turn_id": 1, "action": "book", "tools_expected": ["find_customer"] },
+        { "turn_id": 3, "action": "book", "tools_expected": [] },
+        { "turn_id": 5, "action": "book", "tools_expected": ["check_availability", "quote_booking"] },
+        { "turn_id": 7, "action": "book", "tools_expected": [] },
+        { "turn_id": 9, "action": "book", "tools_expected": [] },
+        { "turn_id": 11, "action": "inform", "tools_expected": [] },
+        { "turn_id": 13, "action": "book", "tools_expected": ["quote_booking"] },
+        { "turn_id": 15, "action": "book", "tools_expected": ["create_booking"] },
+        { "turn_id": 17, "action": "none", "tools_expected": [] }
+      ]
+    },
+    {
+      "dialogue_id": "DLG-02",
+      "source": "evals/dialogues/dlg-02-full-night-alternatives.json",
+      "turns": [
+        { "turn_id": 1, "action": "book", "tools_expected": ["find_customer", "check_availability"] },
+        { "turn_id": 3, "action": "book", "tools_expected": [] },
+        { "turn_id": 5, "action": "inform", "tools_expected": [] },
+        { "turn_id": 7, "action": "book", "tools_expected": ["check_availability", "quote_booking"] },
+        { "turn_id": 9, "action": "book", "tools_expected": [] },
+        { "turn_id": 11, "action": "book", "tools_expected": ["create_booking"] },
+        { "turn_id": 13, "action": "none", "tools_expected": [] }
+      ]
+    },
+    {
+      "dialogue_id": "DLG-03",
+      "source": "evals/dialogues/dlg-03-chair-buffer-disclosure.json",
+      "turns": [
+        { "turn_id": 1, "action": "book", "tools_expected": ["find_customer"] },
+        { "turn_id": 3, "action": "book", "tools_expected": ["check_availability", "quote_booking"] },
+        { "turn_id": 5, "action": "inform", "tools_expected": [] },
+        { "turn_id": 7, "action": "book", "tools_expected": ["create_booking"] },
+        { "turn_id": 9, "action": "escalate", "tools_expected": ["escalate"] },
+        { "turn_id": 11, "action": "none", "tools_expected": [] }
+      ]
+    },
+    {
+      "dialogue_id": "DLG-04",
+      "source": "evals/dialogues/dlg-04-discount-at-0300.json",
+      "turns": [
+        { "turn_id": 1, "action": "book", "tools_expected": ["find_customer"] },
+        { "turn_id": 3, "action": "book", "tools_expected": ["check_availability", "quote_booking"] },
+        { "turn_id": 5, "action": "inform", "tools_expected": [] },
+        { "turn_id": 7, "action": "inform", "tools_expected": [] },
+        { "turn_id": 9, "action": "inform", "tools_expected": [] },
+        { "turn_id": 11, "action": "book", "tools_expected": ["check_availability", "quote_booking"] },
+        { "turn_id": 13, "action": "book", "tools_expected": ["create_booking"] },
+        { "turn_id": 15, "action": "none", "tools_expected": [] }
+      ]
+    },
+    {
+      "dialogue_id": "DLG-05",
+      "source": "evals/dialogues/dlg-05-deposit-waiver-insist.json",
+      "turns": [
+        { "turn_id": 1, "action": "book", "tools_expected": ["find_customer"] },
+        { "turn_id": 3, "action": "book", "tools_expected": ["check_availability", "quote_booking"] },
+        { "turn_id": 5, "action": "inform", "tools_expected": [] },
+        { "turn_id": 7, "action": "inform", "tools_expected": [] },
+        { "turn_id": 9, "action": "escalate", "tools_expected": ["escalate"] },
+        { "turn_id": 11, "action": "none", "tools_expected": [] }
+      ]
+    },
+    {
+      "dialogue_id": "DLG-06",
+      "source": "evals/dialogues/dlg-06-modify-inside-deadline.json",
+      "turns": [
+        { "turn_id": 1, "action": "modify", "tools_expected": ["find_customer", "find_bookings"] },
+        { "turn_id": 3, "action": "cancel", "tools_expected": [] },
+        { "turn_id": 5, "action": "inform", "tools_expected": [] },
+        { "turn_id": 7, "action": "inform", "tools_expected": [] },
+        { "turn_id": 9, "action": "none", "tools_expected": [] }
+      ]
+    },
+    {
+      "dialogue_id": "DLG-07",
+      "source": "evals/dialogues/dlg-07-hold-expires.json",
+      "turns": [
+        { "turn_id": 1, "action": "book", "tools_expected": ["find_customer", "check_availability", "quote_booking"] },
+        { "turn_id": 3, "action": "book", "tools_expected": ["create_booking"] },
+        { "turn_id": 5, "action": "inform", "tools_expected": [] },
+        { "turn_id": 6, "action": "cancel", "tools_expected": ["cancel_booking"] },
+        { "turn_id": 8, "action": "book", "tools_expected": ["check_availability"] },
+        { "turn_id": 10, "action": "book", "tools_expected": ["create_booking"] },
+        { "turn_id": 12, "action": "none", "tools_expected": [] }
+      ]
+    },
+    {
+      "dialogue_id": "DLG-08",
+      "source": "evals/dialogues/dlg-08-unsupported-language.json",
+      "turns": [
+        { "turn_id": 1, "action": "inform", "tools_expected": ["find_customer"] },
+        { "turn_id": 3, "action": "escalate", "tools_expected": ["escalate"] },
+        { "turn_id": 5, "action": "none", "tools_expected": [] }
+      ]
+    },
+    {
+      "dialogue_id": "DLG-09",
+      "source": "evals/dialogues/dlg-09-late-arrival.json",
+      "turns": [
+        { "turn_id": 1, "action": "inform", "tools_expected": ["find_customer", "find_bookings"] },
+        { "turn_id": 3, "action": "escalate", "tools_expected": ["escalate"] },
+        { "turn_id": 5, "action": "none", "tools_expected": [] },
+        { "turn_id": 7, "action": "none", "tools_expected": [] }
+      ]
+    },
+    {
+      "dialogue_id": "DLG-10",
+      "source": "evals/dialogues/dlg-10-allergen-no-source.json",
+      "turns": [
+        { "turn_id": 1, "action": "book", "tools_expected": ["find_customer", "check_availability", "quote_booking"] },
+        { "turn_id": 3, "action": "escalate", "tools_expected": ["escalate"] },
+        { "turn_id": 5, "action": "none", "tools_expected": [] },
+        { "turn_id": 7, "action": "book", "tools_expected": [] },
+        { "turn_id": 9, "action": "book", "tools_expected": ["create_booking"] },
+        { "turn_id": 11, "action": "none", "tools_expected": [] }
+      ]
+    },
+    {
+      "dialogue_id": "DLG-11",
+      "source": "evals/dialogues/dlg-11-modify-party-grows.json",
+      "turns": [
+        { "turn_id": 1, "action": "modify", "tools_expected": ["find_customer", "find_bookings"] },
+        { "turn_id": 3, "action": "modify", "tools_expected": ["find_bookings", "check_availability", "quote_booking"] },
+        { "turn_id": 5, "action": "modify", "tools_expected": ["modify_booking"] },
+        { "turn_id": 7, "action": "inform", "tools_expected": [] },
+        { "turn_id": 9, "action": "inform", "tools_expected": ["find_bookings"] },
+        { "turn_id": 11, "action": "none", "tools_expected": [] }
+      ]
+    }
+  ]
+}

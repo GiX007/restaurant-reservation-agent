@@ -1,12 +1,12 @@
 {
   "dialogue_id": "DLG-08",
   "source": "evals/dialogues/dlg-08-unsupported-language.json",
-  "api_calls": 4,
+  "api_calls": 3,
   "tokens": {
-    "input_tokens": 2705,
-    "output_tokens": 850,
-    "cache_creation_input_tokens": 7116,
-    "cache_read_input_tokens": 14232
+    "input_tokens": 2742,
+    "output_tokens": 887,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 21348
   },
   "turns": [
     {
@@ -106,14 +106,14 @@
         }
       ],
       "expected_utterance": "Goedenavond! Wij kunnen u helpen in het Grieks, Engels, Frans of Italiaans. Kunt u ons in een van deze talen schrijven?",
-      "got_message": "I appreciate you reaching out, but Venue X can help in Greek, English, French or Italian. Please feel free to write to us in any of those languages and we will be happy to help with your reservation.",
+      "got_message": "I appreciate you reaching out, but I'm afraid Venue X can help in Greek, English, French or Italian only. Please write to us in one of those languages and I will be happy to help with your booking.",
       "usage": {
         "input_tokens": 479,
-        "output_tokens": 293,
-        "cache_creation_input_tokens": 7116,
-        "cache_read_input_tokens": 0
+        "output_tokens": 295,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
       },
-      "seconds": 4.446,
+      "seconds": 3.56,
       "model_calls": 1,
       "tools_called": [],
       "probe": null,
@@ -159,9 +159,9 @@
         },
         "got": {
           "name": null,
-          "party_size": null,
-          "date": null,
-          "start_time": null,
+          "party_size": 4,
+          "date": "2026-07-25",
+          "start_time": "21:00",
           "product": null,
           "phone": "+31612345678",
           "email": null
@@ -210,14 +210,14 @@
         }
       ],
       "expected_utterance": "Ik geef uw bericht door aan een collega. Iemand neemt binnenkort contact met u op via deze weg.",
-      "got_message": "A person from our team will come back to you here and may be able to help. Thank you for your patience.",
+      "got_message": "A person from our team will come back to you here to help. Thank you for your patience.",
       "usage": {
-        "input_tokens": 2226,
-        "output_tokens": 557,
+        "input_tokens": 2263,
+        "output_tokens": 592,
         "cache_creation_input_tokens": 0,
         "cache_read_input_tokens": 14232
       },
-      "seconds": 5.484,
+      "seconds": 6.825,
       "model_calls": 2,
       "tools_called": [
         "escalate"
@@ -253,9 +253,9 @@
         },
         "got": {
           "name": null,
-          "party_size": null,
-          "date": null,
-          "start_time": null,
+          "party_size": 4,
+          "date": "2026-07-25",
+          "start_time": "21:00",
           "product": null,
           "phone": "+31612345678",
           "email": null
@@ -275,17 +275,11 @@
         "cache_creation_input_tokens": 0,
         "cache_read_input_tokens": 0
       },
-      "seconds": 0.962,
+      "seconds": 0.0,
       "model_calls": 0,
       "tools_called": [],
-      "probe": {
-        "message": null,
-        "action": null,
-        "conversation_status": null,
-        "text": "",
-        "probe_finished": false
-      },
-      "probe_broke_silence": false
+      "probe": null,
+      "probe_broke_silence": null
     }
   ]
 }

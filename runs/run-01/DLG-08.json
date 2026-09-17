@@ -3,10 +3,10 @@
   "source": "evals/dialogues/dlg-08-unsupported-language.json",
   "api_calls": 4,
   "tokens": {
-    "input_tokens": 2705,
-    "output_tokens": 850,
-    "cache_creation_input_tokens": 7116,
-    "cache_read_input_tokens": 14232
+    "input_tokens": 2792,
+    "output_tokens": 920,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 21348
   },
   "turns": [
     {
@@ -26,7 +26,7 @@
         },
         "reply_language": {
           "expected": "nl",
-          "got": "en"
+          "got": "nl"
         },
         "escalated": {
           "expected": false,
@@ -64,8 +64,8 @@
       "must_say": [
         {
           "phrase": "Engels",
-          "appeared": false,
-          "ok": false
+          "appeared": true,
+          "ok": true
         }
       ],
       "must_not_say": [
@@ -106,14 +106,14 @@
         }
       ],
       "expected_utterance": "Goedenavond! Wij kunnen u helpen in het Grieks, Engels, Frans of Italiaans. Kunt u ons in een van deze talen schrijven?",
-      "got_message": "I appreciate you reaching out, but Venue X can help in Greek, English, French or Italian. Please feel free to write to us in any of those languages and we will be happy to help with your reservation.",
+      "got_message": "Goedenavond! Helaas kan Venue X u helpen in het Grieks, Engels, Frans of Italiaans. Kunt u uw reserveringsverzoek in een van deze talen herhalen?",
       "usage": {
         "input_tokens": 479,
-        "output_tokens": 293,
-        "cache_creation_input_tokens": 7116,
-        "cache_read_input_tokens": 0
+        "output_tokens": 316,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
       },
-      "seconds": 4.446,
+      "seconds": 2.714,
       "model_calls": 1,
       "tools_called": [],
       "probe": null,
@@ -210,14 +210,14 @@
         }
       ],
       "expected_utterance": "Ik geef uw bericht door aan een collega. Iemand neemt binnenkort contact met u op via deze weg.",
-      "got_message": "A person from our team will come back to you here and may be able to help. Thank you for your patience.",
+      "got_message": "I have passed this to our reservation manager and they will come back to you here. A person will be able to help you further.",
       "usage": {
-        "input_tokens": 2226,
-        "output_tokens": 557,
+        "input_tokens": 2313,
+        "output_tokens": 604,
         "cache_creation_input_tokens": 0,
         "cache_read_input_tokens": 14232
       },
-      "seconds": 5.484,
+      "seconds": 5.62,
       "model_calls": 2,
       "tools_called": [
         "escalate"
@@ -275,7 +275,7 @@
         "cache_creation_input_tokens": 0,
         "cache_read_input_tokens": 0
       },
-      "seconds": 0.962,
+      "seconds": 1.063,
       "model_calls": 0,
       "tools_called": [],
       "probe": {

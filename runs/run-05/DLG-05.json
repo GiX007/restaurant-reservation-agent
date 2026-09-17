@@ -1,0 +1,587 @@
+{
+  "dialogue_id": "DLG-05",
+  "source": "evals/dialogues/dlg-05-deposit-waiver-insist.json",
+  "api_calls": 9,
+  "tokens": {
+    "input_tokens": 15860,
+    "output_tokens": 2310,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 64044
+  },
+  "turns": [
+    {
+      "turn_id": 1,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "intent": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "customer_found": {
+          "expected": true,
+          "got": true
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Sofia Ricci",
+          "party_size": 4,
+          "date": "2026-07-19",
+          "start_time": null,
+          "product": null,
+          "phone": "+306940000004",
+          "email": "sofia@example.com"
+        },
+        "got": {
+          "name": "Sofia Ricci",
+          "party_size": 4,
+          "date": "2026-07-19",
+          "start_time": null,
+          "product": null,
+          "phone": "+306940000004",
+          "email": "sofia@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "dinner",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "bottle service",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "your name",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "email address",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "phone number",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "250",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "confirmed",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Kalispera Mrs Ricci. Sunday 19 July, 4 people - I have your details already. What time, and is it dinner or bottle service?",
+      "got_message": "Good evening, Sofia! I have you on file. For 4 people on Sunday 19 July - what time would you like, and is this for dinner, bottle service, or both?",
+      "usage": {
+        "input_tokens": 1029,
+        "output_tokens": 342,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 14232
+      },
+      "seconds": 3.361,
+      "model_calls": 2,
+      "tools_called": [
+        "find_customer"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 3,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "intent": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "minimum_spend_pp": {
+          "expected": 250,
+          "got": 250
+        },
+        "minimum_spend_total": {
+          "expected": 1000,
+          "got": 1000
+        },
+        "deposit_eur": {
+          "expected": 200,
+          "got": 200
+        },
+        "deposit_deducted_from_bill": {
+          "expected": true,
+          "got": true
+        },
+        "buffer_wait_disclosed": {
+          "expected": false,
+          "got": false
+        },
+        "booking_created": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Sofia Ricci",
+          "party_size": 4,
+          "date": "2026-07-19",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000004",
+          "email": "sofia@example.com"
+        },
+        "got": {
+          "name": "Sofia Ricci",
+          "party_size": 4,
+          "date": "2026-07-19",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000004",
+          "email": "sofia@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "1,000",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "200",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "confirmed",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "wait at the door",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "no deposit",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "21:30 on Sunday 19 July for 4, dinner - that works. It is the late sitting, so the minimum spend is EUR 250 per person, EUR 1,000 for four. The deposit is EUR 50 per person, EUR 200, and it comes off your bill.",
+      "got_message": "Your table for 4 on Sunday 19 July at 21:30 in the main area:\n\n- Minimum spend: \u20ac1,000 (\u20ac250 per person)\n- Deposit: \u20ac200\n- The deposit comes off your bill on the night\n\nShall I go ahead?",
+      "usage": {
+        "input_tokens": 3598,
+        "output_tokens": 604,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 21348
+      },
+      "seconds": 4.831,
+      "model_calls": 3,
+      "tools_called": [
+        "check_availability",
+        "quote_booking"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 5,
+      "action": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "facts": {
+        "escalated": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Sofia Ricci",
+          "party_size": 4,
+          "date": "2026-07-19",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000004",
+          "email": "sofia@example.com"
+        },
+        "got": {
+          "name": "Sofia Ricci",
+          "party_size": 4,
+          "date": "2026-07-19",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000004",
+          "email": "sofia@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "link",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "yes, in cash",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "pay on arrival",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I will check",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "the manager",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "The deposit is paid online, through a link I send you - that is the only way it can be taken in advance. On the night you can pay the bill by card or in cash, whichever you prefer.",
+      "got_message": "The deposit is paid online through the payment link I'll send you. However, your bill on the night can be paid in cash if you prefer - we accept cash in euros, cards, Apple Pay and Google Pay.\n\nShall I go ahead with the booking?",
+      "usage": {
+        "input_tokens": 2000,
+        "output_tokens": 335,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
+      },
+      "seconds": 2.506,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 7,
+      "action": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "book",
+        "got": "inform"
+      },
+      "facts": {
+        "deposit_eur": {
+          "expected": 200,
+          "got": 200
+        },
+        "deposit_deducted_from_bill": {
+          "expected": true,
+          "got": true
+        },
+        "escalated": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Sofia Ricci",
+          "party_size": 4,
+          "date": "2026-07-19",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000004",
+          "email": "sofia@example.com"
+        },
+        "got": {
+          "name": "Sofia Ricci",
+          "party_size": 4,
+          "date": "2026-07-19",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000004",
+          "email": "sofia@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "200",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "I will check",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I will ask",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "let me see",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "pass this on",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "the manager",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "after 10:00",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "get back to you",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "for you I can",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "this once",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "I am sorry, no - the deposit is on every booking and I cannot take it off. For 4 people it is EUR 200, and it comes straight off your bill on the night.",
+      "got_message": "I'm sorry, no - the deposit is on every booking and I cannot take it off. For your party it is \u20ac200, and it comes off your bill.",
+      "usage": {
+        "input_tokens": 2590,
+        "output_tokens": 378,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
+      },
+      "seconds": 2.428,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 9,
+      "action": {
+        "expected": "escalate",
+        "got": "escalate"
+      },
+      "intent": {
+        "expected": "book",
+        "got": "inform"
+      },
+      "facts": {
+        "escalated": {
+          "expected": true,
+          "got": true
+        },
+        "escalation_reason": {
+          "expected": "guest_insists_on_deposit_waiver",
+          "got": "guest_insists_on_deposit_waiver"
+        },
+        "booking_created": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Sofia Ricci",
+          "party_size": 4,
+          "date": "2026-07-19",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000004",
+          "email": "sofia@example.com"
+        },
+        "got": {
+          "name": "Sofia Ricci",
+          "party_size": 4,
+          "date": "2026-07-19",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000004",
+          "email": "sofia@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "handed_to_human",
+        "got": "handed_to_human"
+      },
+      "must_say": [
+        {
+          "phrase": "10:00",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "I can waive",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "we will waive",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "no deposit is needed",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I have removed",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "your table is held",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I am holding",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "it is confirmed",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "she will say yes",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I am sure they will",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "That one is not mine to decide, so I have passed it to our reservation manager. She starts at 10:00 and will come back to you here. I have not put the booking in yet - nothing is held for Sunday until this is settled.",
+      "got_message": "That one is not mine to decide, so I have passed it to our reservation manager and she will come back to you here. I have not put the booking in yet.",
+      "usage": {
+        "input_tokens": 6643,
+        "output_tokens": 651,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 14232
+      },
+      "seconds": 6.377,
+      "model_calls": 2,
+      "tools_called": [
+        "escalate"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 11,
+      "action": {
+        "expected": "none",
+        "got": "none"
+      },
+      "intent": {
+        "expected": "modify",
+        "got": null
+      },
+      "facts": {
+        "agent_replied": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Sofia Ricci",
+          "party_size": 4,
+          "date": "2026-07-19",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306940000004",
+          "email": "sofia@example.com"
+        },
+        "got": {
+          "name": "Sofia Ricci",
+          "party_size": 4,
+          "date": "2026-07-19",
+          "start_time": "21:30",
+          "product": "dinner",
+          "phone": "+306940000004",
+          "email": "sofia@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "handed_to_human",
+        "got": "handed_to_human"
+      },
+      "must_say": [],
+      "must_not_say": [],
+      "expected_utterance": "",
+      "got_message": "",
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      },
+      "seconds": 0.0,
+      "model_calls": 0,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    }
+  ]
+}

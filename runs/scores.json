@@ -1,0 +1,1336 @@
+{
+  "runs": [
+    "run-01",
+    "run-02",
+    "run-03",
+    "run-04",
+    "run-05"
+  ],
+  "run_table": {
+    "run-01": {
+      "api_calls": 115,
+      "tokens": {
+        "input_tokens": 267191,
+        "output_tokens": 29995,
+        "cache_creation_input_tokens": 7116,
+        "cache_read_input_tokens": 768528
+      },
+      "cost": 0.5029138
+    },
+    "run-02": {
+      "api_calls": 112,
+      "tokens": {
+        "input_tokens": 277829,
+        "output_tokens": 30112,
+        "cache_creation_input_tokens": 7116,
+        "cache_read_input_tokens": 789876
+      },
+      "cost": 0.5162716
+    },
+    "run-03": {
+      "api_calls": 112,
+      "tokens": {
+        "input_tokens": 271206,
+        "output_tokens": 28895,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 796992
+      },
+      "cost": 0.4953802
+    },
+    "run-04": {
+      "api_calls": 123,
+      "tokens": {
+        "input_tokens": 324548,
+        "output_tokens": 31229,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 875268
+      },
+      "cost": 0.5682198
+    },
+    "run-05": {
+      "api_calls": 108,
+      "tokens": {
+        "input_tokens": 273525,
+        "output_tokens": 31467,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 768528
+      },
+      "cost": 0.5077128
+    }
+  },
+  "metrics": {
+    "intent": {
+      "total": 58,
+      "correct": {
+        "median": 44,
+        "low": 42,
+        "high": 48
+      }
+    },
+    "slot_jga": {
+      "total": 67,
+      "correct": {
+        "median": 61,
+        "low": 50,
+        "high": 62
+      }
+    },
+    "action": {
+      "total": 54,
+      "correct": {
+        "median": 43,
+        "low": 41,
+        "high": 45
+      }
+    },
+    "over_escalation": {
+      "median": 0,
+      "low": 0,
+      "high": 0
+    },
+    "over_escalation_total": 8,
+    "under_escalation": {
+      "median": 1,
+      "low": 0,
+      "high": 1
+    },
+    "under_escalation_total": 5,
+    "tool": {
+      "total": 67,
+      "correct": {
+        "median": 43,
+        "low": 42,
+        "high": 47
+      }
+    },
+    "tool_missing": {
+      "median": 13,
+      "low": 10,
+      "high": 15
+    },
+    "tool_extra": {
+      "median": 15,
+      "low": 12,
+      "high": 19
+    },
+    "money": {
+      "total": 66,
+      "correct": {
+        "median": 51,
+        "low": 45,
+        "high": 57
+      }
+    },
+    "booking": {
+      "total": 110,
+      "correct": {
+        "median": 89,
+        "low": 89,
+        "high": 90
+      }
+    },
+    "latency_median": {
+      "median": 4.7875,
+      "low": 4.496,
+      "high": 4.979
+    },
+    "latency_p95": {
+      "median": 8.255,
+      "low": 7.529,
+      "high": 8.908
+    }
+  },
+  "dialogues": {
+    "DLG-01": {
+      "passed": 5,
+      "out_of": 5,
+      "first_failure_run": null,
+      "first_failure": null
+    },
+    "DLG-02": {
+      "passed": 5,
+      "out_of": 5,
+      "first_failure_run": null,
+      "first_failure": null
+    },
+    "DLG-03": {
+      "passed": 5,
+      "out_of": 5,
+      "first_failure_run": null,
+      "first_failure": null
+    },
+    "DLG-04": {
+      "passed": 3,
+      "out_of": 5,
+      "first_failure_run": "run-04",
+      "first_failure": "turn 9: minimum_spend_pp 0, got 250"
+    },
+    "DLG-05": {
+      "passed": 5,
+      "out_of": 5,
+      "first_failure_run": null,
+      "first_failure": null
+    },
+    "DLG-06": {
+      "passed": 4,
+      "out_of": 5,
+      "first_failure_run": "run-01",
+      "first_failure": "turn 3: booking_status 'confirmed', got 'cancelled'"
+    },
+    "DLG-07": {
+      "passed": 0,
+      "out_of": 5,
+      "first_failure_run": "run-01",
+      "first_failure": "turn 3: booking_created True, got False"
+    },
+    "DLG-08": {
+      "passed": 0,
+      "out_of": 5,
+      "first_failure_run": "run-01",
+      "first_failure": "turn 3: reply_language 'nl', got 'en'"
+    },
+    "DLG-09": {
+      "passed": 5,
+      "out_of": 5,
+      "first_failure_run": null,
+      "first_failure": null
+    },
+    "DLG-10": {
+      "passed": 1,
+      "out_of": 5,
+      "first_failure_run": "run-01",
+      "first_failure": "turn 3: escalated True, got False"
+    },
+    "DLG-11": {
+      "passed": 0,
+      "out_of": 5,
+      "first_failure_run": "run-01",
+      "first_failure": "turn 5: payment_link_sent True, got False"
+    }
+  },
+  "cost": {
+    "per_dialogue": {
+      "DLG-01": {
+        "median": 0.0827208,
+        "low": 0.0771382,
+        "high": 0.0914024
+      },
+      "DLG-02": {
+        "median": 0.0528072,
+        "low": 0.0517346,
+        "high": 0.0673864
+      },
+      "DLG-03": {
+        "median": 0.041663,
+        "low": 0.040956400000000004,
+        "high": 0.044433
+      },
+      "DLG-04": {
+        "median": 0.0732444,
+        "low": 0.0514286,
+        "high": 0.09031979999999999
+      },
+      "DLG-05": {
+        "median": 0.0338244,
+        "low": 0.0329664,
+        "high": 0.0418942
+      },
+      "DLG-06": {
+        "median": 0.0320398,
+        "low": 0.0225766,
+        "high": 0.0360114
+      },
+      "DLG-07": {
+        "median": 0.0874562,
+        "low": 0.0764784,
+        "high": 0.110612
+      },
+      "DLG-08": {
+        "median": 0.0093118,
+        "low": 0.0090338,
+        "high": 0.0095268
+      },
+      "DLG-09": {
+        "median": 0.013887,
+        "low": 0.012735399999999997,
+        "high": 0.014166999999999999
+      },
+      "DLG-10": {
+        "median": 0.0427724,
+        "low": 0.0335958,
+        "high": 0.04725
+      },
+      "DLG-11": {
+        "median": 0.0437206,
+        "low": 0.0414644,
+        "high": 0.0448796
+      }
+    },
+    "total": {
+      "median": 0.5077128,
+      "low": 0.4953802,
+      "high": 0.5682197999999999
+    }
+  },
+  "seconds": {
+    "DLG-01": {
+      "median": 38.52,
+      "low": 35.965,
+      "high": 40.395
+    },
+    "DLG-02": {
+      "median": 29.339,
+      "low": 26.229,
+      "high": 33.81
+    },
+    "DLG-03": {
+      "median": 32.99,
+      "low": 31.939,
+      "high": 37.363
+    },
+    "DLG-04": {
+      "median": 45.908,
+      "low": 35.306,
+      "high": 48.995
+    },
+    "DLG-05": {
+      "median": 21.664,
+      "low": 19.503,
+      "high": 22.571
+    },
+    "DLG-06": {
+      "median": 18.517,
+      "low": 15.349,
+      "high": 21.868
+    },
+    "DLG-07": {
+      "median": 38.273,
+      "low": 31.984,
+      "high": 55.625
+    },
+    "DLG-08": {
+      "median": 10.222,
+      "low": 8.043,
+      "high": 10.736
+    },
+    "DLG-09": {
+      "median": 11.69,
+      "low": 9.971,
+      "high": 18.433
+    },
+    "DLG-10": {
+      "median": 24.019,
+      "low": 19.635,
+      "high": 25.663
+    },
+    "DLG-11": {
+      "median": 22.579,
+      "low": 19.877,
+      "high": 31.382
+    }
+  },
+  "silence_temptation": {
+    "broke_silence": 5,
+    "total_probed": 6
+  },
+  "violations": [
+    {
+      "run": "run-01",
+      "dialogue": "DLG-01",
+      "turn": 11,
+      "type": "must_say_missing",
+      "phrase": "off your bill"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-01",
+      "turn": 11,
+      "type": "must_not_say_appeared",
+      "phrase": "on top"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-01",
+      "turn": 15,
+      "type": "must_not_say_appeared",
+      "phrase": "your booking is confirmed"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-02",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "fully booked"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-02",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "14"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-02",
+      "turn": 7,
+      "type": "must_say_missing",
+      "phrase": "no minimum spend"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-02",
+      "turn": 11,
+      "type": "must_say_missing",
+      "phrase": "6 hours"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-02",
+      "turn": 13,
+      "type": "must_say_missing",
+      "phrase": "15 minutes"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-03",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "wait at the door"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-03",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "1,000"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-04",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "19:30"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-04",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "21:00"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-04",
+      "turn": 9,
+      "type": "must_not_say_appeared",
+      "phrase": "no"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-04",
+      "turn": 13,
+      "type": "must_say_missing",
+      "phrase": "6 hours"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-04",
+      "turn": 15,
+      "type": "must_say_missing",
+      "phrase": "15 minutes"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-05",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "10:00"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-06",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "20:30"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-06",
+      "turn": 1,
+      "type": "must_not_say_appeared",
+      "phrase": "I will check"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-06",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "200"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-06",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "kept"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-06",
+      "turn": 5,
+      "type": "must_say_missing",
+      "phrase": "200"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-06",
+      "turn": 7,
+      "type": "must_say_missing",
+      "phrase": "20:30"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-06",
+      "turn": 7,
+      "type": "must_not_say_appeared",
+      "phrase": "cancelled"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-06",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "15 minutes"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-07",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "6 hours"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-10",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "500"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-10",
+      "turn": 11,
+      "type": "must_say_missing",
+      "phrase": "15 minutes"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-11",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "400"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-11",
+      "turn": 5,
+      "type": "must_say_missing",
+      "phrase": "350"
+    },
+    {
+      "run": "run-01",
+      "dialogue": "DLG-11",
+      "turn": 7,
+      "type": "must_say_missing",
+      "phrase": "350"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-01",
+      "turn": 15,
+      "type": "must_not_say_appeared",
+      "phrase": "your booking is confirmed"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-02",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "14"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-02",
+      "turn": 5,
+      "type": "must_not_say_appeared",
+      "phrase": "let you know if something"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-02",
+      "turn": 7,
+      "type": "must_say_missing",
+      "phrase": "no minimum spend"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-02",
+      "turn": 13,
+      "type": "must_say_missing",
+      "phrase": "15 minutes"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-03",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "wait at the door"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-04",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "dinner"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-04",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "bottle service"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-04",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "1,500"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-04",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "21:00"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-04",
+      "turn": 9,
+      "type": "must_not_say_appeared",
+      "phrase": "no"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-04",
+      "turn": 15,
+      "type": "must_say_missing",
+      "phrase": "15 minutes"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-05",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "10:00"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-07",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "500"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-07",
+      "turn": 1,
+      "type": "must_not_say_appeared",
+      "phrase": "phone number"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-07",
+      "turn": 1,
+      "type": "must_not_say_appeared",
+      "phrase": "confirmed"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-10",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "500"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-10",
+      "turn": 11,
+      "type": "must_say_missing",
+      "phrase": "15 minutes"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-11",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "400"
+    },
+    {
+      "run": "run-02",
+      "dialogue": "DLG-11",
+      "turn": 5,
+      "type": "must_say_missing",
+      "phrase": "350"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-01",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "22:00"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-01",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "22:30"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-02",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "14"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-02",
+      "turn": 5,
+      "type": "must_not_say_appeared",
+      "phrase": "let you know if something"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-02",
+      "turn": 7,
+      "type": "must_say_missing",
+      "phrase": "no minimum spend"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-02",
+      "turn": 11,
+      "type": "must_say_missing",
+      "phrase": "6 hours"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-02",
+      "turn": 13,
+      "type": "must_say_missing",
+      "phrase": "15 minutes"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-03",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "wait at the door"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-03",
+      "turn": 7,
+      "type": "must_say_missing",
+      "phrase": "6 hours"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-04",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "dinner"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-04",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "bottle service"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-04",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "1,500"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-04",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "300"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-04",
+      "turn": 7,
+      "type": "must_say_missing",
+      "phrase": "250"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-04",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "19:30"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-04",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "21:00"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-04",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "no minimum spend"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-04",
+      "turn": 11,
+      "type": "must_say_missing",
+      "phrase": "no minimum spend"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-04",
+      "turn": 15,
+      "type": "must_say_missing",
+      "phrase": "15 minutes"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-05",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "10:00"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-06",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "kept"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-06",
+      "turn": 5,
+      "type": "must_say_missing",
+      "phrase": "200"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-07",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "500"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-08",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "Engels"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-10",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "500"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-10",
+      "turn": 1,
+      "type": "must_not_say_appeared",
+      "phrase": "phone number"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-10",
+      "turn": 7,
+      "type": "must_say_missing",
+      "phrase": "21:30"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-10",
+      "turn": 11,
+      "type": "must_say_missing",
+      "phrase": "15 minutes"
+    },
+    {
+      "run": "run-03",
+      "dialogue": "DLG-11",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "400"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-01",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "22:00"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-01",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "22:30"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-01",
+      "turn": 11,
+      "type": "must_not_say_appeared",
+      "phrase": "on top"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-01",
+      "turn": 15,
+      "type": "must_say_missing",
+      "phrase": "6 hours"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-02",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "14"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-02",
+      "turn": 5,
+      "type": "must_not_say_appeared",
+      "phrase": "let you know if something"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-02",
+      "turn": 7,
+      "type": "must_say_missing",
+      "phrase": "no minimum spend"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-03",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "wait at the door"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-04",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "1,500"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-04",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "300"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-04",
+      "turn": 7,
+      "type": "must_say_missing",
+      "phrase": "250"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-04",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "19:30"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-04",
+      "turn": 9,
+      "type": "must_not_say_appeared",
+      "phrase": "no"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-04",
+      "turn": 15,
+      "type": "must_say_missing",
+      "phrase": "15 minutes"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-05",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "10:00"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-08",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "Engels"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-10",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "500"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-10",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "6 hours"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-10",
+      "turn": 11,
+      "type": "must_say_missing",
+      "phrase": "15 minutes"
+    },
+    {
+      "run": "run-04",
+      "dialogue": "DLG-11",
+      "turn": 5,
+      "type": "must_say_missing",
+      "phrase": "350"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-01",
+      "turn": 15,
+      "type": "must_not_say_appeared",
+      "phrase": "your booking is confirmed"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-01",
+      "turn": 17,
+      "type": "must_say_missing",
+      "phrase": "15 minutes"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-02",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "14"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-02",
+      "turn": 5,
+      "type": "must_not_say_appeared",
+      "phrase": "let you know if something"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-02",
+      "turn": 7,
+      "type": "must_say_missing",
+      "phrase": "no minimum spend"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-02",
+      "turn": 7,
+      "type": "must_not_say_appeared",
+      "phrase": "your name"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-03",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "dinner"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-03",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "bottle service"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-03",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "wait at the door"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-03",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "1,000"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-04",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "1,500"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-04",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "300"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-04",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "19:30"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-04",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "21:00"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-04",
+      "turn": 9,
+      "type": "must_not_say_appeared",
+      "phrase": "no"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-04",
+      "turn": 15,
+      "type": "must_say_missing",
+      "phrase": "15 minutes"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-05",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "10:00"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-06",
+      "turn": 3,
+      "type": "must_say_missing",
+      "phrase": "kept"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-06",
+      "turn": 7,
+      "type": "must_say_missing",
+      "phrase": "20:30"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-06",
+      "turn": 7,
+      "type": "must_not_say_appeared",
+      "phrase": "cancelled"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-06",
+      "turn": 7,
+      "type": "must_not_say_appeared",
+      "phrase": "15 July"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-07",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "500"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-07",
+      "turn": 1,
+      "type": "must_not_say_appeared",
+      "phrase": "phone number"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-08",
+      "turn": 1,
+      "type": "must_say_missing",
+      "phrase": "Engels"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-10",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "100"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-10",
+      "turn": 9,
+      "type": "must_say_missing",
+      "phrase": "6 hours"
+    },
+    {
+      "run": "run-05",
+      "dialogue": "DLG-10",
+      "turn": 11,
+      "type": "must_say_missing",
+      "phrase": "15 minutes"
+    }
+  ],
+  "must_not_say_summary": [
+    {
+      "phrase": "let you know if something",
+      "runs_hit": 4,
+      "locations": [
+        [
+          "DLG-02",
+          5
+        ]
+      ]
+    },
+    {
+      "phrase": "no",
+      "runs_hit": 4,
+      "locations": [
+        [
+          "DLG-04",
+          9
+        ]
+      ]
+    },
+    {
+      "phrase": "phone number",
+      "runs_hit": 3,
+      "locations": [
+        [
+          "DLG-07",
+          1
+        ],
+        [
+          "DLG-10",
+          1
+        ]
+      ]
+    },
+    {
+      "phrase": "your booking is confirmed",
+      "runs_hit": 3,
+      "locations": [
+        [
+          "DLG-01",
+          15
+        ]
+      ]
+    },
+    {
+      "phrase": "cancelled",
+      "runs_hit": 2,
+      "locations": [
+        [
+          "DLG-06",
+          7
+        ]
+      ]
+    },
+    {
+      "phrase": "on top",
+      "runs_hit": 2,
+      "locations": [
+        [
+          "DLG-01",
+          11
+        ]
+      ]
+    },
+    {
+      "phrase": "15 July",
+      "runs_hit": 1,
+      "locations": [
+        [
+          "DLG-06",
+          7
+        ]
+      ]
+    },
+    {
+      "phrase": "I will check",
+      "runs_hit": 1,
+      "locations": [
+        [
+          "DLG-06",
+          1
+        ]
+      ]
+    },
+    {
+      "phrase": "confirmed",
+      "runs_hit": 1,
+      "locations": [
+        [
+          "DLG-07",
+          1
+        ]
+      ]
+    },
+    {
+      "phrase": "your name",
+      "runs_hit": 1,
+      "locations": [
+        [
+          "DLG-02",
+          7
+        ]
+      ]
+    }
+  ],
+  "known_limits": [
+    "tool ground truth is derived from the dialogues by a model, not written by hand",
+    "escalation rests on 8 negative and 5 positive turns",
+    "the 6 silence turns are enforced by the engine, not chosen by the agent",
+    "latency measures the model plus a home connection, not a deployment",
+    "dlg-11 turn 9 has a known cross-booking fact gap",
+    "the `both` product is untested",
+    "the deposit is derived, not stored",
+    "run-01's cost excludes 6 probe calls"
+  ]
+}

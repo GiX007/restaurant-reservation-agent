@@ -1,0 +1,498 @@
+{
+  "dialogue_id": "DLG-06",
+  "source": "evals/dialogues/dlg-06-modify-inside-deadline.json",
+  "api_calls": 7,
+  "tokens": {
+    "input_tokens": 10037,
+    "output_tokens": 1654,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 42696
+  },
+  "turns": [
+    {
+      "turn_id": 1,
+      "action": {
+        "expected": "modify",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "modify",
+        "got": "modify"
+      },
+      "facts": {
+        "customer_found": {
+          "expected": true,
+          "got": true
+        },
+        "booking_found": {
+          "expected": true,
+          "got": true
+        },
+        "modify_allowed": {
+          "expected": false,
+          "got": null
+        },
+        "booking_status": {
+          "expected": "confirmed",
+          "got": null
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Jean Dupont",
+          "party_size": 4,
+          "date": "2026-07-15",
+          "start_time": "20:30",
+          "product": "dinner",
+          "phone": "+306940000003",
+          "email": "jean@example.com"
+        },
+        "got": {
+          "name": "Jean Dupont",
+          "party_size": null,
+          "date": null,
+          "start_time": null,
+          "product": null,
+          "phone": "+306940000003",
+          "email": "jean@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "13 July",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "20:30",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "I have moved",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "15 July is booked",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "moved to the 15th",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I will check",
+          "appeared": true,
+          "ok": false
+        },
+        {
+          "phrase": "the manager",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "let me ask",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Dear Mr Dupont, I found your booking - 4 people, dinner, Monday 13 July at 20:30. I am sorry, I cannot move it. In high season a booking can only be changed 4 or more days before the date, and Monday is 2 days away. Your table on 13 July stands exactly as it is.",
+      "got_message": "Dear Jean,\n\nThank you for reaching out. I'm sorry, but your booking for Monday 13 July is no longer modifiable \u2014 the deadline to change it has passed. You are still welcome to keep that table as it stands.\n\nIf you would like a separate booking for Wednesday 15 July instead, I can help you with that as a new reservation. Let me know the time and party size you have in mind, and I will check what is available.\n\nBest regards,\nVenue X Reservations",
+      "usage": {
+        "input_tokens": 1458,
+        "output_tokens": 457,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 14232
+      },
+      "seconds": 5.283,
+      "model_calls": 2,
+      "tools_called": [
+        "find_customer",
+        "find_bookings"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 3,
+      "action": {
+        "expected": "cancel",
+        "got": "cancel"
+      },
+      "intent": {
+        "expected": "cancel",
+        "got": "cancel"
+      },
+      "facts": {
+        "booking_found": {
+          "expected": true,
+          "got": true
+        },
+        "deposit_kept": {
+          "expected": true,
+          "got": true
+        },
+        "refund_eur": {
+          "expected": 0,
+          "got": 0
+        },
+        "booking_status": {
+          "expected": "confirmed",
+          "got": "cancelled"
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Jean Dupont",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:30",
+          "product": "dinner",
+          "phone": "+306940000003",
+          "email": "jean@example.com"
+        },
+        "got": {
+          "name": "Jean Dupont",
+          "party_size": null,
+          "date": null,
+          "start_time": null,
+          "product": null,
+          "phone": "+306940000003",
+          "email": "jean@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "200",
+          "appeared": false,
+          "ok": false
+        },
+        {
+          "phrase": "kept",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "you will get it back",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "we will refund",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "fully refunded",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "returned to you",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "no charge",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "I can do that, but I want you to know the cost first. Cancelling 3 days before or later means the deposit is kept - so the EUR 200 on the 13th would not come back to you. Shall I still cancel it?",
+      "got_message": "Done. Your Monday 13 July booking is cancelled. Nothing was refunded because the deadline to cancel with a refund had already passed \u2014 but the deposit will not be charged either.\n\nFor Wednesday 15 July, I have a few details to confirm. What time would you like the table, and will it be for the same party size of 4?",
+      "usage": {
+        "input_tokens": 3344,
+        "output_tokens": 366,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 14232
+      },
+      "seconds": 3.859,
+      "model_calls": 2,
+      "tools_called": [
+        "cancel_booking"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 5,
+      "action": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "facts": {
+        "deposit_kept": {
+          "expected": true,
+          "got": true
+        },
+        "deposit_eur": {
+          "expected": 200,
+          "got": null
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Jean Dupont",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:30",
+          "product": "dinner",
+          "phone": "+306940000003",
+          "email": "jean@example.com"
+        },
+        "got": {
+          "name": "Jean Dupont",
+          "party_size": null,
+          "date": null,
+          "start_time": null,
+          "product": null,
+          "phone": "+306940000003",
+          "email": "jean@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "200",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "carries over",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "carry over",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "we can move the deposit",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "transfer",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "no, only one",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "it follows you",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Yes. A deposit only follows a booking when it is changed, and a change is not possible this close to the date. If you cancel, the EUR 200 stays with the old booking and a new one for the 15th needs its own EUR 200.",
+      "got_message": "Yes, the new booking for 15 July will have its own deposit. Once you confirm the time and party size, I will quote the full cost to you \u2014 the deposit will be the same amount as the original one, and it comes off your bill on the night.",
+      "usage": {
+        "input_tokens": 2356,
+        "output_tokens": 251,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
+      },
+      "seconds": 2.473,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 7,
+      "action": {
+        "expected": "inform",
+        "got": "escalate"
+      },
+      "intent": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "facts": {
+        "booking_found": {
+          "expected": true,
+          "got": true
+        },
+        "booking_status": {
+          "expected": "confirmed",
+          "got": "cancelled"
+        },
+        "modify_allowed": {
+          "expected": false,
+          "got": false
+        },
+        "deposit_deducted_from_bill": {
+          "expected": true,
+          "got": null
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Jean Dupont",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:30",
+          "product": "dinner",
+          "phone": "+306940000003",
+          "email": "jean@example.com"
+        },
+        "got": {
+          "name": "Jean Dupont",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:30",
+          "product": "dinner",
+          "phone": "+306940000003",
+          "email": "jean@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "handed_to_human"
+      },
+      "must_say": [
+        {
+          "phrase": "13 July",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "20:30",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "cancelled",
+          "appeared": true,
+          "ok": false
+        },
+        {
+          "phrase": "I have cancelled",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "15 July",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "the 15th",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "a new deposit",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Understood - nothing has changed. Your booking is still 4 people, dinner, Monday 13 July at 20:30, and the EUR 200 you have already paid comes off the bill that night. There is nothing more to pay in advance.",
+      "got_message": "Understood. I'm afraid the Monday 13 July booking has already been cancelled \u2014 that cannot be undone on my end. You will need to contact our reservation manager to discuss this further, and I have passed your request to them now. They will come back to you here.\n\nBest regards,\nVenue X Reservations",
+      "usage": {
+        "input_tokens": 2879,
+        "output_tokens": 580,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
+      },
+      "seconds": 4.987,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 9,
+      "action": {
+        "expected": "none",
+        "got": "none"
+      },
+      "intent": {
+        "expected": "bye",
+        "got": null
+      },
+      "facts": {},
+      "state": {
+        "expected": {
+          "name": "Jean Dupont",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:30",
+          "product": "dinner",
+          "phone": "+306940000003",
+          "email": "jean@example.com"
+        },
+        "got": {
+          "name": "Jean Dupont",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:30",
+          "product": "dinner",
+          "phone": "+306940000003",
+          "email": "jean@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "handed_to_human"
+      },
+      "must_say": [
+        {
+          "phrase": "15 minutes",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [],
+      "expected_utterance": "Thank you Mr Dupont. Please arrive about 15 minutes before 20:30. We look forward to seeing you on Monday.",
+      "got_message": "",
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      },
+      "seconds": 1.915,
+      "model_calls": 0,
+      "tools_called": [],
+      "probe": {
+        "message": "Thank you, Jean. Please arrive about 15 minutes early. See you Monday.\n\nBest regards,\nVenue X Reservations",
+        "action": "none",
+        "conversation_status": "handed_to_human",
+        "text": "",
+        "probe_finished": true
+      },
+      "probe_broke_silence": true
+    }
+  ]
+}

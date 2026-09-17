@@ -1,0 +1,796 @@
+{
+  "dialogue_id": "DLG-04",
+  "source": "evals/dialogues/dlg-04-discount-at-0300.json",
+  "api_calls": 11,
+  "tokens": {
+    "input_tokens": 27611,
+    "output_tokens": 3198,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 78276
+  },
+  "turns": [
+    {
+      "turn_id": 1,
+      "action": {
+        "expected": "book",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "customer_found": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": null,
+          "party_size": 6,
+          "date": "2026-07-18",
+          "start_time": "22:00",
+          "product": null,
+          "phone": "+306945556677",
+          "email": null
+        },
+        "got": {
+          "name": null,
+          "party_size": 6,
+          "date": "2026-07-18",
+          "start_time": "22:00",
+          "product": null,
+          "phone": "+306945556677",
+          "email": null
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "dinner",
+          "appeared": false,
+          "ok": false
+        },
+        {
+          "phrase": "bottle service",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "250",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "400",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "after 10:00",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "in the morning",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "we are closed",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Yiasou! Before I can give you a figure I need to know which one you want: dinner, or bottle service? They are priced differently.",
+      "got_message": "You are not yet in my records. Before I check what is available, I need a name and an email address, and I already have your number from WhatsApp.\n\nWhat is your name, and what email should I use for the booking?\n\n(Just to confirm: Saturday night is 2026-07-18, for 6 people around 22:00 \u2014 did you mean that, or did you mean next Saturday, 2026-07-25?)",
+      "usage": {
+        "input_tokens": 998,
+        "output_tokens": 453,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 14232
+      },
+      "seconds": 5.865,
+      "model_calls": 2,
+      "tools_called": [
+        "find_customer"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 3,
+      "action": {
+        "expected": "book",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "minimum_spend_pp": {
+          "expected": 250,
+          "got": null
+        },
+        "minimum_spend_total": {
+          "expected": 1500,
+          "got": null
+        },
+        "deposit_eur": {
+          "expected": 300,
+          "got": null
+        },
+        "deposit_deducted_from_bill": {
+          "expected": true,
+          "got": null
+        },
+        "booking_created": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": null,
+          "party_size": 6,
+          "date": "2026-07-18",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306945556677",
+          "email": null
+        },
+        "got": {
+          "name": null,
+          "party_size": 6,
+          "date": "2026-07-18",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306945556677",
+          "email": null
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "1,500",
+          "appeared": false,
+          "ok": false
+        },
+        {
+          "phrase": "300",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "confirmed",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Saturday 18 July at 22:00 for 6, dinner. That is our late sitting, so the minimum spend is EUR 250 per person - EUR 1,500 for six. The deposit is EUR 50 per person, EUR 300, and it comes off your bill.",
+      "got_message": "Got it - dinner. I still need your name and email address to move forward. What are those?",
+      "usage": {
+        "input_tokens": 1095,
+        "output_tokens": 218,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
+      },
+      "seconds": 2.535,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 5,
+      "action": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "minimum_spend_pp": {
+          "expected": 250,
+          "got": null
+        },
+        "escalated": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": null,
+          "party_size": 6,
+          "date": "2026-07-18",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306945556677",
+          "email": null
+        },
+        "got": {
+          "name": null,
+          "party_size": 6,
+          "date": "2026-07-18",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306945556677",
+          "email": null
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "fixed",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "I will check",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I will ask",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "let me see what I can do",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "pass this on",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "the manager",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "after 10:00",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "get back to you",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "maybe",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "special price",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "I am sorry, no - our minimum spends are fixed and we do not do group prices. It is EUR 250 per person at 22:00, for everyone.",
+      "got_message": "I haven't quoted you yet - I'm still waiting for your name and email. But to answer your question straight: no, our minimum spends are fixed and I cannot change them for any booking. Once I have your details I can show you exactly what the figure is for your party.",
+      "usage": {
+        "input_tokens": 1513,
+        "output_tokens": 282,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
+      },
+      "seconds": 3.186,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 7,
+      "action": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "minimum_spend_pp": {
+          "expected": 250,
+          "got": null
+        },
+        "escalated": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": null,
+          "party_size": 6,
+          "date": "2026-07-18",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306945556677",
+          "email": null
+        },
+        "got": {
+          "name": null,
+          "party_size": 6,
+          "date": "2026-07-18",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306945556677",
+          "email": null
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "250",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "I will check",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I will ask",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "let me see what I can do",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "pass this on",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "the manager",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "after 10:00",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "get back to you",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "this once",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "exception",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Still no, and I would rather tell you straight than leave you hoping. 250 per person is the figure at that hour and I cannot change it.",
+      "got_message": "I understand, but no - the minimum spend is the same for your party, and I cannot move on it. I would rather tell you straight than leave you hoping.\n\nI still need your name and email to check availability and show you the actual figures. Once you give me those, you'll see exactly what you are looking at.",
+      "usage": {
+        "input_tokens": 1959,
+        "output_tokens": 359,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
+      },
+      "seconds": 3.715,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 9,
+      "action": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "inform",
+        "got": "book"
+      },
+      "facts": {
+        "minimum_spend_pp": {
+          "expected": 0,
+          "got": null
+        },
+        "escalated": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": null,
+          "party_size": 6,
+          "date": "2026-07-18",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306945556677",
+          "email": null
+        },
+        "got": {
+          "name": null,
+          "party_size": 6,
+          "date": "2026-07-18",
+          "start_time": "22:00",
+          "product": "dinner",
+          "phone": "+306945556677",
+          "email": null
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "19:30",
+          "appeared": false,
+          "ok": false
+        },
+        {
+          "phrase": "21:00",
+          "appeared": false,
+          "ok": false
+        },
+        {
+          "phrase": "no minimum spend",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "I cannot",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "prices are fixed",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "no",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "discount",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "250 per person is the only",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Yes - the early sitting. Anything from 19:30 to 21:00 for dinner has no minimum spend at all. You would only pay for what you eat.",
+      "got_message": "That's a fair question. Let me check a different time for you - what other time on Saturday would suit you, or would you prefer to look at a different night altogether?",
+      "usage": {
+        "input_tokens": 2474,
+        "output_tokens": 296,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
+      },
+      "seconds": 3.107,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 11,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "intent": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "minimum_spend_pp": {
+          "expected": 0,
+          "got": 0
+        },
+        "minimum_spend_total": {
+          "expected": 0,
+          "got": 0
+        },
+        "deposit_eur": {
+          "expected": 300,
+          "got": 300
+        },
+        "buffer_wait_disclosed": {
+          "expected": false,
+          "got": false
+        },
+        "booking_created": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Petros Laskaris",
+          "party_size": 6,
+          "date": "2026-07-18",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306945556677",
+          "email": "p.laskaris@outlook.com"
+        },
+        "got": {
+          "name": "Petros Laskaris",
+          "party_size": 6,
+          "date": "2026-07-18",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306945556677",
+          "email": "p.laskaris@outlook.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "no minimum spend",
+          "appeared": false,
+          "ok": false
+        },
+        {
+          "phrase": "300",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "1,500",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "1500",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "250",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "confirmed",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Saturday 18 July at 20:00 for 6, dinner. No minimum spend. The deposit is still EUR 50 per person, EUR 300. Shall I go ahead?",
+      "got_message": "Perfect, Petros. Saturday 20:00 works for six of you. Here's what you are looking at:\n\n**Deposit:** \u20ac300 \u2014 that comes off your bill on the night.  \n**Hold:** the table is held for 6 hours from when you book.\n\nIf the deposit does not arrive in time, the table will be released and I will let you know. Shall I go ahead and hold it for you?",
+      "usage": {
+        "input_tokens": 6266,
+        "output_tokens": 664,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 14232
+      },
+      "seconds": 7.375,
+      "model_calls": 2,
+      "tools_called": [
+        "check_availability",
+        "quote_booking"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 13,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "intent": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "booking_created": {
+          "expected": true,
+          "got": true
+        },
+        "booking_status": {
+          "expected": "pending_deposit",
+          "got": "pending_deposit"
+        },
+        "booking_party_size": {
+          "expected": 6,
+          "got": 6
+        },
+        "deposit_eur": {
+          "expected": 300,
+          "got": 300
+        },
+        "payment_link_sent": {
+          "expected": true,
+          "got": true
+        },
+        "hold_hours": {
+          "expected": 6,
+          "got": 6
+        },
+        "hold_expires_at": {
+          "expected": "2026-07-18T09:00:00+03:00",
+          "got": "2026-07-18T09:00:00+03:00"
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Petros Laskaris",
+          "party_size": 6,
+          "date": "2026-07-18",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306945556677",
+          "email": "p.laskaris@outlook.com"
+        },
+        "got": {
+          "name": "Petros Laskaris",
+          "party_size": 6,
+          "date": "2026-07-18",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306945556677",
+          "email": "p.laskaris@outlook.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "300",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "6 hours",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "your table is confirmed",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "1,500",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "22:00",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Done. Here is the link for the EUR 300 deposit: {payment_link}. I am holding the table for 6 hours, until 09:00 this morning. It is confirmed once the deposit is paid.",
+      "got_message": "Done. Your table is held for Saturday 18 July at 20:00 for 6 people \u2014 held for 6 hours, until 09:00.\n\nI've sent a payment link to p.laskaris@outlook.com. Once the \u20ac300 deposit arrives, your booking is locked in. If it does not come through by 09:00, the table will be released and I will let you know.\n\nSee you Saturday. Please arrive about 15 minutes early.",
+      "usage": {
+        "input_tokens": 8267,
+        "output_tokens": 668,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 14232
+      },
+      "seconds": 6.93,
+      "model_calls": 2,
+      "tools_called": [
+        "create_booking"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 15,
+      "action": {
+        "expected": "none",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "bye",
+        "got": "bye"
+      },
+      "facts": {},
+      "state": {
+        "expected": {
+          "name": "Petros Laskaris",
+          "party_size": 6,
+          "date": "2026-07-18",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306945556677",
+          "email": "p.laskaris@outlook.com"
+        },
+        "got": {
+          "name": "Petros Laskaris",
+          "party_size": 6,
+          "date": "2026-07-18",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306945556677",
+          "email": "p.laskaris@outlook.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "15 minutes",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [],
+      "expected_utterance": "Kalinixta Mr Laskaris. Please arrive about 15 minutes before 20:00. See you on Saturday.",
+      "got_message": "Thank you. Kalinixta!",
+      "usage": {
+        "input_tokens": 5039,
+        "output_tokens": 258,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
+      },
+      "seconds": 2.593,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    }
+  ]
+}

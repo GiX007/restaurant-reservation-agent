@@ -14,8 +14,9 @@ is otherwise free-form tool use.
 
 import json
 import sys
+import time
 from dataclasses import asdict, is_dataclass
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from anthropic import Anthropic
@@ -51,11 +52,55 @@ MODEL = "claude-haiku-4-5-20251001"
 MAX_TOOL_ROUNDS = 8
 RUNS_DIR = Path("runs")
 
+# Off by default - set from the command line with --silence-probe. When on,
+# a turn the handed-to-human guard silences still gets graded on the silent
+# reply, exactly as without the flag; the probe is one extra, side-effect-
+# free model call, only to record what the model would have said.
+SILENCE_PROBE = False
+
 client = Anthropic()
 
 # How many times this run has called the model - one line of visibility into
 # the thing the phase 5 brief says to watch: only these calls cost money.
 api_call_count = 0
+
+# A --silence-probe call is real, paid API usage that is deliberately kept
+# out of the graded per-turn usage (it must never change what is graded) -
+# but it still has to be accounted for somewhere, or api_calls and tokens
+# disagree about how many calls actually happened. Counted separately here,
+# never mixed into a turn's own usage.
+probe_call_count = 0
+
+# The four counters response.usage carries on every call - summed per turn,
+# then per dialogue, so the scoring script can price them later without
+# calling the model again.
+USAGE_KEYS = ("input_tokens", "output_tokens", "cache_creation_input_tokens", "cache_read_input_tokens")
+
+
+def _zero_usage() -> dict:
+    """
+    A fresh all-zero usage counter dict.
+
+    Return: {"input_tokens": 0, "output_tokens": 0, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0}
+    """
+    return {key: 0 for key in USAGE_KEYS}
+
+
+def _add_usage(totals: dict, usage) -> None:
+    """
+    Add one response.usage onto a running totals dict, in place.
+
+    Params: totals - a dict shaped like _zero_usage(), mutated in place.
+            usage  - the response.usage object from a messages.create call.
+    Return: None.
+    """
+    for key in USAGE_KEYS:
+        totals[key] += getattr(usage, key, 0) or 0
+
+
+# Every --silence-probe call's usage, summed the same way as a turn's own
+# usage, but kept apart from it - a probe must never change what is graded.
+probe_usage = _zero_usage()
 
 
 # ---------------------------------------------------------------------------
@@ -322,6 +367,12 @@ Use "inform" for a side question that is not moving the request forward
 or goodbye with nothing else in it. On a goodbye, always remind the guest to
 arrive about {policy['booking']['arrive_minutes_early']} minutes early.
 
+`intent` is what the GUEST wants in the message you are answering this
+turn - it is not your own action, and it can differ from it. book = they
+want a table, modify = they want to change an existing booking, cancel =
+they want to cancel one, inform = they are asking a question or giving
+information, bye = they are closing the conversation.
+
 Set conversation_status to handed_to_human once you have escalated or gone
 silent, otherwise agent.
 """
@@ -482,11 +533,12 @@ TOOLS = [
             "properties": {
                 "message": {"type": "string"},
                 "action": {"type": "string", "enum": ["book", "modify", "cancel", "inform", "escalate", "none"]},
+                "intent": {"type": "string", "enum": ["book", "modify", "cancel", "inform", "bye"]},
                 "state": _STATE_SCHEMA,
                 "facts": _FACTS_SCHEMA,
                 "conversation_status": {"type": "string", "enum": ["agent", "handed_to_human"]},
             },
-            "required": ["message", "action", "state", "facts", "conversation_status"],
+            "required": ["message", "action", "intent", "state", "facts", "conversation_status"],
         },
     },
 ]
@@ -731,19 +783,30 @@ def _generate_reply(history: list, ctx: dict) -> dict:
     Call the model, running tool calls, until it calls `respond`.
 
     Params: history - the running Anthropic messages list, extended in place.
-            ctx      - see _dispatch.
+            ctx      - see _dispatch. This turn's summed usage is left on
+                       ctx["turn_usage"], how many messages.create calls it
+                       took on ctx["turn_model_calls"], and the tool names it
+                       called (in order, excluding respond) on
+                       ctx["turn_tools_called"], for the caller to read
+                       afterwards.
     Return: the arguments `respond` was called with.
     """
     global api_call_count
+    ctx["turn_usage"] = _zero_usage()
+    ctx["turn_model_calls"] = 0
+    ctx["turn_tools_called"] = []
     for _ in range(MAX_TOOL_ROUNDS):
         response = client.messages.create(
             model=MODEL,
             max_tokens=1024,
-            system=SYSTEM_PROMPT,
+            system=[{"type": "text", "text": SYSTEM_PROMPT, "cache_control": {"type": "ephemeral"}}],
             messages=history,
             tools=TOOLS,
         )
         api_call_count += 1
+        ctx["turn_model_calls"] += 1
+        print(f"  usage: {response.usage}")
+        _add_usage(ctx["turn_usage"], response.usage)
         history.append({"role": "assistant", "content": response.content})
 
         finishing = None
@@ -755,6 +818,7 @@ def _generate_reply(history: list, ctx: dict) -> dict:
                 finishing = block.input
                 tool_results.append({"type": "tool_result", "tool_use_id": block.id, "content": "noted"})
                 continue
+            ctx["turn_tools_called"].append(block.name)
             try:
                 result = _dispatch(block.name, block.input, ctx)
                 content = json.dumps(result, default=str)
@@ -821,6 +885,56 @@ def _silent_reply(state: dict) -> dict:
     }
 
 
+def _probe_silence(history: list) -> dict:
+    """
+    Call the model once, read-only, to see what it would have said on a
+    turn the handed-to-human guard is about to silence.
+
+    Never dispatches any tool call and never appends anything to history -
+    the guard's own silent reply is still the only thing that gets graded;
+    this is purely an extra look, so it must not touch any shared state.
+
+    A single round is not always enough for the model to reach `respond` -
+    it may only get as far as plain text, or a different tool call, before
+    running out of turns. That is a real, distinct outcome from genuinely
+    choosing to say nothing, so it is kept apart via "probe_finished"
+    rather than folded into "message" as if it were a considered answer.
+
+    Params: history - the running Anthropic messages list, read but never
+                       modified.
+    Return: "message"/"action"/"conversation_status" from the model's
+            `respond` call, or all None when it did not call respond this
+            round; "text" - any plain text blocks it wrote, joined ("" for
+            none); "probe_finished" - True only when it did call respond.
+    """
+    global api_call_count, probe_call_count
+    response = client.messages.create(
+        model=MODEL,
+        max_tokens=1024,
+        system=[{"type": "text", "text": SYSTEM_PROMPT, "cache_control": {"type": "ephemeral"}}],
+        messages=list(history),
+        tools=TOOLS,
+    )
+    api_call_count += 1
+    probe_call_count += 1
+    _add_usage(probe_usage, response.usage)
+    print(f"  probe usage: {response.usage}")
+
+    text = "\n".join(block.text for block in response.content if block.type == "text")
+    respond_input = next(
+        (block.input for block in response.content if block.type == "tool_use" and block.name == "respond"),
+        None,
+    )
+
+    return {
+        "message": respond_input.get("message") if respond_input else None,
+        "action": respond_input.get("action") if respond_input else None,
+        "conversation_status": respond_input.get("conversation_status") if respond_input else None,
+        "text": text,
+        "probe_finished": respond_input is not None,
+    }
+
+
 # ---------------------------------------------------------------------------
 # Stepping a dialogue file
 # ---------------------------------------------------------------------------
@@ -852,14 +966,40 @@ def _check_phrases(message: str, phrases: list[str], should_appear: bool) -> lis
     return results
 
 
-def _grade(turn: dict, produced: dict, expected_state: dict | None) -> dict:
+def _grade(
+    turn: dict,
+    produced: dict,
+    expected_state: dict | None,
+    expected_intent: str | None,
+    usage: dict,
+    seconds: float,
+    model_calls: int,
+    tools_called: list[str],
+    probe: dict | None,
+) -> dict:
     """
     Compare one produced reply against what the dialogue file expects.
 
-    Params: turn           - the expected SYSTEM turn.
-            produced       - what _generate_reply (or _silent_reply) returned.
-            expected_state - the state on the USER turn this reply answers,
-                              or None when there is nothing to compare.
+    Params: turn            - the expected SYSTEM turn.
+            produced        - what _generate_reply (or _silent_reply) returned.
+            expected_state  - the state on the USER turn this reply answers,
+                               or None when there is nothing to compare.
+            expected_intent - the intent on the USER turn this reply answers,
+                               or None when this turn was triggered by the
+                               system clock, not a guest message.
+            usage           - this turn's summed token counters, shaped like
+                               _zero_usage() (all zero for a silent turn).
+            seconds         - wall time from the guest's message going into
+                               history to the model calling respond.
+            model_calls     - how many messages.create calls this turn took
+                               (0 for a silent, handed-to-human turn).
+            tools_called    - the policy tool names the model actually called
+                               this turn, in order, excluding respond ([] is
+                               a real result, not "not recorded").
+            probe           - what _probe_silence returned, only on a turn
+                               the handed-to-human guard silenced with
+                               SILENCE_PROBE on; None otherwise (not "not
+                               applicable" vs "not recorded" - just unused).
     Return: one record, ready to print and to save.
     """
     expected_facts = turn.get("facts", {})
@@ -873,6 +1013,7 @@ def _grade(turn: dict, produced: dict, expected_state: dict | None) -> dict:
     return {
         "turn_id": turn["turn_id"],
         "action": {"expected": turn.get("action"), "got": produced.get("action")},
+        "intent": {"expected": expected_intent, "got": produced.get("intent")},
         "facts": facts,
         "state": {"expected": expected_state, "got": produced.get("state")},
         "conversation_status": {
@@ -883,6 +1024,14 @@ def _grade(turn: dict, produced: dict, expected_state: dict | None) -> dict:
         "must_not_say": _check_phrases(message, turn.get("must_not_say", []), should_appear=False),
         "expected_utterance": turn.get("utterance"),
         "got_message": message,
+        "usage": usage,
+        "seconds": round(seconds, 3),
+        "model_calls": model_calls,
+        "tools_called": tools_called,
+        "probe": probe,
+        "probe_broke_silence": (
+            bool(probe["message"]) or bool(probe["text"]) if probe is not None else None
+        ),
     }
 
 
@@ -907,15 +1056,20 @@ def _print_record(record: dict) -> None:
         print(f"  must_not_say [{mark}] {check['phrase']!r}")
 
 
-def run_dialogue_file(path: str) -> dict:
+def run_dialogue_file(path: str, out_dir: Path = RUNS_DIR) -> dict:
     """
     Step through one dialogue file, turn by turn, grading every SYSTEM turn.
 
-    Params: path - path to a dialogue JSON file.
-    Return: the summary that was also saved under runs/.
+    Params: path    - path to a dialogue JSON file.
+            out_dir - folder to save the result under (runs/ by default, or
+                      runs/<run label>/ when several runs must sit side by
+                      side).
+    Return: the summary that was also saved under out_dir.
     """
-    global api_call_count
+    global api_call_count, probe_call_count, probe_usage
     api_call_count = 0
+    probe_call_count = 0
+    probe_usage = _zero_usage()
 
     dialogue = load_dialogue(path)
     channel = dialogue["channel"]
@@ -933,6 +1087,13 @@ def run_dialogue_file(path: str) -> dict:
     # until the tool that produces it is called again, not just for one turn.
     known_facts: dict = {"escalated": False, "booking_created": False}
     pending = None
+    pending_usage = None  # this turn's token counters, waiting alongside `pending` to be graded
+    pending_seconds = None  # wall time from the guest's message to the model calling respond
+    pending_model_calls = None  # how many messages.create calls that turn took
+    pending_intent = None  # the guest turn's own intent, or None when a system-clock turn triggered this reply
+    pending_tools_called = None  # the policy tool names actually called this turn, in order
+    pending_probe = None  # what the model would have said, only set on a silenced turn with SILENCE_PROBE on
+    dialogue_usage = _zero_usage()  # summed across every turn, for the summary
     records = []
 
     print(f'{dialogue["dialogue_id"]} - {len(dialogue["turns"])} turns')
@@ -949,13 +1110,16 @@ def run_dialogue_file(path: str) -> dict:
                 conversation_status = "agent"  # a person has handed it back
                 known_facts["escalated"] = False
                 known_facts.pop("escalation_reason", None)
+                pending_intent = None  # a manager message carries no guest intent
                 history.append(
                     {"role": "user", "content": f'{prefix}\n[The reservation manager writes] {turn["utterance"]}'}
                 )
             else:
                 last_user_state = turn["state"]
+                pending_intent = turn["intent"]
                 history.append({"role": "user", "content": f'{prefix}\n{turn["utterance"]}'})
 
+            turn_start = time.perf_counter()
             if conversation_status == "agent":
                 ctx = {
                     "channel": channel, "handle": handle, "now": now,
@@ -966,18 +1130,28 @@ def run_dialogue_file(path: str) -> dict:
                     "known_facts": known_facts,
                 }
                 pending = _generate_reply(history, ctx)
+                pending_usage = ctx["turn_usage"]
+                pending_model_calls = ctx["turn_model_calls"]
+                pending_tools_called = ctx["turn_tools_called"]
                 if ctx.get("created_this_turn"):
                     confirmation_pending = False
                 elif ctx.get("quoted_this_turn"):
                     confirmation_pending = True
             else:
                 pending = _silent_reply(last_model_state)
+                pending_usage = _zero_usage()
+                pending_model_calls = 0
+                pending_tools_called = []
+                pending_probe = _probe_silence(history) if SILENCE_PROBE else None
+            pending_seconds = time.perf_counter() - turn_start
             continue
 
         # SYSTEM turn. If nothing is pending, the clock triggered this one,
         # not a message - inject a note and let the agent react to it.
         if pending is None:
             history.append({"role": "user", "content": f"{prefix}\n[System clock] Time has moved on."})
+            pending_intent = None  # no guest message triggered this turn
+            turn_start = time.perf_counter()
             if conversation_status == "agent":
                 ctx = {
                     "channel": channel, "handle": handle, "now": now,
@@ -988,29 +1162,51 @@ def run_dialogue_file(path: str) -> dict:
                     "known_facts": known_facts,
                 }
                 pending = _generate_reply(history, ctx)
+                pending_usage = ctx["turn_usage"]
+                pending_model_calls = ctx["turn_model_calls"]
+                pending_tools_called = ctx["turn_tools_called"]
                 if ctx.get("created_this_turn"):
                     confirmation_pending = False
                 elif ctx.get("quoted_this_turn"):
                     confirmation_pending = True
             else:
                 pending = _silent_reply(last_model_state)
+                pending_usage = _zero_usage()
+                pending_model_calls = 0
+                pending_tools_called = []
+                pending_probe = _probe_silence(history) if SILENCE_PROBE else None
+            pending_seconds = time.perf_counter() - turn_start
 
-        record = _grade(turn, pending, last_user_state)
+        record = _grade(
+            turn, pending, last_user_state, pending_intent,
+            pending_usage, pending_seconds, pending_model_calls, pending_tools_called, pending_probe,
+        )
         records.append(record)
         _print_record(record)
+        for key in USAGE_KEYS:
+            dialogue_usage[key] += pending_usage[key]
 
         conversation_status = pending.get("conversation_status", "agent")
         last_model_state = pending.get("state") or last_model_state
         pending = None
+        pending_usage = None
+        pending_seconds = None
+        pending_intent = None
+        pending_model_calls = None
+        pending_tools_called = None
+        pending_probe = None
 
     summary = {
         "dialogue_id": dialogue["dialogue_id"],
         "source": path,
         "api_calls": api_call_count,
+        "tokens": dialogue_usage,
+        "probe_calls": probe_call_count,
+        "probe_tokens": probe_usage,
         "turns": records,
     }
-    RUNS_DIR.mkdir(exist_ok=True)
-    out_path = RUNS_DIR / f'{dialogue["dialogue_id"]}.json'
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / f'{dialogue["dialogue_id"]}.json'
     out_path.write_text(json.dumps(summary, indent=2, default=str), encoding="utf-8")
     print(f"\n{len(records)} SYSTEM turns graded, {api_call_count} model calls")
     print(f"saved {out_path}")
@@ -1042,7 +1238,7 @@ def _turn_passed(record: dict) -> bool:
     return True
 
 
-def run_all_dialogues() -> None:
+def run_all_dialogues(run_label: str | None = None) -> None:
     """
     Run all eleven dialogues in order, save each one under runs/, then print
     one verdict line per dialogue.
@@ -1050,28 +1246,65 @@ def run_all_dialogues() -> None:
     The saved files are what Phase 6 counts instead of re-running everything
     and spending credits again - each one already carries expected-vs-got
     for every turn, so no model call is needed to score them later.
+
+    Params: run_label - when given, results go under runs/<run_label>/
+                        instead of straight under runs/, and a summary.json
+                        is written there too, so several runs can sit side
+                        by side instead of overwriting each other. With no
+                        label, behaves exactly as before.
+    Return: None.
     """
-    if RUNS_DIR.exists():
+    out_dir = RUNS_DIR if run_label is None else RUNS_DIR / run_label
+    started_at_utc = datetime.now(timezone.utc).isoformat()
+
+    if run_label is None and RUNS_DIR.exists():
         for old_file in RUNS_DIR.glob("*.jsonl"):
             old_file.unlink()
 
     verdicts = []
+    dialogue_totals = []
     for path in DIALOGUE_PATHS:
         seed_db()  # a fresh, known DB before every dialogue - earlier runs wrote real bookings into it
-        summary = run_dialogue_file(path)
+        summary = run_dialogue_file(path, out_dir=out_dir)
         passed = sum(1 for turn in summary["turns"] if _turn_passed(turn))
         total = len(summary["turns"])
         verdicts.append((summary["dialogue_id"], passed, total))
+        dialogue_totals.append({
+            "dialogue_id": summary["dialogue_id"],
+            "turns": total,
+            "api_calls": summary["api_calls"],
+            "tokens": summary["tokens"],
+            "probe_calls": summary["probe_calls"],
+            "probe_tokens": summary["probe_tokens"],
+            "seconds": round(sum(turn["seconds"] for turn in summary["turns"]), 3),
+        })
 
     print("\n=== VERDICT ===")
     for dialogue_id, passed, total in verdicts:
         mark = "PASS" if passed == total else "FAIL"
         print(f"{dialogue_id}: {mark} ({passed}/{total} turns fully matched)")
 
+    if run_label is not None:
+        run_summary = {
+            "run_label": run_label,
+            "model": MODEL,
+            "started_at_utc": started_at_utc,
+            "dialogues": dialogue_totals,
+        }
+        summary_path = out_dir / "summary.json"
+        summary_path.write_text(json.dumps(run_summary, indent=2, default=str), encoding="utf-8")
+        print(f"saved {summary_path}")
+
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "all":
-        run_all_dialogues()
+    cli_args = sys.argv[1:]
+    if "--silence-probe" in cli_args:
+        SILENCE_PROBE = True
+        cli_args.remove("--silence-probe")
+
+    if cli_args and cli_args[0] == "all":
+        run_label = cli_args[1] if len(cli_args) > 1 else None
+        run_all_dialogues(run_label)
     else:
-        dialogue_path = sys.argv[1] if len(sys.argv) > 1 else "evals/dialogues/dlg-01-party-size-change.json"
+        dialogue_path = cli_args[0] if cli_args else "evals/dialogues/dlg-01-party-size-change.json"
         run_dialogue_file(dialogue_path)

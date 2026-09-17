@@ -1,0 +1,640 @@
+{
+  "dialogue_id": "DLG-11",
+  "source": "evals/dialogues/dlg-11-modify-party-grows.json",
+  "api_calls": 10,
+  "tokens": {
+    "input_tokens": 23216,
+    "output_tokens": 2696,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 71160
+  },
+  "turns": [
+    {
+      "turn_id": 1,
+      "action": {
+        "expected": "modify",
+        "got": "modify"
+      },
+      "intent": {
+        "expected": "modify",
+        "got": "modify"
+      },
+      "facts": {
+        "customer_found": {
+          "expected": true,
+          "got": true
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Nikos Pappas",
+          "party_size": 7,
+          "date": "2026-07-12",
+          "start_time": null,
+          "product": null,
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        },
+        "got": {
+          "name": "Nikos Pappas",
+          "party_size": 7,
+          "date": "2026-07-12",
+          "start_time": null,
+          "product": null,
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "19:30",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "bottle service",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "which date",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I have changed it",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I have updated it",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "your booking is now 7",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I assume",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Hello Mr Pappas. You have two bookings that night - dinner at 19:30 for 4, and bottle service at 00:00 for 5. Which of the two should be 7?",
+      "got_message": "Hi Nikos! I can see you have two bookings on Sunday (2026-07-12): a dinner at 19:30 for 4 people, and bottle service starting at midnight for 5 people. \n\nWhen you say you need a bigger table for Sunday and now 7 people - which one of these are you changing? Is it the dinner at 19:30, or the bottle service at midnight?",
+      "usage": {
+        "input_tokens": 1962,
+        "output_tokens": 485,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 21348
+      },
+      "seconds": 5.148,
+      "model_calls": 3,
+      "tools_called": [
+        "find_customer",
+        "find_bookings"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 3,
+      "action": {
+        "expected": "modify",
+        "got": "modify"
+      },
+      "intent": {
+        "expected": "modify",
+        "got": "modify"
+      },
+      "facts": {
+        "booking_found": {
+          "expected": true,
+          "got": true
+        },
+        "booking_status": {
+          "expected": "confirmed",
+          "got": null
+        },
+        "modify_allowed": {
+          "expected": true,
+          "got": null
+        },
+        "buffer_wait_disclosed": {
+          "expected": false,
+          "got": false
+        },
+        "minimum_spend_pp": {
+          "expected": 400,
+          "got": 400
+        },
+        "minimum_spend_total": {
+          "expected": 2800,
+          "got": 2800
+        },
+        "deposit_eur": {
+          "expected": 350,
+          "got": 350
+        },
+        "deposit_extra_eur": {
+          "expected": 100,
+          "got": 100
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Nikos Pappas",
+          "party_size": 7,
+          "date": "2026-07-12",
+          "start_time": "00:00",
+          "product": "bottle_service",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        },
+        "got": {
+          "name": "Nikos Pappas",
+          "party_size": 7,
+          "date": "2026-07-12",
+          "start_time": "00:00",
+          "product": "bottle_service",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "400",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "100",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "2,000",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "2000",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I cannot change",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "too close to the date",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I have changed it",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "19:30",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "a short wait",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Found it - bottle service, Sunday 12 July at 00:00, currently 5 people. Sunday is 5 days away, so the change is allowed, and there is room for seven. Two figures move. The minimum spend at that hour is EUR 400 per person, so EUR 2,800 for seven. And the deposit goes from EUR 250 to EUR 350 - EUR 50 for each of the two extra people, so EUR 100 more. Shall I make the change?",
+      "got_message": "Perfect! Your midnight bottle service can move to 7 people on the same night. Here are the figures:\n\n**Minimum spend:** \u20ac400 per person (\u20ac2,800 total)  \n**Deposit:** You already paid \u20ac250 for the 5-person booking. For 7 people it is \u20ac350, so you owe an extra \u20ac100.\n\nThe deposit comes off your bill, and your table is held for 6 hours from when I confirm. Shall I go ahead and change it to 7?",
+      "usage": {
+        "input_tokens": 3431,
+        "output_tokens": 722,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 14232
+      },
+      "seconds": 6.339,
+      "model_calls": 2,
+      "tools_called": [
+        "check_availability",
+        "quote_booking"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 5,
+      "action": {
+        "expected": "modify",
+        "got": "modify"
+      },
+      "intent": {
+        "expected": "modify",
+        "got": "modify"
+      },
+      "facts": {
+        "booking_found": {
+          "expected": true,
+          "got": true
+        },
+        "booking_status": {
+          "expected": "confirmed",
+          "got": "confirmed"
+        },
+        "booking_party_size": {
+          "expected": 7,
+          "got": 7
+        },
+        "deposit_eur": {
+          "expected": 350,
+          "got": 350
+        },
+        "deposit_extra_eur": {
+          "expected": 100,
+          "got": 100
+        },
+        "payment_link_sent": {
+          "expected": true,
+          "got": false
+        },
+        "deposit_deducted_from_bill": {
+          "expected": true,
+          "got": true
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Nikos Pappas",
+          "party_size": 7,
+          "date": "2026-07-12",
+          "start_time": "00:00",
+          "product": "bottle_service",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        },
+        "got": {
+          "name": "Nikos Pappas",
+          "party_size": 7,
+          "date": "2026-07-12",
+          "start_time": "00:00",
+          "product": "bottle_service",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "100",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "350",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "cancelled",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "a new booking",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "2,000",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "2000",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "back to pending",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "no longer confirmed",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "rebook",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Changed - bottle service for 7 on Sunday 12 July at 00:00. Your table was never released; it is the same booking, still confirmed. Here is the link for the extra EUR 100: {payment_link}. The whole EUR 350 comes off the bill that night.",
+      "got_message": "Done! Your bottle service on Sunday is now for 7 people. You owe \u20ac100 extra on your deposit, and we'll send you a new payment link for that.\n\nYour table is held, and if the extra deposit doesn't arrive in time, we'll let you know and release the table. See you Sunday at midnight!",
+      "usage": {
+        "input_tokens": 5504,
+        "output_tokens": 442,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 14232
+      },
+      "seconds": 3.881,
+      "model_calls": 2,
+      "tools_called": [
+        "modify_booking"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 7,
+      "action": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "facts": {
+        "deposit_eur": {
+          "expected": 350,
+          "got": 350
+        },
+        "deposit_extra_eur": {
+          "expected": 100,
+          "got": 100
+        },
+        "deposit_deducted_from_bill": {
+          "expected": true,
+          "got": true
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Nikos Pappas",
+          "party_size": 7,
+          "date": "2026-07-12",
+          "start_time": "00:00",
+          "product": "bottle_service",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        },
+        "got": {
+          "name": "Nikos Pappas",
+          "party_size": 7,
+          "date": "2026-07-12",
+          "start_time": "00:00",
+          "product": "bottle_service",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "250",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "100",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "350",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "pay it again",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "a second deposit",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "250 again",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "a new deposit",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "non-refundable",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "No. The EUR 250 you already paid stays on the booking - a deposit follows a booking when it is changed. You add EUR 100 for the two extra people, and all EUR 350 comes off the bill.",
+      "got_message": "No - you already paid \u20ac250 for the 5-person booking. That stays on your account and comes off your bill on the night. You only pay the extra \u20ac100 now to bring the total deposit to \u20ac350. No double payment.",
+      "usage": {
+        "input_tokens": 3534,
+        "output_tokens": 264,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
+      },
+      "seconds": 2.642,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 9,
+      "action": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "facts": {
+        "booking_found": {
+          "expected": true,
+          "got": true
+        },
+        "booking_party_size": {
+          "expected": 4,
+          "got": 7
+        },
+        "booking_status": {
+          "expected": "confirmed",
+          "got": "confirmed"
+        },
+        "minimum_spend_pp": {
+          "expected": 0,
+          "got": 400
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Nikos Pappas",
+          "party_size": 7,
+          "date": "2026-07-12",
+          "start_time": "00:00",
+          "product": "bottle_service",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        },
+        "got": {
+          "name": "Nikos Pappas",
+          "party_size": 7,
+          "date": "2026-07-12",
+          "start_time": "00:00",
+          "product": "bottle_service",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "19:30",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "also changed",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I have updated both",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "both bookings",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "2,800",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "2800",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "400",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Untouched - dinner at 19:30 on Sunday 12 July, still for 4. I changed only the bottle service booking. The early sitting has no minimum spend.",
+      "got_message": "Yes, your dinner at 19:30 on Sunday is still for 4 people as it is. That booking hasn't changed.",
+      "usage": {
+        "input_tokens": 4116,
+        "output_tokens": 395,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
+      },
+      "seconds": 2.303,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 11,
+      "action": {
+        "expected": "none",
+        "got": "none"
+      },
+      "intent": {
+        "expected": "bye",
+        "got": "bye"
+      },
+      "facts": {},
+      "state": {
+        "expected": {
+          "name": "Nikos Pappas",
+          "party_size": 7,
+          "date": "2026-07-12",
+          "start_time": "00:00",
+          "product": "bottle_service",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        },
+        "got": {
+          "name": "Nikos Pappas",
+          "party_size": 7,
+          "date": "2026-07-12",
+          "start_time": "00:00",
+          "product": "bottle_service",
+          "phone": "+306940000001",
+          "email": "nikos@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "15 minutes",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [],
+      "expected_utterance": "Thank you Mr Pappas. Please arrive about 15 minutes before each sitting. See you on Sunday.",
+      "got_message": "Thank you! We'll see you Sunday - remember to arrive about 15 minutes early. Enjoy!",
+      "usage": {
+        "input_tokens": 4669,
+        "output_tokens": 388,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
+      },
+      "seconds": 2.266,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    }
+  ]
+}

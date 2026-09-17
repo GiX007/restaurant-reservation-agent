@@ -1,0 +1,139 @@
+{
+  "run_label": "run-04",
+  "model": "claude-haiku-4-5-20251001",
+  "started_at_utc": "2026-09-17T02:09:20.790017+00:00",
+  "dialogues": [
+    {
+      "dialogue_id": "DLG-01",
+      "turns": 9,
+      "api_calls": 19,
+      "tokens": {
+        "input_tokens": 56542,
+        "output_tokens": 4268,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 135204
+      },
+      "seconds": 38.77
+    },
+    {
+      "dialogue_id": "DLG-02",
+      "turns": 7,
+      "api_calls": 14,
+      "tokens": {
+        "input_tokens": 38129,
+        "output_tokens": 3859,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 99624
+      },
+      "seconds": 31.368
+    },
+    {
+      "dialogue_id": "DLG-03",
+      "turns": 6,
+      "api_calls": 9,
+      "tokens": {
+        "input_tokens": 20052,
+        "output_tokens": 2900,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 64044
+      },
+      "seconds": 32.364
+    },
+    {
+      "dialogue_id": "DLG-04",
+      "turns": 8,
+      "api_calls": 18,
+      "tokens": {
+        "input_tokens": 58036,
+        "output_tokens": 3895,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 128088
+      },
+      "seconds": 46.756
+    },
+    {
+      "dialogue_id": "DLG-05",
+      "turns": 6,
+      "api_calls": 9,
+      "tokens": {
+        "input_tokens": 16212,
+        "output_tokens": 2456,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 64044
+      },
+      "seconds": 20.475
+    },
+    {
+      "dialogue_id": "DLG-06",
+      "turns": 5,
+      "api_calls": 8,
+      "tokens": {
+        "input_tokens": 15397,
+        "output_tokens": 2190,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 56928
+      },
+      "seconds": 18.165
+    },
+    {
+      "dialogue_id": "DLG-07",
+      "turns": 7,
+      "api_calls": 20,
+      "tokens": {
+        "input_tokens": 72785,
+        "output_tokens": 4719,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 142320
+      },
+      "seconds": 40.917
+    },
+    {
+      "dialogue_id": "DLG-08",
+      "turns": 3,
+      "api_calls": 3,
+      "tokens": {
+        "input_tokens": 2742,
+        "output_tokens": 887,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 21348
+      },
+      "seconds": 10.385
+    },
+    {
+      "dialogue_id": "DLG-09",
+      "turns": 4,
+      "api_calls": 5,
+      "tokens": {
+        "input_tokens": 4834,
+        "output_tokens": 1099,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 35580
+      },
+      "seconds": 12.067
+    },
+    {
+      "dialogue_id": "DLG-10",
+      "turns": 6,
+      "api_calls": 8,
+      "tokens": {
+        "input_tokens": 16603,
+        "output_tokens": 2260,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 56928
+      },
+      "seconds": 19.635
+    },
+    {
+      "dialogue_id": "DLG-11",
+      "turns": 6,
+      "api_calls": 10,
+      "tokens": {
+        "input_tokens": 23216,
+        "output_tokens": 2696,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 71160
+      },
+      "seconds": 22.579
+    }
+  ]
+}

@@ -1,0 +1,655 @@
+{
+  "dialogue_id": "DLG-02",
+  "source": "evals/dialogues/dlg-02-full-night-alternatives.json",
+  "api_calls": 12,
+  "tokens": {
+    "input_tokens": 28733,
+    "output_tokens": 3107,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 85392
+  },
+  "turns": [
+    {
+      "turn_id": 1,
+      "action": {
+        "expected": "book",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "customer_found": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Claire Dubois",
+          "party_size": 6,
+          "date": "2026-07-12",
+          "start_time": "21:00",
+          "product": "dinner",
+          "phone": null,
+          "email": "c.dubois@orange.fr"
+        },
+        "got": {
+          "name": "Claire Dubois",
+          "party_size": 6,
+          "date": "2026-07-12",
+          "start_time": "21:00",
+          "product": "dinner",
+          "phone": null,
+          "email": "c.dubois@orange.fr"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "fully booked",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "waiting list",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "I will let you know if",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "we have space on the 12th",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "your name",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Dear Mrs Dubois, thank you for writing. I am sorry, we are fully booked on Sunday 12 July. I would be glad to look at the days around it - which days are you on the island?",
+      "got_message": "Unfortunately, that date and time are fully booked. I can offer you Saturday 11 July or Tuesday 14 July instead, both at 21:00 for your party of 6. Would either of those dates work for you?",
+      "usage": {
+        "input_tokens": 1796,
+        "output_tokens": 536,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 21348
+      },
+      "seconds": 7.504,
+      "model_calls": 3,
+      "tools_called": [
+        "find_customer",
+        "check_availability"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 3,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "intent": {
+        "expected": "book",
+        "got": "inform"
+      },
+      "facts": {
+        "alternative_dates": {
+          "expected": [
+            "2026-07-11",
+            "2026-07-14"
+          ],
+          "got": [
+            "2026-07-11",
+            "2026-07-14"
+          ]
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Claire Dubois",
+          "party_size": 6,
+          "date": "2026-07-12",
+          "start_time": "21:00",
+          "product": "dinner",
+          "phone": null,
+          "email": "c.dubois@orange.fr"
+        },
+        "got": {
+          "name": "Claire Dubois",
+          "party_size": 6,
+          "date": "2026-07-11",
+          "start_time": "21:00",
+          "product": "dinner",
+          "phone": null,
+          "email": "c.dubois@orange.fr"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "11",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "14",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "13 July",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "the 13th",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "Monday",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "10 July",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "the 10th",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "16 July",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "the 16th",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Thank you. For 6 people I can offer Saturday 11 July or Tuesday 14 July, both at 21:00. Would either of those work for you?",
+      "got_message": "Perfect, so Saturday 11 July works for you then? At 21:00 for 6 people for dinner?",
+      "usage": {
+        "input_tokens": 1289,
+        "output_tokens": 260,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
+      },
+      "seconds": 2.412,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 5,
+      "action": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "facts": {},
+      "state": {
+        "expected": {
+          "name": "Claire Dubois",
+          "party_size": 6,
+          "date": "2026-07-12",
+          "start_time": "21:00",
+          "product": "dinner",
+          "phone": null,
+          "email": "c.dubois@orange.fr"
+        },
+        "got": {
+          "name": "Claire Dubois",
+          "party_size": 6,
+          "date": "2026-07-12",
+          "start_time": "21:00",
+          "product": "dinner",
+          "phone": null,
+          "email": "c.dubois@orange.fr"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [],
+      "must_not_say": [
+        {
+          "phrase": "I will add you",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "put you on the list",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "let you know if something",
+          "appeared": true,
+          "ok": false
+        },
+        {
+          "phrase": "contact you if",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "check with the manager",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "We do not keep a waiting list, so I am not able to hold anything for the 12th. The 11th and the 14th are both free at 21:00 if either suits you.",
+      "got_message": "There is no waitlist, I'm afraid. Once a night is full, we cannot hold a place or let you know if something opens up. Your options are Saturday 11 July or Tuesday 14 July, both at 21:00 for your party of 6.\n\nSince you arrive on the 11th, Saturday would give you a chance to settle in first. Would that work for you?",
+      "usage": {
+        "input_tokens": 1772,
+        "output_tokens": 378,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
+      },
+      "seconds": 3.626,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 7,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "intent": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "minimum_spend_pp": {
+          "expected": 0,
+          "got": null
+        },
+        "minimum_spend_total": {
+          "expected": 0,
+          "got": null
+        },
+        "buffer_wait_disclosed": {
+          "expected": false,
+          "got": false
+        },
+        "booking_created": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Claire Dubois",
+          "party_size": 6,
+          "date": "2026-07-14",
+          "start_time": "21:00",
+          "product": "dinner",
+          "phone": null,
+          "email": "c.dubois@orange.fr"
+        },
+        "got": {
+          "name": "Claire Dubois",
+          "party_size": 6,
+          "date": "2026-07-14",
+          "start_time": "21:00",
+          "product": "dinner",
+          "phone": null,
+          "email": "c.dubois@orange.fr"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "no minimum spend",
+          "appeared": false,
+          "ok": false
+        },
+        {
+          "phrase": "phone",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "250",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "1,500",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "1500",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "your name",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "email address",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "wait at the door",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "short wait",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Tuesday 14 July at 21:00 for 6, dinner. That is our early sitting, so there is no minimum spend. I only need a phone number to hold the table.",
+      "got_message": "Perfect! That works. Now I need a phone number to complete your booking. What number should I use for your reservation?",
+      "usage": {
+        "input_tokens": 4913,
+        "output_tokens": 433,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 14232
+      },
+      "seconds": 4.979,
+      "model_calls": 2,
+      "tools_called": [
+        "check_availability"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 9,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "intent": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "minimum_spend_total": {
+          "expected": 0,
+          "got": 0
+        },
+        "deposit_eur": {
+          "expected": 300,
+          "got": 300
+        },
+        "deposit_deducted_from_bill": {
+          "expected": true,
+          "got": true
+        },
+        "booking_created": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Claire Dubois",
+          "party_size": 6,
+          "date": "2026-07-14",
+          "start_time": "21:00",
+          "product": "dinner",
+          "phone": "+33612345678",
+          "email": "c.dubois@orange.fr"
+        },
+        "got": {
+          "name": "Claire Dubois",
+          "party_size": 6,
+          "date": "2026-07-14",
+          "start_time": "21:00",
+          "product": "dinner",
+          "phone": "+33612345678",
+          "email": "c.dubois@orange.fr"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "300",
+          "appeared": true,
+          "ok": true
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "confirmed",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "250",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "To go over it: 6 people, dinner, Tuesday 14 July at 21:00. No minimum spend. The deposit is EUR 50 per person, EUR 300 in total, and it comes off your bill. Shall I go ahead?",
+      "got_message": "Your minimum spend is \u20ac300 total, and the deposit is \u20ac300, which will come off your bill on the night. The table will be held for 6 hours from when you book.\n\nShall I go ahead?",
+      "usage": {
+        "input_tokens": 6228,
+        "output_tokens": 512,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 14232
+      },
+      "seconds": 5.315,
+      "model_calls": 2,
+      "tools_called": [
+        "quote_booking"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 11,
+      "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "intent": {
+        "expected": "book",
+        "got": "book"
+      },
+      "facts": {
+        "booking_created": {
+          "expected": true,
+          "got": true
+        },
+        "booking_status": {
+          "expected": "pending_deposit",
+          "got": "pending_deposit"
+        },
+        "booking_party_size": {
+          "expected": 6,
+          "got": 6
+        },
+        "deposit_eur": {
+          "expected": 300,
+          "got": 300
+        },
+        "payment_link_sent": {
+          "expected": true,
+          "got": true
+        },
+        "hold_hours": {
+          "expected": 6,
+          "got": 6
+        },
+        "hold_expires_at": {
+          "expected": "2026-07-09T17:30:00+03:00",
+          "got": "2026-07-09T17:30:00+03:00"
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Claire Dubois",
+          "party_size": 6,
+          "date": "2026-07-14",
+          "start_time": "21:00",
+          "product": "dinner",
+          "phone": "+33612345678",
+          "email": "c.dubois@orange.fr"
+        },
+        "got": {
+          "name": "Claire Dubois",
+          "party_size": 6,
+          "date": "2026-07-14",
+          "start_time": "21:00",
+          "product": "dinner",
+          "phone": "+33612345678",
+          "email": "c.dubois@orange.fr"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "300",
+          "appeared": true,
+          "ok": true
+        },
+        {
+          "phrase": "6 hours",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [
+        {
+          "phrase": "your table is confirmed",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "12 July",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "the 12th",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Here is the link for the EUR 300 deposit: {payment_link}. I am holding the table for 6 hours, until 17:30 today. It is confirmed once the deposit is paid.",
+      "got_message": "Perfect! Your table is held for 6 people on Tuesday 14 July at 21:00. We've sent you a payment link for the \u20ac300 deposit \u2014 please pay that when you can. The deposit will come off your bill on the night. If the deposit doesn't arrive by 17:30 today, the table will be released and we'll let you know.\n\nPlease arrive about 15 minutes early. We look forward to welcoming you!",
+      "usage": {
+        "input_tokens": 7899,
+        "output_tokens": 629,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 14232
+      },
+      "seconds": 6.761,
+      "model_calls": 2,
+      "tools_called": [
+        "create_booking"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 13,
+      "action": {
+        "expected": "none",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "bye",
+        "got": "inform"
+      },
+      "facts": {},
+      "state": {
+        "expected": {
+          "name": "Claire Dubois",
+          "party_size": 6,
+          "date": "2026-07-14",
+          "start_time": "21:00",
+          "product": "dinner",
+          "phone": "+33612345678",
+          "email": "c.dubois@orange.fr"
+        },
+        "got": {
+          "name": "Claire Dubois",
+          "party_size": 6,
+          "date": "2026-07-14",
+          "start_time": "21:00",
+          "product": "dinner",
+          "phone": "+33612345678",
+          "email": "c.dubois@orange.fr"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [
+        {
+          "phrase": "15 minutes",
+          "appeared": false,
+          "ok": false
+        }
+      ],
+      "must_not_say": [],
+      "expected_utterance": "Thank you Mrs Dubois. Please arrive about 15 minutes before 21:00. We look forward to seeing you on Tuesday.",
+      "got_message": "Thank you, Claire! We've received your payment. Your booking is confirmed for 6 people on Tuesday 14 July at 21:00 for dinner.\n\nIf you have any questions before your visit, just get in touch. We look forward to seeing you!",
+      "usage": {
+        "input_tokens": 4836,
+        "output_tokens": 359,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7116
+      },
+      "seconds": 3.213,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    }
+  ]
+}

@@ -1,0 +1,342 @@
+{
+  "dialogue_id": "DLG-09",
+  "source": "evals/dialogues/dlg-09-late-arrival.json",
+  "api_calls": 5,
+  "tokens": {
+    "input_tokens": 4834,
+    "output_tokens": 1099,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 35580
+  },
+  "turns": [
+    {
+      "turn_id": 1,
+      "action": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "facts": {
+        "customer_found": {
+          "expected": true,
+          "got": true
+        },
+        "booking_found": {
+          "expected": true,
+          "got": true
+        },
+        "booking_status": {
+          "expected": "confirmed",
+          "got": "confirmed"
+        },
+        "escalated": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Elena Marino",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306940000002",
+          "email": "elena@example.com"
+        },
+        "got": {
+          "name": "Elena Marino",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306940000002",
+          "email": "elena@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "agent",
+        "got": "agent"
+      },
+      "must_say": [],
+      "must_not_say": [
+        {
+          "phrase": "you have lost",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "the table is gone",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "your deposit is lost",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "we will hold it",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "take your time",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "no problem at all",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "Thank you for telling us, Mrs Marino - I have your table for 4 at 20:00 tonight. How late do you think you will be?",
+      "got_message": "Elena, I have your booking for 4 at 20:00 tonight. You're stuck in traffic - can you tell me how late you think you will be? That will help me know what to do.",
+      "usage": {
+        "input_tokens": 1816,
+        "output_tokens": 386,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 21348
+      },
+      "seconds": 4.82,
+      "model_calls": 3,
+      "tools_called": [
+        "find_customer",
+        "find_bookings"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 3,
+      "action": {
+        "expected": "escalate",
+        "got": "escalate"
+      },
+      "intent": {
+        "expected": "inform",
+        "got": "inform"
+      },
+      "facts": {
+        "customer_found": {
+          "expected": true,
+          "got": true
+        },
+        "booking_found": {
+          "expected": true,
+          "got": true
+        },
+        "booking_status": {
+          "expected": "confirmed",
+          "got": "confirmed"
+        },
+        "escalated": {
+          "expected": true,
+          "got": true
+        },
+        "escalation_reason": {
+          "expected": "forgiving_a_late_arrival",
+          "got": "forgiving_a_late_arrival"
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Elena Marino",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306940000002",
+          "email": "elena@example.com"
+        },
+        "got": {
+          "name": "Elena Marino",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306940000002",
+          "email": "elena@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "handed_to_human",
+        "got": "handed_to_human"
+      },
+      "must_say": [],
+      "must_not_say": [
+        {
+          "phrase": "you have lost",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "the table is gone",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "your deposit is lost",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "we will hold it",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "your table is waiting",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "no problem",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "of course",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "do not worry",
+          "appeared": false,
+          "ok": true
+        }
+      ],
+      "expected_utterance": "I have passed this straight to our reservation manager with your booking details - 4 people, 20:00 tonight, arriving around 20:20. She will come back to you here shortly. Please keep coming.",
+      "got_message": "I've passed this to our reservation manager and she will come back to you here. Your booking is for 4 at 20:00 and we have everything you have told me - that you are in traffic and expect to arrive around 20:20.",
+      "usage": {
+        "input_tokens": 3018,
+        "output_tokens": 713,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 14232
+      },
+      "seconds": 7.247,
+      "model_calls": 2,
+      "tools_called": [
+        "escalate"
+      ],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 5,
+      "action": {
+        "expected": "none",
+        "got": "none"
+      },
+      "intent": {
+        "expected": "inform",
+        "got": null
+      },
+      "facts": {
+        "agent_replied": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Elena Marino",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306940000002",
+          "email": "elena@example.com"
+        },
+        "got": {
+          "name": "Elena Marino",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306940000002",
+          "email": "elena@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "handed_to_human",
+        "got": "handed_to_human"
+      },
+      "must_say": [],
+      "must_not_say": [],
+      "expected_utterance": "",
+      "got_message": "",
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      },
+      "seconds": 0.0,
+      "model_calls": 0,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    },
+    {
+      "turn_id": 7,
+      "action": {
+        "expected": "none",
+        "got": "none"
+      },
+      "intent": {
+        "expected": "inform",
+        "got": null
+      },
+      "facts": {
+        "agent_replied": {
+          "expected": false,
+          "got": false
+        }
+      },
+      "state": {
+        "expected": {
+          "name": "Elena Marino",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306940000002",
+          "email": "elena@example.com"
+        },
+        "got": {
+          "name": "Elena Marino",
+          "party_size": 4,
+          "date": "2026-07-13",
+          "start_time": "20:00",
+          "product": "dinner",
+          "phone": "+306940000002",
+          "email": "elena@example.com"
+        }
+      },
+      "conversation_status": {
+        "expected": "handed_to_human",
+        "got": "handed_to_human"
+      },
+      "must_say": [],
+      "must_not_say": [],
+      "expected_utterance": "",
+      "got_message": "",
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      },
+      "seconds": 0.0,
+      "model_calls": 0,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
+    }
+  ]
+}
