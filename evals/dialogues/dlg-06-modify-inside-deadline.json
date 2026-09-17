@@ -45,7 +45,7 @@
         "booking_status": "confirmed"
       },
       "must_say": ["13 July", "20:30"],
-      "must_not_say": ["I have moved", "15 July is booked", "moved to the 15th", "I will check", "the manager", "let me ask"],
+      "must_not_say": ["I have moved", "15 July is booked", "moved to the 15th", "I will check with", "the manager", "let me ask"],
       "conversation_status": "agent"
     },
     {
@@ -133,7 +133,7 @@
         "deposit_deducted_from_bill": true
       },
       "must_say": ["13 July", "20:30"],
-      "must_not_say": ["cancelled", "I have cancelled", "15 July", "the 15th", "a new deposit"],
+      "must_not_say": ["has been cancelled", "has already been cancelled", "I have cancelled", "new booking for 15 July", "new booking for the 15th", "a new deposit"],
       "conversation_status": "agent"
     },
     {

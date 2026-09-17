@@ -1,0 +1,112 @@
+{
+  "dialogue_id": "DLG-15",
+  "goal": "Two ordinary questions that the FAQ answers. The agent answers both from its sources and does not escalate - the mirror of the allergen case, where no source has the answer.",
+  "channel": "email",
+  "from": "l.martin@example.com",
+  "language": "en",
+  "db": "seed_v1",
+  "now": "2026-07-06T11:00:00+03:00",
+  "policy_refs": [
+    "policy.md #1 who is writing",
+    "policy.md #12 answer only from the sources",
+    "policy.md #13 escalate only when no source answers"
+  ],
+  "turns": [
+    {
+      "turn_id": 0,
+      "speaker": "USER",
+      "utterance": "Hello, is there a dress code at Venue X?",
+      "intent": "inform",
+      "state": {
+        "name": null,
+        "party_size": null,
+        "date": null,
+        "start_time": null,
+        "product": null,
+        "phone": null,
+        "email": "l.martin@example.com"
+      }
+    },
+    {
+      "turn_id": 1,
+      "speaker": "SYSTEM",
+      "utterance": "Smart casual. No beachwear, no swimwear and no flip-flops in the evening. The terrace gets windy after midnight, so it is worth bringing a layer.",
+      "action": "inform",
+      "facts": {
+        "customer_found": false,
+        "escalated": false
+      },
+      "must_say": [
+        "smart casual"
+      ],
+      "must_not_say": [
+        "I will check with",
+        "I cannot answer that",
+        "pass this to"
+      ],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 2,
+      "speaker": "USER",
+      "utterance": "Good to know. Is there parking?",
+      "intent": "inform",
+      "state": {
+        "name": null,
+        "party_size": null,
+        "date": null,
+        "start_time": null,
+        "product": null,
+        "phone": null,
+        "email": "l.martin@example.com"
+      }
+    },
+    {
+      "turn_id": 3,
+      "speaker": "SYSTEM",
+      "utterance": "Yes - there is a free car park across the road with about 30 spaces, unattended. Scooters and ATVs use the marked area near the entrance.",
+      "action": "inform",
+      "facts": {
+        "escalated": false
+      },
+      "must_say": [
+        "free"
+      ],
+      "must_not_say": [
+        "I will check with",
+        "I cannot answer that",
+        "pass this to"
+      ],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 4,
+      "speaker": "USER",
+      "utterance": "Perfect, thank you.",
+      "intent": "bye",
+      "state": {
+        "name": null,
+        "party_size": null,
+        "date": null,
+        "start_time": null,
+        "product": null,
+        "phone": null,
+        "email": "l.martin@example.com"
+      }
+    },
+    {
+      "turn_id": 5,
+      "speaker": "SYSTEM",
+      "utterance": "You are welcome. We look forward to seeing you.",
+      "action": "none",
+      "facts": {},
+      "must_say": [],
+      "must_not_say": [
+        "received your payment",
+        "the deposit has arrived",
+        "your booking is confirmed"
+      ],
+      "conversation_status": "agent"
+    }
+  ]
+}

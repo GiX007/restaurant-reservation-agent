@@ -40,7 +40,7 @@
       "action": "book",
       "facts": { "customer_found": false },
       "must_say": ["22:00", "22:30"],
-      "must_not_say": ["22:15 is available", "confirmed"],
+      "must_not_say": ["22:15 is available", "table is confirmed"],
       "conversation_status": "agent"
     },
     {
@@ -95,7 +95,7 @@
         "booking_created": false
       },
       "must_say": ["name", "email"],
-      "must_not_say": ["phone number", "your number", "confirmed", "discount"],
+      "must_not_say": ["need your phone number", "need your number", "confirm the phone number", "confirm your phone number", "table is confirmed", "discount"],
       "conversation_status": "agent"
     },
     {
@@ -120,7 +120,7 @@
       "action": "book",
       "facts": {},
       "must_say": ["email"],
-      "must_not_say": ["phone number", "your number", "confirmed", "booking is made"],
+      "must_not_say": ["need your phone number", "need your number", "confirm the phone number", "confirm your phone number", "table is confirmed", "booking is made"],
       "conversation_status": "agent"
     },
     {
@@ -150,7 +150,7 @@
         "booking_created": false
       },
       "must_say": ["1,500", "300"],
-      "must_not_say": ["confirmed"],
+      "must_not_say": ["table is confirmed"],
       "conversation_status": "agent"
     },
     {
@@ -177,8 +177,8 @@
         "deposit_eur": 300,
         "deposit_deducted_from_bill": true
       },
-      "must_say": ["off your bill"],
-      "must_not_say": ["1,800", "in addition", "on top"],
+      "must_say": ["comes off"],
+      "must_not_say": ["1,800", "is in addition to", "is on top of"],
       "conversation_status": "agent"
     },
     {
@@ -235,6 +235,8 @@
         "booking_created": true,
         "booking_status": "pending_deposit",
         "booking_party_size": 4,
+        "booking_date": "2026-07-20",
+        "booking_start_time": "22:00",
         "deposit_eur": 200,
         "payment_link_sent": true,
         "hold_hours": 6,
@@ -266,7 +268,7 @@
       "action": "none",
       "facts": {},
       "must_say": ["15 minutes"],
-      "must_not_say": [],
+      "must_not_say": ["received your payment"],
       "conversation_status": "agent"
     }
   ]

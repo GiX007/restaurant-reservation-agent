@@ -1,0 +1,133 @@
+{
+  "dialogue_id": "DLG-16",
+  "goal": "A returning guest books in three messages. The channel identifies her, so the agent never asks for a name, phone or email it already holds - the identity rule paying off on the ordinary path.",
+  "channel": "whatsapp",
+  "from": "+306940000002",
+  "language": "en",
+  "db": "seed_v1",
+  "now": "2026-05-05T11:00:00+03:00",
+  "policy_refs": [
+    "policy.md #1 who is writing",
+    "policy.md #3 low season",
+    "policy.md #7 no minimum spend out of high season",
+    "policy.md #8 the deposit",
+    "policy.md #10 the six hour hold"
+  ],
+  "turns": [
+    {
+      "turn_id": 0,
+      "speaker": "USER",
+      "utterance": "Hi, it's Elena. Do you have a table for 2 on 20 May at 20:00? Dinner.",
+      "intent": "book",
+      "state": {
+        "name": "Elena Marino",
+        "party_size": 2,
+        "date": "2026-05-20",
+        "start_time": "20:00",
+        "product": "dinner",
+        "phone": "+306940000002",
+        "email": "elena@example.com"
+      }
+    },
+    {
+      "turn_id": 1,
+      "speaker": "SYSTEM",
+      "utterance": "Hello Mrs Marino - I have your details already. 20 May at 20:00 for 2, dinner is free. It is low season, so there is no minimum spend. The deposit is EUR 100 and it comes off your bill. Shall I book it?",
+      "action": "book",
+      "facts": {
+        "customer_found": true,
+        "minimum_spend_pp": 0,
+        "minimum_spend_total": 0,
+        "deposit_eur": 100,
+        "deposit_deducted_from_bill": true,
+        "buffer_wait_disclosed": false,
+        "booking_created": false
+      },
+      "must_say": [
+        "no minimum spend",
+        "100"
+      ],
+      "must_not_say": [
+        "need your name",
+        "need your email address",
+        "need your phone number",
+        "confirm the phone number",
+        "table is confirmed"
+      ],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 2,
+      "speaker": "USER",
+      "utterance": "yes please",
+      "intent": "book",
+      "state": {
+        "name": "Elena Marino",
+        "party_size": 2,
+        "date": "2026-05-20",
+        "start_time": "20:00",
+        "product": "dinner",
+        "phone": "+306940000002",
+        "email": "elena@example.com"
+      }
+    },
+    {
+      "turn_id": 3,
+      "speaker": "SYSTEM",
+      "utterance": "Done. Here is the link for the EUR 100 deposit: {payment_link}. I am holding the table for 6 hours, until 17:00 today. It is confirmed once the deposit is paid.",
+      "action": "book",
+      "facts": {
+        "booking_created": true,
+        "booking_status": "pending_deposit",
+        "booking_party_size": 2,
+        "booking_date": "2026-05-20",
+        "booking_start_time": "20:00",
+        "deposit_eur": 100,
+        "payment_link_sent": true,
+        "hold_hours": 6,
+        "hold_expires_at": "2026-05-05T17:00:00+03:00"
+      },
+      "must_say": [
+        "100",
+        "6 hours"
+      ],
+      "must_not_say": [
+        "your booking is confirmed",
+        "received your payment",
+        "the deposit has arrived"
+      ],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 4,
+      "speaker": "USER",
+      "utterance": "thanks!",
+      "intent": "bye",
+      "state": {
+        "name": "Elena Marino",
+        "party_size": 2,
+        "date": "2026-05-20",
+        "start_time": "20:00",
+        "product": "dinner",
+        "phone": "+306940000002",
+        "email": "elena@example.com"
+      }
+    },
+    {
+      "turn_id": 5,
+      "speaker": "SYSTEM",
+      "utterance": "Thank you Mrs Marino. Please arrive about 15 minutes before 20:00. See you on the 20th.",
+      "action": "none",
+      "facts": {},
+      "must_say": [
+        "15 minutes"
+      ],
+      "must_not_say": [
+        "received your payment",
+        "the deposit has arrived",
+        "your booking is confirmed"
+      ],
+      "conversation_status": "agent"
+    }
+  ]
+}

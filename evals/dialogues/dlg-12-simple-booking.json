@@ -1,0 +1,132 @@
+{
+  "dialogue_id": "DLG-12",
+  "goal": "A new guest books a quiet early sitting. Nothing goes wrong: the night is free, the early slot has no minimum spend, the deposit is quoted, the booking is written and held for six hours. The ordinary path, start to finish.",
+  "channel": "whatsapp",
+  "from": "+306949999001",
+  "language": "en",
+  "db": "seed_v1",
+  "now": "2026-07-06T11:00:00+03:00",
+  "policy_refs": [
+    "policy.md #1 who is writing",
+    "policy.md #5 start times",
+    "policy.md #7 minimum spend by slot",
+    "policy.md #8 the deposit",
+    "policy.md #10 the six hour hold"
+  ],
+  "turns": [
+    {
+      "turn_id": 0,
+      "speaker": "USER",
+      "utterance": "Hello, do you have a table for 2 on Monday 20 July at 20:00? Dinner.",
+      "intent": "book",
+      "state": {
+        "name": null,
+        "party_size": 2,
+        "date": "2026-07-20",
+        "start_time": "20:00",
+        "product": "dinner",
+        "phone": "+306949999001",
+        "email": null
+      }
+    },
+    {
+      "turn_id": 1,
+      "speaker": "SYSTEM",
+      "utterance": "Good morning! Monday 20 July at 20:00 for 2, dinner - that is free. It is the early sitting, so there is no minimum spend. The deposit is EUR 50 per person, EUR 100 in total, and it comes off your bill. I need a name and an email address to hold the table.",
+      "action": "book",
+      "facts": {
+        "customer_found": false,
+        "minimum_spend_pp": 0,
+        "minimum_spend_total": 0,
+        "deposit_eur": 100,
+        "deposit_deducted_from_bill": true,
+        "buffer_wait_disclosed": false,
+        "booking_created": false
+      },
+      "must_say": [
+        "no minimum spend",
+        "100"
+      ],
+      "must_not_say": [
+        "table is confirmed",
+        "need your phone number",
+        "confirm the phone number",
+        "wait at the door"
+      ],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 2,
+      "speaker": "USER",
+      "utterance": "Andreas Petrou, a.petrou@example.com",
+      "intent": "book",
+      "state": {
+        "name": "Andreas Petrou",
+        "party_size": 2,
+        "date": "2026-07-20",
+        "start_time": "20:00",
+        "product": "dinner",
+        "phone": "+306949999001",
+        "email": "a.petrou@example.com"
+      }
+    },
+    {
+      "turn_id": 3,
+      "speaker": "SYSTEM",
+      "utterance": "Done, Mr Petrou. Here is the link for the EUR 100 deposit: {payment_link}. I am holding the table for 6 hours, until 17:00 today. It is confirmed once the deposit is paid.",
+      "action": "book",
+      "facts": {
+        "booking_created": true,
+        "booking_status": "pending_deposit",
+        "booking_party_size": 2,
+        "booking_date": "2026-07-20",
+        "booking_start_time": "20:00",
+        "deposit_eur": 100,
+        "payment_link_sent": true,
+        "hold_hours": 6,
+        "hold_expires_at": "2026-07-06T17:00:00+03:00"
+      },
+      "must_say": [
+        "100",
+        "6 hours"
+      ],
+      "must_not_say": [
+        "your booking is confirmed",
+        "received your payment",
+        "the deposit has arrived"
+      ],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 4,
+      "speaker": "USER",
+      "utterance": "perfect, thank you",
+      "intent": "bye",
+      "state": {
+        "name": "Andreas Petrou",
+        "party_size": 2,
+        "date": "2026-07-20",
+        "start_time": "20:00",
+        "product": "dinner",
+        "phone": "+306949999001",
+        "email": "a.petrou@example.com"
+      }
+    },
+    {
+      "turn_id": 5,
+      "speaker": "SYSTEM",
+      "utterance": "Thank you Mr Petrou. Please arrive about 15 minutes before 20:00. We look forward to seeing you.",
+      "action": "none",
+      "facts": {},
+      "must_say": [
+        "15 minutes"
+      ],
+      "must_not_say": [
+        "received your payment",
+        "the deposit has arrived",
+        "your booking is confirmed"
+      ],
+      "conversation_status": "agent"
+    }
+  ]
+}

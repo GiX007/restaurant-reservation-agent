@@ -53,6 +53,8 @@ FACT_KEYS = {
     "booking_created",
     "booking_status",
     "booking_party_size",
+    "booking_date",
+    "booking_start_time",
     "booking_found",
     "payment_link_sent",
     "hold_hours",

@@ -6,7 +6,7 @@ this file injects those itself, fresh each time, the same way a real channel
 integration would. The model only ever supplies the business arguments: what
 the guest asked for, and its own judgement calls (which booking, what reason).
 
-Every turn ends with the model calling `respond` - not one of the eight
+Every turn ends with the model calling `respond` - not one of the ten
 policy tools, just this file's way of getting a structured answer (a reply,
 an action, the belief state, the facts settled this turn) out of a turn that
 is otherwise free-form tool use.
@@ -129,9 +129,13 @@ and you never guess a fact - every price, every table check, every booking
 record comes from calling a tool. If a tool has not told you a number, you do
 not know it.
 
-IDENTITY. Call find_customer first, before asking the guest anything. If they
-are found, you already have their name, phone, email and deposit_required -
-never ask for what you already have. If the name given in conversation
+IDENTITY. Every conversation opens with a "[Customer lookup]" line - the
+channel already told the engine who is writing, so this has already been
+done for you before your first reply; you do not need to call find_customer
+yourself to get it, though you still can, any time, and it will always
+agree. If it says Found, you already have their name, phone, email and
+deposit_required - never ask for what you already have. If the name given
+in conversation
 differs from the record, use the name given; never correct the guest with the
 record. Every booking still needs both a phone and an email, even when the
 channel already gave you one of the two - but the one the channel gave you is
@@ -147,15 +151,25 @@ single greeting or sign-off word in another language ("Kalispera",
 not change what language the message is in - go by the language the rest of
 the sentence is written in, not by one greeting word, however it is spelled.
 In any other language - Dutch, German, Spanish, any language not in that
-list - reply in the guest's own language with one fixed sentence: that
-Venue X can help in Greek, English, French or Italian. This applies even
-when you can read the message perfectly well and know exactly what they
-are asking - understanding a language is not the same as it being
-supported, and you must not act on what you understood. Take no booking
-details in that reply: no name, no date, no time, no party size, nothing -
-state stays exactly what it was before this message, whatever they wrote.
-If the guest writes again in that same unsupported language, escalate
-(reason: unsupported_language_repeated).
+list - the guest gets a fixed sentence saying Venue X can help in Greek,
+English, French or Italian, sent in their own language. That sentence
+comes from a table the engine already has, not from you - whatever you put
+in `message` on that turn is discarded and replaced before the guest ever
+sees it, so do not spend effort composing it well. Your one real job is
+`facts.reply_language`: name the guest's own language code correctly -
+"nl" for Dutch, "de" for German, whatever code actually fits - even though
+you are reading and reasoning about all of this in English. Getting that
+one code right is what sends the correct stored sentence; getting it wrong
+sends the wrong one, or none at all. This applies even when you can read
+the message perfectly well and know exactly what they are asking -
+understanding a language is not the same as it being supported, and you
+must not act on what you understood. Take no booking details in that
+reply: no name, no date, no time, no party size, nothing - state stays
+exactly what it was before this message, whatever they wrote. If the guest
+writes again in that same unsupported language, escalate (reason:
+unsupported_language_repeated) - keep replying in their language there
+too, this time for real, since escalating is your own free-form message,
+not the stored sentence.
 
 DATES. Every message gives you a short list of upcoming dates, each already
 paired with its weekday name ("2026-07-19 (Sunday)"). When a guest names a
@@ -240,14 +254,28 @@ MODIFY / CANCEL. Only confirmed or pending_deposit bookings, only nights not
 yet finished, only this guest's own. Call find_bookings before touching
 anything - if it returns more than one live booking, that is ambiguous even
 when the guest only named a date, because they may have two on the same
-night (a dinner booking and a bottle service booking, say). You must ask
-which one they mean, by whatever tells them apart - the time and the
-product, if that is what differs - before you check availability or quote
+night (a dinner booking and a bottle service booking, say). Sometimes the
+guest's own message already makes it obvious which one they mean - a date
+that matches only one of the two, say - and no follow-up question is
+needed; sometimes it does not, and you must ask which one they mean, by
+whatever tells them apart, before you check availability or quote
 anything. Picking the one that seems most likely, or the first one
 returned, is exactly the mistake this rule exists to stop; there is no safe
-guess here. Only proceed once the guest has said which. A change respects
-modify_allowed on the booking, from
-find_bookings; if it says no, refuse plainly and do not offer to check - and
+guess here.
+
+Either way - whether the guest told you which one up front or you had to
+ask - the moment you know which booking it is, before you say anything else
+about it, call get_booking with that one's id. This is not optional and
+does not depend on whether you can already answer from find_bookings' own
+result - you likely can, and must call it anyway. find_bookings deliberately
+stays silent on every fact specific to a single booking while more than one
+was still live, because guessing which one a figure belongs to is worse
+than reporting nothing; get_booking is the only call that puts that one
+booking's own record back in view, and every reply about it - a refusal, a
+change, a cancellation, an answer to a question - happens after that call,
+never on the strength of find_bookings alone. A change respects
+modify_allowed on the booking; if it says no, refuse plainly and do not
+offer to check - and
 never escalate that refusal. The policy already has the answer here (the
 deadline has passed) and giving that answer directly is not the same as
 having no answer - this is a refuse, exactly like a discount or a deposit
@@ -256,10 +284,20 @@ Cancelling refunds the deposit only when refund_if_cancelled_now says so.
 
 When a guest has more than one live booking and you have just acted on one
 of them, a question about the OTHER one is not answered from memory - call
-find_bookings again before you state anything about it. The one you just
-changed and the one you did not are different rows with different figures,
-and reusing the one still in front of you for the other is a real mistake,
-not a shortcut.
+find_bookings again, then get_booking for that other one's own id, before
+you state anything about it. The one you just changed and the one you did
+not are different rows with different figures, and reusing the one still
+in front of you for the other is a real mistake, not a shortcut.
+
+The same goes for returning to a booking you already looked at earlier in
+this same conversation - a fresh quote_booking for something else in
+between (a hypothetical new booking, a different night) clears what you
+knew about it, on purpose, so that new quote's figures are never mixed up
+with the old booking's. If the guest then comes back to that original
+booking - "leave it as it is", say - call get_booking for its id again
+before confirming anything is unchanged. Restating the old figures from
+memory is exactly the mistake this rule stops, even when you are certain
+nothing about the booking itself has actually changed.
 
 MONEY. "Fixed" means not negotiable - nobody can talk a figure down, and you
 never soften that. It does not mean the figure is the same everywhere: the
@@ -320,9 +358,22 @@ forgiving it is never your call - always escalate (reason:
 forgiving_a_late_arrival). Never tell them the table or deposit is lost,
 and never promise the table is still there either.
 
-INFORM. Answer only from the rules above and this FAQ. If the answer is not
-here, say you will check and escalate (reason: no_answer_in_sources) - never
-guess, especially about food, ingredients or allergies.
+INFORM. Answer only from the rules above and this FAQ. Any question about a
+dish, an ingredient, an allergen or what the kitchen can or cannot do -
+call lookup_answer with it, every time, before you say anything. Do not
+answer these from memory or from what you already understood, even when
+you are confident - policy.md #12 says there is no menu and no allergen
+list anywhere the venue keeps, so a specific food question has no source
+by design, not by omission, and only lookup_answer can tell you that for
+certain. When it comes back found, use only what it gives you. When it
+comes back not found, escalated and the handover are already done for you
+by the time you reply - do not call escalate yourself, and do not answer
+the question anyway. Just say plainly that this needs the kitchen to
+confirm and that a person will come back to them, the same as you would
+after any other escalation, then call respond as normal to close the
+turn. For anything else the FAQ or the rules above do not cover, say you
+will check and escalate (reason: no_answer_in_sources) yourself - never
+guess.
 
 {faq}
 
@@ -355,9 +406,12 @@ you can grant it.
 
 `facts` is worked out for you afterwards from the tools you actually
 called this turn - you do not need to fill it in, and nothing you write
-there is used. The one exception is `reply_language`: report the language
-code you replied in (en, el, fr, it, or the guest's own language when it is
-none of those) - that is the one thing no tool can tell us.
+there is used. The one exception is `reply_language`: report the guest's
+own language code for this message (en, el, fr, it, or their actual
+language when it is none of those) - that is the one thing no tool can
+tell us, and for an unsupported language it is also what the engine uses
+to pick the stored sentence it sends instead of your own `message` - see
+LANGUAGE above.
 
 `action` names which of the five things the guest's message this turn was
 about - book, modify, cancel, inform, escalate - even a clarifying question
@@ -408,7 +462,10 @@ _FACTS_SCHEMA = {
         # Every other fact key is worked out from the tools you actually
         # called this turn, not from what you say here - reply_language is
         # the one thing no tool can tell us, since it is about your own words.
-        "reply_language": {"type": "string", "description": "the language code you replied in, e.g. en, el, fr, it"},
+        "reply_language": {
+            "type": "string",
+            "description": "the guest's own language code for this message, e.g. en, el, fr, it, or their real code when it is none of those - not necessarily the language your own message text is in",
+        },
     },
 }
 
@@ -422,6 +479,15 @@ TOOLS = [
         "name": "find_bookings",
         "description": "The guest's own live bookings (confirmed or pending_deposit, nights not yet finished).",
         "input_schema": {"type": "object", "properties": {}},
+    },
+    {
+        "name": "get_booking",
+        "description": "One booking's own figures, by id. Use this once find_bookings returned more than one and the guest has said which - do not guess or reuse another booking's figures.",
+        "input_schema": {
+            "type": "object",
+            "properties": {"booking_id": {"type": "integer"}},
+            "required": ["booking_id"],
+        },
     },
     {
         "name": "check_availability",
@@ -471,8 +537,16 @@ TOOLS = [
                 "party_size": {"type": "integer"},
                 "product": {"type": "string", "enum": ["dinner", "bottle_service", "both"]},
                 "area": {"type": "string", "enum": ["main", "bar"]},
+                "name": {
+                    "type": "string",
+                    "description": "the guest's name, exactly as you have it right now - a first-time guest, this is who the booking is for.",
+                },
+                "email": {
+                    "type": "string",
+                    "description": "the guest's email, exactly as you have it right now - a first-time guest, this is who the booking is for.",
+                },
             },
-            "required": ["date", "start_time", "party_size", "product", "area"],
+            "required": ["date", "start_time", "party_size", "product", "area", "name", "email"],
         },
     },
     {
@@ -500,6 +574,15 @@ TOOLS = [
                 "reason": {"type": "string", "enum": ["guest_cancelled", "hold_expired", "no_show"]},
             },
             "required": ["booking_id", "reason"],
+        },
+    },
+    {
+        "name": "lookup_answer",
+        "description": "Search config/faq.md and config/policy.md for a sourced answer. Required, every time, for any question about a dish, an ingredient, an allergen or the kitchen - never answer those from memory. Returns a sourced answer, or {\"found\": false} - when it comes back false, the engine has already escalated and closed your turn for you.",
+        "input_schema": {
+            "type": "object",
+            "properties": {"question": {"type": "string", "description": "the guest's question, in your own words"}},
+            "required": ["question"],
         },
     },
     {
@@ -623,9 +706,20 @@ def _harvest_booking(known_facts: dict, booking, created: bool | None = None) ->
     known_facts["booking_found"] = True
     known_facts["booking_status"] = booking.status
     known_facts["booking_party_size"] = booking.party_size
+    known_facts["booking_date"] = booking.service_date
+    known_facts["booking_start_time"] = datetime.fromisoformat(booking.start_at).strftime("%H:%M")
     known_facts["hold_expires_at"] = booking.hold_expires_at
     known_facts["payment_link_sent"] = booking.payment_link is not None
     known_facts["modify_allowed"] = booking.modify_allowed
+    known_facts["deposit_eur"] = booking.deposit_eur
+    if booking.deposit_extra_eur:
+        # 0 almost always means "nothing extra to collect", not "the figure
+        # is zero euros" - only modify_booking's own reply, right after
+        # raising the deposit, has anything worth reporting here. Leaving
+        # this key alone otherwise avoids implying a fact from a plain
+        # find_bookings/get_booking/create_booking read, which never means
+        # to say anything about it either way.
+        known_facts["deposit_extra_eur"] = booking.deposit_extra_eur
     if created is not None:
         known_facts["booking_created"] = created
 
@@ -659,7 +753,12 @@ def _dispatch(name: str, args: dict, ctx: dict):
         else:
             # None found, or more than one with no way to say which the
             # guest means yet - either way, no single booking's facts apply.
+            # get_booking is how the model reads one cleanly once it knows.
             _clear_single_booking_facts(known_facts)
+    elif name == "get_booking":
+        result = t.get_booking(booking_id=args["booking_id"], now=ctx["now"])
+        known_facts["booking_found"] = True
+        _harvest_booking(known_facts, result)
     elif name == "check_availability":
         result = t.check_availability(
             date=args["date"],
@@ -681,6 +780,7 @@ def _dispatch(name: str, args: dict, ctx: dict):
             product=args["product"],
             area=args["area"],
             deposit_required=deposit_required,
+            now=ctx["now"],
             existing_booking_id=args.get("existing_booking_id"),
         )
         known_facts["minimum_spend_pp"] = result.minimum_spend_pp
@@ -718,12 +818,26 @@ def _dispatch(name: str, args: dict, ctx: dict):
         if customer is not None:
             customer_id = customer.id
         else:
+            # The identity fields come from THIS call's own arguments first -
+            # ctx["state"] is last_model_state, what the model reported at
+            # the END of the PREVIOUS turn. A guest who gives their name and
+            # email in the very turn the model books them (the normal path
+            # for a first-time guest) would otherwise be refused for fields
+            # they just gave, because state has not caught up yet. state is
+            # only a fallback, for a model that forgets to pass them.
             state = ctx["state"]
-            missing = [field for field in ("name", "phone", "email") if not state.get(field)]
+            guest_name = args.get("name") or state.get("name")
+            guest_email = args.get("email") or state.get("email")
+            guest_phone = state.get("phone")
+            missing = [
+                field_name
+                for field_name, value in (("name", guest_name), ("phone", guest_phone), ("email", guest_email))
+                if not value
+            ]
             if missing:
                 raise ValueError(f"cannot create a booking yet - still missing: {', '.join(missing)}")
             customer_id = t._create_customer(
-                name=state["name"], phone=state["phone"], email=state["email"], now=ctx["now"]
+                name=guest_name, phone=guest_phone, email=guest_email, now=ctx["now"]
             )
         result = t.create_booking(
             customer_id=customer_id,
@@ -739,6 +853,18 @@ def _dispatch(name: str, args: dict, ctx: dict):
         known_facts["deposit_deducted_from_bill"] = t.POLICY["deposit"]["deducted_from_bill"]
         ctx["created_this_turn"] = True
     elif name == "modify_booking":
+        # Destructive, same as create_booking, and guarded the same way: an
+        # earlier, already-completed turn must have quoted the new figures
+        # and asked, with the guest's current message answering yes to it.
+        # A quote called in this same turn does not count, exactly as for
+        # create_booking - confirmation_pending already encodes that.
+        if not ctx.get("confirmation_pending"):
+            raise ValueError(
+                "You have not yet asked 'shall I go ahead?' on an earlier turn and had the guest "
+                "say yes to it. Call quote_booking with this booking's id and present the new "
+                "figures with that question instead, then wait for their next message before "
+                "calling modify_booking."
+            )
         result = t.modify_booking(
             booking_id=args["booking_id"],
             now=ctx["now"],
@@ -749,12 +875,48 @@ def _dispatch(name: str, args: dict, ctx: dict):
         )
         _harvest_booking(known_facts, result)  # a modify never creates or un-creates anything
         known_facts["deposit_deducted_from_bill"] = t.POLICY["deposit"]["deducted_from_bill"]
+        ctx["modified_this_turn"] = True
     elif name == "cancel_booking":
+        # Destructive too, guarded the same way - but only when the guest is
+        # the one cancelling. hold_expired and no_show are the engine's own
+        # housekeeping (system-clock turns, policy.md #8), never something a
+        # guest is asked to confirm, so they are exempt.
+        if args["reason"] == "guest_cancelled" and not ctx.get("confirmation_pending"):
+            raise ValueError(
+                "You have not yet stated what happens to the deposit (kept or refunded) and "
+                "asked 'shall I still cancel it?' on an earlier turn, with the guest's current "
+                "message answering yes to it. State the consequence and ask first, then wait "
+                "for their next message before calling cancel_booking."
+            )
         result = t.cancel_booking(booking_id=args["booking_id"], reason=args["reason"], now=ctx["now"])
         _harvest_booking(known_facts, result.booking, created=False)
         known_facts["refund_eur"] = result.refund_eur
         known_facts["deposit_kept"] = result.deposit_kept
         known_facts["cancel_reason"] = args["reason"]
+        ctx["cancelled_this_turn"] = True
+    elif name == "lookup_answer":
+        result = t.lookup_answer(question=args["question"])
+        if not result["found"]:
+            # F-07: the model has correctly reasoned its way to "I do not
+            # know this" before now and still, sometimes, not called
+            # escalate - so the engine does not wait for it to. This is
+            # the one place being wrong costs a guest their health, not
+            # just a euro figure, so the escalation happens here,
+            # deterministically, the moment the source search comes back
+            # empty - not on the strength of the model noticing and acting
+            # on it a second time.
+            t.escalate(
+                conversation_id=ctx["conversation_id"],
+                reason="no_answer_in_sources",
+                guest_request_verbatim=args["question"],
+                collected_fields=dict(ctx["state"]),
+                rule_that_triggered="policy.md #12 - no menu or allergen source exists for this",
+                agent_recommendation="a person confirms with the kitchen and answers the guest directly",
+                already_told_guest="a person will check and come back to them here",
+            )
+            known_facts["escalated"] = True
+            known_facts["escalation_reason"] = "no_answer_in_sources"
+            ctx["engine_forced_escalation"] = True
     elif name == "escalate":
         result = t.escalate(
             conversation_id=ctx["conversation_id"],
@@ -785,10 +947,11 @@ def _generate_reply(history: list, ctx: dict) -> dict:
     Params: history - the running Anthropic messages list, extended in place.
             ctx      - see _dispatch. This turn's summed usage is left on
                        ctx["turn_usage"], how many messages.create calls it
-                       took on ctx["turn_model_calls"], and the tool names it
-                       called (in order, excluding respond) on
-                       ctx["turn_tools_called"], for the caller to read
-                       afterwards.
+                       took on ctx["turn_model_calls"], and the tools it called
+                       (in order, excluding respond) on ctx["turn_tools_called"]
+                       - one {"name", "ok", "error"} record per call, ok being
+                       whether _dispatch actually ran it rather than refusing
+                       it - for the caller to read afterwards.
     Return: the arguments `respond` was called with.
     """
     global api_call_count
@@ -818,14 +981,16 @@ def _generate_reply(history: list, ctx: dict) -> dict:
                 finishing = block.input
                 tool_results.append({"type": "tool_result", "tool_use_id": block.id, "content": "noted"})
                 continue
-            ctx["turn_tools_called"].append(block.name)
             try:
                 result = _dispatch(block.name, block.input, ctx)
                 content = json.dumps(result, default=str)
                 is_error = False
+                error_text = None
             except Exception as exc:  # a bad tool call must not crash the run
                 content = str(exc)
                 is_error = True
+                error_text = content
+            ctx["turn_tools_called"].append({"name": block.name, "ok": not is_error, "error": error_text})
             tool_results.append(
                 {"type": "tool_result", "tool_use_id": block.id, "content": content, "is_error": is_error}
             )
@@ -842,12 +1007,61 @@ def _generate_reply(history: list, ctx: dict) -> dict:
             finishing["facts"]["agent_replied"] = True
             if model_reply_language is not None:
                 finishing["facts"]["reply_language"] = model_reply_language
+                is_unsupported = model_reply_language not in t.POLICY["languages"]["supported"]
+                if is_unsupported and finishing.get("action") != "escalate":
+                    # policy.md #1, "any other language": a fixed sentence
+                    # never costs a token - the engine says it, from a table
+                    # it already has, and whatever the model put in message
+                    # for this turn is discarded. The model's only real job
+                    # here was getting reply_language right. Only the fixed
+                    # refusal is templated this way - once the guest writes
+                    # again and the agent escalates, that message is its own
+                    # free-form handover notice, not this stored sentence.
+                    templates = t.POLICY["languages"]["unsupported_reply"]
+                    fallback_lang = t.POLICY["languages"]["unsupported_reply_fallback"]
+                    finishing["message"] = templates.get(model_reply_language, templates[fallback_lang])
+            if ctx.get("engine_forced_escalation"):
+                # F-07: lookup_answer came back with nothing this turn, and
+                # the engine has already escalated for it (see _dispatch) -
+                # conversation_status is not left to the model's own word
+                # here either, for the same reason reply_language's stored
+                # sentence is not: this is the one place a missed handover
+                # is not just a wrong figure, it is a guest never hearing
+                # back about something that could hurt them.
+                finishing["conversation_status"] = "handed_to_human"
             return finishing
         if not tool_results:
             # Plain text, no tool call at all - nudge it back on track.
             history.append({"role": "user", "content": "Please call the respond tool to finish your turn."})
 
     raise RuntimeError("model did not call respond within the round limit")
+
+
+def _next_confirmation_pending(ctx: dict, pending: dict) -> bool:
+    """
+    Whether create_booking, modify_booking or cancel_booking may run on the
+    NEXT turn, from what this turn actually did.
+
+    False the moment one of the three destructive calls succeeds, so a
+    guest's next "yes" cannot be spent twice. Otherwise True when this turn
+    told the guest a real consequence to answer: fresh figures
+    (check_availability/quote_booking, shared by create and modify), or, for
+    a cancellation - which has no quote to call - this turn's own reported
+    action being "cancel" without cancel_booking itself having run. Neither
+    condition changes anything; the previous value carries forward
+    unchanged, exactly as before this covered modify and cancel too.
+
+    Params: ctx     - this turn's context, read for *_this_turn flags and
+                       the confirmation_pending it was given.
+            pending - what this turn's _generate_reply (or _silent_reply)
+                      returned, read for its own reported "action".
+    Return: the confirmation_pending value to carry into the next turn.
+    """
+    if ctx.get("created_this_turn") or ctx.get("modified_this_turn") or ctx.get("cancelled_this_turn"):
+        return False
+    if ctx.get("quoted_this_turn") or pending.get("action") == "cancel":
+        return True
+    return ctx.get("confirmation_pending", False)
 
 
 def _calendar_strip(now: str, days: int = 8) -> str:
@@ -867,6 +1081,25 @@ def _calendar_strip(now: str, days: int = 8) -> str:
         label = day.strftime("%A") + (", today" if offset == 0 else "")
         entries.append(f"{day.isoformat()} ({label})")
     return ", ".join(entries)
+
+
+def _customer_lookup_note(customer: t.Customer | None) -> str:
+    """
+    The one-line note the engine hands the model for the identity lookup it
+    now does itself, at the start of every conversation (policy.md #1: "the
+    agent looks the guest up before it asks for anything") - the same
+    reasoning as the weekday injection: a deterministic thing belongs in
+    code, not left to the model to remember to call.
+
+    Params: customer - the Customer from tools.find_customer, or None.
+    Return: one line, prepended to the very first turn's prefix.
+    """
+    if customer is None:
+        return "[Customer lookup] Not found - this is a new guest."
+    return (
+        f"[Customer lookup] Found: name={customer.name}, phone={customer.phone}, "
+        f"email={customer.email}, deposit_required={customer.deposit_required}."
+    )
 
 
 def _silent_reply(state: dict) -> dict:
@@ -974,7 +1207,7 @@ def _grade(
     usage: dict,
     seconds: float,
     model_calls: int,
-    tools_called: list[str],
+    tools_called: list[dict],
     probe: dict | None,
 ) -> dict:
     """
@@ -993,8 +1226,9 @@ def _grade(
                                history to the model calling respond.
             model_calls     - how many messages.create calls this turn took
                                (0 for a silent, handed-to-human turn).
-            tools_called    - the policy tool names the model actually called
-                               this turn, in order, excluding respond ([] is
+            tools_called    - the policy tools the model actually called this
+                               turn, in order, excluding respond - one
+                               {"name", "ok", "error"} record per call ([] is
                                a real result, not "not recorded").
             probe           - what _probe_silence returned, only on a turn
                                the handed-to-human guard silenced with
@@ -1071,6 +1305,7 @@ def run_dialogue_file(path: str, out_dir: Path = RUNS_DIR) -> dict:
     probe_call_count = 0
     probe_usage = _zero_usage()
 
+    seed_db()  # a fresh, known DB before every dialogue - a previous run (single or "all") may have written real bookings into it
     dialogue = load_dialogue(path)
     channel = dialogue["channel"]
     handle = dialogue["from"]
@@ -1085,16 +1320,26 @@ def run_dialogue_file(path: str, out_dir: Path = RUNS_DIR) -> dict:
     # (evals/dialogues/schema.py: facts is what the deterministic functions
     # computed) - carried forward turn to turn, since a fact stays true
     # until the tool that produces it is called again, not just for one turn.
-    known_facts: dict = {"escalated": False, "booking_created": False}
+    # customer_found is seeded here rather than left for the model to set by
+    # calling find_customer - the channel and handle are already known to
+    # the engine on every conversation's first turn, so this is done for it
+    # (policy.md #1), the same reasoning as the weekday injection below. The
+    # model still has the tool and may call it again later, but nothing has
+    # to actually get called for this fact to be true from the start.
+    identified_customer = t.find_customer(channel, handle)
+    known_facts: dict = {
+        "escalated": False, "booking_created": False, "customer_found": identified_customer is not None,
+    }
     pending = None
     pending_usage = None  # this turn's token counters, waiting alongside `pending` to be graded
     pending_seconds = None  # wall time from the guest's message to the model calling respond
     pending_model_calls = None  # how many messages.create calls that turn took
     pending_intent = None  # the guest turn's own intent, or None when a system-clock turn triggered this reply
-    pending_tools_called = None  # the policy tool names actually called this turn, in order
+    pending_tools_called = None  # the policy tools actually called this turn, in order (name/ok/error each)
     pending_probe = None  # what the model would have said, only set on a silenced turn with SILENCE_PROBE on
     dialogue_usage = _zero_usage()  # summed across every turn, for the summary
     records = []
+    is_first_turn = True  # only the very first turn gets the customer-lookup note
 
     print(f'{dialogue["dialogue_id"]} - {len(dialogue["turns"])} turns')
 
@@ -1104,6 +1349,9 @@ def run_dialogue_file(path: str, out_dir: Path = RUNS_DIR) -> dict:
 
         calendar = _calendar_strip(now)
         prefix = f"(now: {now}, upcoming dates: {calendar}, channel: {channel}, sender: {handle})"
+        if is_first_turn:
+            prefix += f"\n{_customer_lookup_note(identified_customer)}"
+            is_first_turn = False
 
         if turn["speaker"] in ("USER", "HUMAN"):
             if turn["speaker"] == "HUMAN":
@@ -1133,10 +1381,7 @@ def run_dialogue_file(path: str, out_dir: Path = RUNS_DIR) -> dict:
                 pending_usage = ctx["turn_usage"]
                 pending_model_calls = ctx["turn_model_calls"]
                 pending_tools_called = ctx["turn_tools_called"]
-                if ctx.get("created_this_turn"):
-                    confirmation_pending = False
-                elif ctx.get("quoted_this_turn"):
-                    confirmation_pending = True
+                confirmation_pending = _next_confirmation_pending(ctx, pending)
             else:
                 pending = _silent_reply(last_model_state)
                 pending_usage = _zero_usage()
@@ -1165,10 +1410,7 @@ def run_dialogue_file(path: str, out_dir: Path = RUNS_DIR) -> dict:
                 pending_usage = ctx["turn_usage"]
                 pending_model_calls = ctx["turn_model_calls"]
                 pending_tools_called = ctx["turn_tools_called"]
-                if ctx.get("created_this_turn"):
-                    confirmation_pending = False
-                elif ctx.get("quoted_this_turn"):
-                    confirmation_pending = True
+                confirmation_pending = _next_confirmation_pending(ctx, pending)
             else:
                 pending = _silent_reply(last_model_state)
                 pending_usage = _zero_usage()
@@ -1264,8 +1506,7 @@ def run_all_dialogues(run_label: str | None = None) -> None:
     verdicts = []
     dialogue_totals = []
     for path in DIALOGUE_PATHS:
-        seed_db()  # a fresh, known DB before every dialogue - earlier runs wrote real bookings into it
-        summary = run_dialogue_file(path, out_dir=out_dir)
+        summary = run_dialogue_file(path, out_dir=out_dir)  # seeds the DB itself, fresh, every call
         passed = sum(1 for turn in summary["turns"] if _turn_passed(turn))
         total = len(summary["turns"])
         verdicts.append((summary["dialogue_id"], passed, total))

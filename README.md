@@ -58,7 +58,7 @@ replying at all.
 | `config/` | the venue: rules for people, the same rules as JSON, inventory, FAQ |
 | `db/` | schema and seeded fake data, built to hit the hard cases |
 | `prompts/` | who the agent is, and four worked examples |
-| `tools.py` | the eight deterministic functions for money, availability, bookings |
+| `tools.py` | the ten deterministic functions for money, availability, bookings |
 | `engine.py` | the prompt, the tool loop, conversation state, the runner |
 | `evals/` | 58 policy cases, 11 hand-written dialogues, and the scoring script |
 | `runs/` | five saved runs, and the report they were scored into |
@@ -97,7 +97,7 @@ the decision, not the phrasing.
   time, product, phone, email. JGA means all seven must be right at once.
 - **action:** what the agent did: `book`, `modify`, `cancel`, `inform`,
   `escalate`, `none`.
-- **tools:** which of the eight functions in `tools.py` it called. The model
+- **tools:** which of the ten functions in `tools.py` it called. The model
   never does arithmetic; the tools do.
 
 ### The ten metrics

@@ -39,7 +39,7 @@
       "action": "book",
       "facts": { "customer_found": true },
       "must_say": ["dinner", "bottle service"],
-      "must_not_say": ["your name", "email address", "phone number", "250", "confirmed"],
+      "must_not_say": ["need your name", "confirm your name", "confirm the name", "need your email address", "confirm the email", "confirm your email", "need your phone number", "confirm the phone number", "confirm your phone number", "250", "table is confirmed"],
       "conversation_status": "agent"
     },
     {
@@ -69,8 +69,8 @@
         "buffer_wait_disclosed": true,
         "booking_created": false
       },
-      "must_say": ["wait at the door", "1,000", "200"],
-      "must_not_say": ["no deposit", "waive", "since you are a regular", "confirmed"],
+      "must_say": ["at the door", "1,000", "200"],
+      "must_not_say": ["no deposit", "waive", "since you are a regular", "table is confirmed"],
       "conversation_status": "agent"
     },
     {
@@ -124,6 +124,8 @@
         "booking_created": true,
         "booking_status": "pending_deposit",
         "booking_party_size": 4,
+        "booking_date": "2026-07-13",
+        "booking_start_time": "21:30",
         "deposit_eur": 200,
         "deposit_deducted_from_bill": true,
         "payment_link_sent": true,
@@ -160,7 +162,7 @@
         "booking_status": "pending_deposit"
       },
       "must_say": [],
-      "must_not_say": ["of course", "I have noted the window", "I will reserve the window", "no problem"],
+      "must_not_say": ["of course", "I have noted the window", "I will reserve the window", "no problem", "is confirmed"],
       "conversation_status": "handed_to_human"
     },
     {

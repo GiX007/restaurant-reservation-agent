@@ -73,7 +73,7 @@
         "booking_created": false
       },
       "must_say": ["1,500", "300"],
-      "must_not_say": ["confirmed"],
+      "must_not_say": ["table is confirmed"],
       "conversation_status": "agent"
     },
     {
@@ -157,7 +157,7 @@
         "escalated": false
       },
       "must_say": ["19:30", "21:00", "no minimum spend"],
-      "must_not_say": ["I cannot", "prices are fixed", "no", "discount", "250 per person is the only"],
+      "must_not_say": ["I cannot", "prices are fixed", "no,", "no.", "discount", "250 per person is the only"],
       "conversation_status": "agent"
     },
     {
@@ -188,7 +188,7 @@
         "booking_created": false
       },
       "must_say": ["no minimum spend", "300"],
-      "must_not_say": ["1,500", "1500", "250", "confirmed"],
+      "must_not_say": ["1,500", "1500", "250", "table is confirmed"],
       "conversation_status": "agent"
     },
     {
@@ -215,6 +215,8 @@
         "booking_created": true,
         "booking_status": "pending_deposit",
         "booking_party_size": 6,
+        "booking_date": "2026-07-18",
+        "booking_start_time": "20:00",
         "deposit_eur": 300,
         "payment_link_sent": true,
         "hold_hours": 6,

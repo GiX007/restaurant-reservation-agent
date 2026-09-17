@@ -14,6 +14,7 @@ from pathlib import Path
 
 RUNS = ["run-01", "run-02", "run-03", "run-04", "run-05"]
 RUNS_DIR = Path("runs")
+DIALOGUES_DIR = Path("evals/dialogues")
 TOOLS_EXPECTED_PATH = Path("evals/tools_expected.json")
 SCORES_PATH = RUNS_DIR / "scores.json"
 REPORT_PATH = RUNS_DIR / "report.md"
@@ -31,20 +32,25 @@ MONEY_KEYS = (
 )
 BOOKING_KEYS = (
     "booking_created", "booking_status", "booking_party_size",
+    "booking_date", "booking_start_time",
     "booking_found", "payment_link_sent", "hold_hours", "hold_expires_at",
     "cancel_reason", "modify_allowed", "customer_found",
     "buffer_wait_disclosed", "alternative_dates",
 )
 
 SHORT_PHRASE_WARNING = (
-    "Some forbidden phrases are short enough to match innocent text, not "
-    "just the thing they were written to catch: dlg-04 \"no\", dlg-07 "
-    "\"phone number\", dlg-10 \"your number\". A hit there is worth reading "
-    "in context before treating it as a real violation."
+    "must_not_say phrases were rewritten and replayed against all five saved "
+    "runs in phase 6b step 1 (811 checks: every phrase, every SYSTEM turn, "
+    "every run) - every known false positive was removed and no real catch "
+    "was lost. A hit here is now treated as a real violation, not a fragment "
+    "worth second-guessing, and counts as a critical failure below."
 )
 
 KNOWN_LIMITS = [
     "tool ground truth is derived from the dialogues by a model, not written by hand",
+    "tool accuracy on runs/run-01 .. run-05 still measures attempts, not "
+    "successes - those files predate the ok/error field on each tool call "
+    "(phase 6b step 2); it is accurate from the next run onward",
     "escalation rests on 8 negative and 5 positive turns",
     "the 6 silence turns are enforced by the engine, not chosen by the agent",
     "latency measures the model plus a home connection, not a deployment",
@@ -91,6 +97,73 @@ def load_run_dialogues(run_label: str) -> dict[str, list[dict]]:
 def load_run_summary(run_label: str) -> dict:
     """Read one run's summary.json."""
     return json.loads((RUNS_DIR / run_label / "summary.json").read_text(encoding="utf-8"))
+
+
+def load_dialogue_phrases() -> dict[tuple[str, int], dict[str, list[str]]]:
+    """
+    Read the CURRENT must_say/must_not_say lists straight from
+    evals/dialogues/, not from anything a run saved.
+
+    A saved run file froze whatever the phrase lists said the day it ran -
+    step 1 rewrote those lists afterwards, so a run's own stored appeared/ok
+    is checking a phrase that may no longer exist. This is the ground truth
+    a phrase list can change without re-running anything against.
+
+    Return: {(dialogue_id, turn_id): {"must_say": [...], "must_not_say": [...]}}.
+    """
+    lookup = {}
+    for path in sorted(DIALOGUES_DIR.glob("dlg-*.json")):
+        data = json.loads(path.read_text(encoding="utf-8"))
+        for turn in data["turns"]:
+            if turn["speaker"] != "SYSTEM":
+                continue
+            lookup[(data["dialogue_id"], turn["turn_id"])] = {
+                "must_say": turn.get("must_say", []),
+                "must_not_say": turn.get("must_not_say", []),
+            }
+    return lookup
+
+
+def check_phrases(message: str, phrases: list[str], should_appear: bool) -> list[dict]:
+    """
+    Test a list of required or forbidden phrases against a reply.
+
+    Mirrors engine.py's _check_phrases exactly (plain, case-insensitive
+    substring matching) - duplicated rather than imported, since importing
+    engine.py would build an Anthropic client at module load time, and this
+    file never calls the model.
+
+    Params: message       - the reply text to test.
+            phrases       - substrings to check for.
+            should_appear - True for must_say, False for must_not_say.
+    Return: one record per phrase: the phrase, whether it appeared, and
+            whether that satisfies the rule.
+    """
+    results = []
+    for phrase in phrases:
+        appeared = phrase.lower() in message.lower()
+        ok = appeared if should_appear else not appeared
+        results.append({"phrase": phrase, "appeared": appeared, "ok": ok})
+    return results
+
+
+def recheck_phrases(turns: list[dict], dialogue_id: str, dialogue_phrases: dict) -> None:
+    """
+    Replace each turn's stored must_say/must_not_say with a fresh check of
+    got_message against evals/dialogues/'s current phrase lists, in place.
+
+    Params: turns            - one dialogue's saved turn records, mutated in place.
+            dialogue_id      - which dialogue these turns belong to.
+            dialogue_phrases - see load_dialogue_phrases().
+    Return: None.
+    """
+    for turn in turns:
+        phrases = dialogue_phrases.get((dialogue_id, turn["turn_id"]))
+        if phrases is None:
+            continue
+        message = turn.get("got_message", "")
+        turn["must_say"] = check_phrases(message, phrases["must_say"], should_appear=True)
+        turn["must_not_say"] = check_phrases(message, phrases["must_not_say"], should_appear=False)
 
 
 # ---------------------------------------------------------------------------
@@ -145,18 +218,47 @@ def median_low_high(values: list[float]) -> dict:
 # ---------------------------------------------------------------------------
 
 
+def tool_names_run(raw_tools_called: list) -> set[str]:
+    """
+    The tool names that actually ran this turn, from either save format.
+
+    Phase 6b step 2 changed engine.py to record one {"name", "ok", "error"}
+    per call, ok being whether _dispatch ran it rather than refusing it - a
+    call recorded before that fix was scored on intention, not success. The
+    five saved runs still use the old format, a plain list of names, with no
+    way to tell attempt from success; every name in it counts, exactly as
+    before. In the new format, only ok True counts - ok False was a refused
+    call that wrote nothing to the database.
+
+    Params: raw_tools_called - turn["tools_called"], either format.
+    Return: the set of tool names that counted as having run.
+    """
+    names = set()
+    for entry in raw_tools_called:
+        if isinstance(entry, dict):
+            if entry.get("ok") is not False:
+                names.add(entry["name"])
+        else:
+            names.add(entry)
+    return names
+
+
 def first_failure(turns: list[dict]) -> str | None:
     """
     Find the first CRITICAL failure in one dialogue's turns, in turn order.
 
     A dialogue fails a run when, on some turn:
-      - an expected fact and its got value are both present and differ, or
-      - escalated was expected true but got is not true.
-    must_not_say is not part of this: the phrases are too short and some
-    fire on innocent text (see the short-phrase warning), so they cannot
-    carry a pass/fail claim - they are only logged, in their own section.
-    Everything else (a fact expected but got null, a missing must_say, an
-    action mismatch, a missing or extra tool) is a defect, not a failure.
+      - an expected fact and its got value are both present and differ,
+      - a money or booking key was expected and got came back null - the
+        agent never did the work, and phase 6 treats that the same as
+        getting it wrong, not as merely incomplete,
+      - escalated was expected true but got is not true, or
+      - a must_not_say phrase appeared. Step 1 rewrote and replayed every
+        phrase against all five saved runs (see the short-phrase warning);
+        a hit is now a real lie caught in the act, not a fragment.
+    Everything else (a non-money/booking fact expected but got null, a
+    missing must_say, an action mismatch, a missing or extra tool) is a
+    defect, not a failure.
 
     Params: turns - one dialogue's saved turn records, in turn order.
     Return: "turn N: ..." for the first failure found, or None.
@@ -164,10 +266,15 @@ def first_failure(turns: list[dict]) -> str | None:
     for turn in turns:
         for key, pair in turn["facts"].items():
             expected, got = pair["expected"], pair["got"]
+            if expected is not None and got is None and (key in MONEY_KEYS or key in BOOKING_KEYS):
+                return f"turn {turn['turn_id']}: {key} expected {expected!r}, got null"
             if expected is not None and got is not None and expected != got:
                 return f"turn {turn['turn_id']}: {key} {expected!r}, got {got!r}"
             if key == "escalated" and expected is True and got is not True:
                 return f"turn {turn['turn_id']}: escalated {expected!r}, got {got!r}"
+        for check in turn["must_not_say"]:
+            if not check["ok"]:
+                return f"turn {turn['turn_id']}: must_not_say {check['phrase']!r} appeared"
     return None
 
 
@@ -176,13 +283,22 @@ def first_failure(turns: list[dict]) -> str | None:
 # ---------------------------------------------------------------------------
 
 
-def score_run(run_label: str, tools_expected: dict[tuple[str, int], list[str]]) -> dict:
+def score_run(
+    run_label: str,
+    tools_expected: dict[tuple[str, int], list[str]],
+    dialogue_phrases: dict[tuple[str, int], dict[str, list[str]]],
+) -> dict:
     """
     Compute all ten metrics, the per-dialogue verdicts, and the cost and
     must_say/must_not_say violations for one run.
 
-    Params: run_label       - "run-01", etc.
-            tools_expected  - see load_tools_expected.
+    Params: run_label        - "run-01", etc.
+            tools_expected   - see load_tools_expected.
+            dialogue_phrases - see load_dialogue_phrases. Every turn's
+                                must_say/must_not_say is re-checked against
+                                this, current, list before anything below
+                                reads it - what the run file itself stored
+                                is a stale phrase check from whenever it ran.
     Return: one big dict of raw counts - see the keys set below.
     """
     dialogues = load_run_dialogues(run_label)
@@ -202,6 +318,7 @@ def score_run(run_label: str, tools_expected: dict[tuple[str, int], list[str]]) 
     violations: list[dict] = []
 
     for dialogue_id, turns in dialogues.items():
+        recheck_phrases(turns, dialogue_id, dialogue_phrases)
         per_dialogue_cost[dialogue_id] = sum(usage_cost(turn["usage"]) for turn in turns)
         per_dialogue_seconds[dialogue_id] = round(sum(turn["seconds"] for turn in turns), 3)
         failure = first_failure(turns)
@@ -240,7 +357,7 @@ def score_run(run_label: str, tools_expected: dict[tuple[str, int], list[str]]) 
                         under_esc_missed += 1
 
             expected_tools = set(tools_expected.get((dialogue_id, turn_id), []))
-            got_tools = set(turn["tools_called"])
+            got_tools = tool_names_run(turn["tools_called"])
             tool_total += 1
             if expected_tools == got_tools:
                 tool_correct += 1
@@ -550,8 +667,10 @@ def build_report_md(
     lines.append("## Reply wording")
     lines.append("")
     lines.append(
-        "Reply wording is not scored. must_say phrases were logged but are not part of "
-        "any metric - there are many correct ways to say the same thing. Comparing the "
+        "must_say is still not scored: phrases were logged but are not part of any "
+        "metric, since there are many correct ways to say the same thing. must_not_say "
+        "is different - since phase 6b step 2, a phrase appearing is a critical failure "
+        "(see the per-dialogue verdicts above), not just a log line. Comparing the "
         "agent's wording against a reference answer is future work."
     )
     lines.append("")
@@ -579,7 +698,8 @@ def build_report_md(
 def main() -> None:
     """Score all five runs and write scores.json and report.md."""
     tools_expected = load_tools_expected()
-    per_run_scores = [score_run(run_label, tools_expected) for run_label in RUNS]
+    dialogue_phrases = load_dialogue_phrases()
+    per_run_scores = [score_run(run_label, tools_expected, dialogue_phrases) for run_label in RUNS]
 
     metrics = {
         "intent": rate_series([s["intent"] for s in per_run_scores]),

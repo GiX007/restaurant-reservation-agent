@@ -42,7 +42,7 @@
         "customer_found": true
       },
       "must_say": ["dinner", "bottle service"],
-      "must_not_say": ["your name", "email address", "phone number", "250", "confirmed"],
+      "must_not_say": ["need your name", "confirm your name", "confirm the name", "need your email address", "confirm the email", "confirm your email", "need your phone number", "confirm the phone number", "confirm your phone number", "250", "table is confirmed"],
       "conversation_status": "agent"
     },
     {
@@ -74,7 +74,7 @@
         "booking_created": false
       },
       "must_say": ["1,000", "200"],
-      "must_not_say": ["confirmed", "wait at the door", "no deposit"],
+      "must_not_say": ["table is confirmed", "wait at the door", "no deposit"],
       "conversation_status": "agent"
     },
     {

@@ -72,10 +72,10 @@
       "dialogue_id": "DLG-06",
       "source": "evals/dialogues/dlg-06-modify-inside-deadline.json",
       "turns": [
-        { "turn_id": 1, "action": "modify", "tools_expected": ["find_customer", "find_bookings"] },
+        { "turn_id": 1, "action": "modify", "tools_expected": ["find_customer", "find_bookings", "get_booking"] },
         { "turn_id": 3, "action": "cancel", "tools_expected": [] },
         { "turn_id": 5, "action": "inform", "tools_expected": [] },
-        { "turn_id": 7, "action": "inform", "tools_expected": [] },
+        { "turn_id": 7, "action": "inform", "tools_expected": ["get_booking"] },
         { "turn_id": 9, "action": "none", "tools_expected": [] }
       ]
     },
@@ -116,7 +116,7 @@
       "source": "evals/dialogues/dlg-10-allergen-no-source.json",
       "turns": [
         { "turn_id": 1, "action": "book", "tools_expected": ["find_customer", "check_availability", "quote_booking"] },
-        { "turn_id": 3, "action": "escalate", "tools_expected": ["escalate"] },
+        { "turn_id": 3, "action": "escalate", "tools_expected": ["lookup_answer"] },
         { "turn_id": 5, "action": "none", "tools_expected": [] },
         { "turn_id": 7, "action": "book", "tools_expected": [] },
         { "turn_id": 9, "action": "book", "tools_expected": ["create_booking"] },
@@ -128,10 +128,10 @@
       "source": "evals/dialogues/dlg-11-modify-party-grows.json",
       "turns": [
         { "turn_id": 1, "action": "modify", "tools_expected": ["find_customer", "find_bookings"] },
-        { "turn_id": 3, "action": "modify", "tools_expected": ["find_bookings", "check_availability", "quote_booking"] },
+        { "turn_id": 3, "action": "modify", "tools_expected": ["get_booking", "check_availability", "quote_booking"] },
         { "turn_id": 5, "action": "modify", "tools_expected": ["modify_booking"] },
         { "turn_id": 7, "action": "inform", "tools_expected": [] },
-        { "turn_id": 9, "action": "inform", "tools_expected": ["find_bookings"] },
+        { "turn_id": 9, "action": "inform", "tools_expected": ["find_bookings", "get_booking"] },
         { "turn_id": 11, "action": "none", "tools_expected": [] }
       ]
     }

@@ -1,11 +1,28 @@
 {
   "dialogue_id": "DLG-10",
   "source": "evals/dialogues/dlg-10-allergen-no-source.json",
-  "api_calls": 10,
+  "api_calls": 9,
+  "tokens": {
+    "input_tokens": 19062,
+    "output_tokens": 2710,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 74547
+  },
+  "probe_calls": 0,
+  "probe_tokens": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
   "turns": [
     {
       "turn_id": 1,
       "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "intent": {
         "expected": "book",
         "got": "book"
       },
@@ -74,23 +91,50 @@
       ],
       "must_not_say": [
         {
-          "phrase": "phone number",
+          "phrase": "need your phone number",
           "appeared": false,
           "ok": true
         },
         {
-          "phrase": "your number",
-          "appeared": true,
-          "ok": false
+          "phrase": "need your number",
+          "appeared": false,
+          "ok": true
         },
         {
-          "phrase": "confirmed",
+          "phrase": "confirm the phone number",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "confirm your phone number",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "table is confirmed",
           "appeared": false,
           "ok": true
         }
       ],
       "expected_utterance": "Hello! Friday 24 July at 21:30 for 2, dinner - that is free. It is the late sitting, so the minimum spend is EUR 250 per person, EUR 500 for two. I need a name and an email address to hold it.",
-      "got_message": "Perfect - we have a table for two on Friday 24 July at 21:30 in our main area. \n\nTo hold it, I need a name, and an email address (I have your number from WhatsApp). What name should the booking be under?"
+      "got_message": "Perfect - I can hold a table for two on Friday 24 July at 21:30 in our main area. \n\nTo complete the booking, I need a few details from you: your name, your phone number (I have your WhatsApp: +447700900123), and your email address. Shall I go ahead with the reservation once you give me those?",
+      "usage": {
+        "input_tokens": 1132,
+        "output_tokens": 489,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 16566
+      },
+      "seconds": 4.653,
+      "model_calls": 2,
+      "tools_called": [
+        {
+          "name": "check_availability",
+          "ok": true,
+          "error": null
+        }
+      ],
+      "probe": null,
+      "probe_broke_silence": null
     },
     {
       "turn_id": 3,
@@ -98,14 +142,18 @@
         "expected": "escalate",
         "got": "escalate"
       },
+      "intent": {
+        "expected": "inform",
+        "got": "inform"
+      },
       "facts": {
         "escalated": {
           "expected": true,
-          "got": false
+          "got": true
         },
         "escalation_reason": {
           "expected": "no_answer_in_sources",
-          "got": null
+          "got": "no_answer_in_sources"
         },
         "booking_created": {
           "expected": false,
@@ -170,13 +218,34 @@
         }
       ],
       "expected_utterance": "That one I will not answer from memory - it is the kitchen's to confirm, not mine. I have passed it to our reservation manager and she will come back to you here shortly, with everything you have told me so far. I have not put the booking in yet.",
-      "got_message": "Thank you, Sarah. On the coeliac question - I won't answer that from memory. What the kitchen can and cannot do for allergies and dietary needs is theirs to confirm, not mine. I have passed this to our reservation manager and she will come back to you here with everything you have told me, including your partner's coeliac requirement and the octopus question."
+      "got_message": "Thank you for those details, Sarah. I have passed your question about gluten to our reservation manager \u2013 what the kitchen can and cannot do with dietary requirements is theirs to confirm, not mine, and they will come back to you here with all the information you need.\n\nOnce they have confirmed that, we can go ahead with your booking for 2 on Friday 24 July at 21:30.",
+      "usage": {
+        "input_tokens": 2544,
+        "output_tokens": 455,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 16566
+      },
+      "seconds": 4.112,
+      "model_calls": 2,
+      "tools_called": [
+        {
+          "name": "lookup_answer",
+          "ok": true,
+          "error": null
+        }
+      ],
+      "probe": null,
+      "probe_broke_silence": null
     },
     {
       "turn_id": 5,
       "action": {
         "expected": "none",
         "got": "none"
+      },
+      "intent": {
+        "expected": "inform",
+        "got": null
       },
       "facts": {
         "agent_replied": {
@@ -211,12 +280,27 @@
       "must_say": [],
       "must_not_say": [],
       "expected_utterance": "",
-      "got_message": ""
+      "got_message": "",
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0
+      },
+      "seconds": 0.0,
+      "model_calls": 0,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
     },
     {
       "turn_id": 7,
       "action": {
         "expected": "book",
+        "got": "book"
+      },
+      "intent": {
+        "expected": null,
         "got": "book"
       },
       "facts": {
@@ -271,12 +355,32 @@
       ],
       "must_not_say": [
         {
-          "phrase": "your name",
+          "phrase": "need your name",
           "appeared": false,
           "ok": true
         },
         {
-          "phrase": "email address",
+          "phrase": "confirm your name",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "confirm the name",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "need your email address",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "confirm the email",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "confirm your email",
           "appeared": false,
           "ok": true
         },
@@ -307,11 +411,32 @@
         }
       ],
       "expected_utterance": "Thank you Maria. Mrs Whitfield, back to me - so that is 2 people, dinner, Friday 24 July at 21:30, minimum spend EUR 500. Shall I put it in?",
-      "got_message": "Brilliant - Maria has sorted out the octopus and the coeliac note is on your reservation. We can seat you outside, and she has passed you back to me to confirm the booking.\n\nFor two at dinner on Friday 24 July at 21:30, the minimum spend is \u20ac500, and the deposit is \u20ac100 - that comes off your final bill. You will receive a payment link by email, and the table is held for 6 hours from when you book.\n\nShall I go ahead?"
+      "got_message": "Wonderful \u2013 Maria has confirmed the kitchen can do the octopus plain with olive oil and lemon for your partner, and we have added a coeliac note to your reservation. You are all set to sit outside.\n\nHere are the figures for your booking:\n- **Date & time:** Friday 24 July at 21:30\n- **Party size:** 2\n- **Minimum spend:** \u20ac500 total (\u20ac250 per person)\n- **Deposit:** \u20ac100\n- **The deposit comes off your bill on the night**\n- **Your table is held for 6 hours from when you book**\n\nShall I go ahead and put the booking in?",
+      "usage": {
+        "input_tokens": 4489,
+        "output_tokens": 681,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 16566
+      },
+      "seconds": 5.759,
+      "model_calls": 2,
+      "tools_called": [
+        {
+          "name": "quote_booking",
+          "ok": true,
+          "error": null
+        }
+      ],
+      "probe": null,
+      "probe_broke_silence": null
     },
     {
       "turn_id": 9,
       "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "intent": {
         "expected": "book",
         "got": "book"
       },
@@ -327,6 +452,14 @@
         "booking_party_size": {
           "expected": 2,
           "got": 2
+        },
+        "booking_date": {
+          "expected": "2026-07-24",
+          "got": "2026-07-24"
+        },
+        "booking_start_time": {
+          "expected": "21:30",
+          "got": "21:30"
         },
         "deposit_eur": {
           "expected": 100,
@@ -372,13 +505,13 @@
       "must_say": [
         {
           "phrase": "100",
-          "appeared": false,
-          "ok": false
+          "appeared": true,
+          "ok": true
         },
         {
           "phrase": "6 hours",
-          "appeared": true,
-          "ok": true
+          "appeared": false,
+          "ok": false
         }
       ],
       "must_not_say": [
@@ -394,12 +527,33 @@
         }
       ],
       "expected_utterance": "Done. Here is the link for the EUR 100 deposit: {payment_link}. I am holding the table for 6 hours, until 00:20 tonight. It is confirmed once the deposit is paid.",
-      "got_message": "Perfect. Your table is held for Friday 24 July at 21:30 for two, and I have sent a payment link to s.whitfield@gmail.com. The table is held for 6 hours, until 00:20 on 23 July.\n\nOnce the deposit arrives, you are all set. If it does not come through in time, the table will be released and I will let you know.\n\nPlease arrive about 15 minutes early. Have a great evening!"
+      "got_message": "Perfect! Your table is held for 2 at Venue X, Friday 24 July at 21:30 outside.\n\n**What happens next:**\n- I have sent you a payment link for the \u20ac100 deposit\n- Once we receive your payment, your booking is confirmed\n- If we do not receive the deposit by **23 July at 00:20**, the table will be released and we will let you know\n- The deposit comes off your bill on the night\n- Maria has noted your partner's coeliac requirement and the octopus will be prepared plain with olive oil and lemon\n\nPlease arrive about 15 minutes early. We look forward to seeing you both!",
+      "usage": {
+        "input_tokens": 6574,
+        "output_tokens": 774,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 16566
+      },
+      "seconds": 5.776,
+      "model_calls": 2,
+      "tools_called": [
+        {
+          "name": "create_booking",
+          "ok": true,
+          "error": null
+        }
+      ],
+      "probe": null,
+      "probe_broke_silence": null
     },
     {
       "turn_id": 11,
       "action": {
         "expected": "none",
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "bye",
         "got": "inform"
       },
       "facts": {},
@@ -436,7 +590,18 @@
       ],
       "must_not_say": [],
       "expected_utterance": "Thank you Mrs Whitfield. Please arrive about 15 minutes before 21:30. See you on Friday.",
-      "got_message": "Thank you, Sarah! We will see you on Friday. Enjoy your evening with us."
+      "got_message": "Thank you so much, Sarah! We have received your payment. Your table for 2 on Friday 24 July at 21:30 is now held, and we cannot wait to see you both. Enjoy your evening at Venue X!",
+      "usage": {
+        "input_tokens": 4323,
+        "output_tokens": 311,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 8283
+      },
+      "seconds": 2.113,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
     }
   ]
 }

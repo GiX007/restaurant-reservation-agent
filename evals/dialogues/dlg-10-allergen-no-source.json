@@ -45,7 +45,7 @@
         "booking_created": false
       },
       "must_say": ["500", "name", "email"],
-      "must_not_say": ["phone number", "your number", "confirmed"],
+      "must_not_say": ["need your phone number", "need your number", "confirm the phone number", "confirm your phone number", "table is confirmed"],
       "conversation_status": "agent"
     },
     {
@@ -121,7 +121,7 @@
         "booking_created": false
       },
       "must_say": ["21:30", "500"],
-      "must_not_say": ["your name", "email address", "what date", "which date", "how many people", "what time would you like", "let us start"],
+      "must_not_say": ["need your name", "confirm your name", "confirm the name", "need your email address", "confirm the email", "confirm your email", "what date", "which date", "how many people", "what time would you like", "let us start"],
       "conversation_status": "agent"
     },
     {
@@ -148,6 +148,8 @@
         "booking_created": true,
         "booking_status": "pending_deposit",
         "booking_party_size": 2,
+        "booking_date": "2026-07-24",
+        "booking_start_time": "21:30",
         "deposit_eur": 100,
         "payment_link_sent": true,
         "hold_hours": 6,

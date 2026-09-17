@@ -1,13 +1,30 @@
 {
   "dialogue_id": "DLG-06",
   "source": "evals/dialogues/dlg-06-modify-inside-deadline.json",
-  "api_calls": 9,
+  "api_calls": 7,
+  "tokens": {
+    "input_tokens": 14891,
+    "output_tokens": 2221,
+    "cache_creation_input_tokens": 7703,
+    "cache_read_input_tokens": 46218
+  },
+  "probe_calls": 0,
+  "probe_tokens": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
   "turns": [
     {
       "turn_id": 1,
       "action": {
         "expected": "modify",
         "got": "inform"
+      },
+      "intent": {
+        "expected": "modify",
+        "got": "modify"
       },
       "facts": {
         "customer_found": {
@@ -80,7 +97,7 @@
           "ok": true
         },
         {
-          "phrase": "I will check",
+          "phrase": "I will check with",
           "appeared": false,
           "ok": true
         },
@@ -96,13 +113,34 @@
         }
       ],
       "expected_utterance": "Dear Mr Dupont, I found your booking - 4 people, dinner, Monday 13 July at 20:30. I am sorry, I cannot move it. In high season a booking can only be changed 4 or more days before the date, and Monday is 2 days away. Your table on 13 July stands exactly as it is.",
-      "got_message": "Hello Jean,\n\nI am sorry, but the booking for 13 July cannot be moved - the deadline for changes has passed. \n\nIf you would like to make a new booking for Wednesday 15 July at 20:30, I can check that for you instead. Would that help?\n\nBest regards"
+      "got_message": "I can see your dinner booking on Monday 13 July at 20:30 for 4 people. Unfortunately, this booking is no longer open for modifications \u2013 the change deadline has passed. If you would like a table on Wednesday 15 July instead at the same time (20:30) for 4 people, I can help you create a new booking. Would you like me to check availability for Wednesday 15 July at 20:30 for 4 people dining?",
+      "usage": {
+        "input_tokens": 1428,
+        "output_tokens": 726,
+        "cache_creation_input_tokens": 7703,
+        "cache_read_input_tokens": 7703
+      },
+      "seconds": 8.843,
+      "model_calls": 2,
+      "tools_called": [
+        {
+          "name": "find_bookings",
+          "ok": true,
+          "error": null
+        }
+      ],
+      "probe": null,
+      "probe_broke_silence": null
     },
     {
       "turn_id": 3,
       "action": {
         "expected": "cancel",
-        "got": "book"
+        "got": "cancel"
+      },
+      "intent": {
+        "expected": "cancel",
+        "got": "cancel"
       },
       "facts": {
         "booking_found": {
@@ -186,13 +224,39 @@
         }
       ],
       "expected_utterance": "I can do that, but I want you to know the cost first. Cancelling 3 days before or later means the deposit is kept - so the EUR 200 on the 13th would not come back to you. Shall I still cancel it?",
-      "got_message": "Your booking for 13 July has been cancelled. No refund was issued as the booking was confirmed and non-refundable.\n\nFor Wednesday 15 July at 20:30 for four guests, the minimum spend is \u20ac0 total, and the deposit required is \u20ac200. This will be deducted from your bill on the night.\n\nShall I go ahead and book this for you?"
+      "got_message": "Your Monday 13 July booking has a \u20ac200 deposit. If you cancel now, this deposit will not be refunded. Shall I go ahead and cancel it?",
+      "usage": {
+        "input_tokens": 3858,
+        "output_tokens": 500,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 15406
+      },
+      "seconds": 5.586,
+      "model_calls": 2,
+      "tools_called": [
+        {
+          "name": "cancel_booking",
+          "ok": false,
+          "error": "You have not yet stated what happens to the deposit (kept or refunded) and asked 'shall I still cancel it?' on an earlier turn, with the guest's current message answering yes to it. State the consequence and ask first, then wait for their next message before calling cancel_booking."
+        },
+        {
+          "name": "check_availability",
+          "ok": true,
+          "error": null
+        }
+      ],
+      "probe": null,
+      "probe_broke_silence": null
     },
     {
       "turn_id": 5,
       "action": {
         "expected": "inform",
-        "got": "book"
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "inform",
+        "got": "inform"
       },
       "facts": {
         "deposit_kept": {
@@ -201,7 +265,7 @@
         },
         "deposit_eur": {
           "expected": 200,
-          "got": 200
+          "got": null
         }
       },
       "state": {
@@ -238,8 +302,8 @@
       "must_not_say": [
         {
           "phrase": "carries over",
-          "appeared": true,
-          "ok": false
+          "appeared": false,
+          "ok": true
         },
         {
           "phrase": "carry over",
@@ -268,13 +332,28 @@
         }
       ],
       "expected_utterance": "Yes. A deposit only follows a booking when it is changed, and a change is not possible this close to the date. If you cancel, the EUR 200 stays with the old booking and a new one for the 15th needs its own EUR 200.",
-      "got_message": "No - you have already paid the \u20ac200 deposit for the 13 July booking. When you book the 15th, that same deposit carries over, so you will not pay a second one. It will still be deducted from your bill on the night.\n\nShall I go ahead and book Wednesday 15 July at 20:30 for four?"
+      "got_message": "When you cancel the 13th and create a new booking for the 15th, that is a separate booking \u2013 so yes, the new booking will have its own deposit of \u20ac200. However, that deposit comes off your bill on the night, just as the original one does. So you will have paid two deposits in total (\u20ac200 for each booking), but both are credited against what you spend. Shall I go ahead and cancel the 13 July booking now?",
+      "usage": {
+        "input_tokens": 2617,
+        "output_tokens": 410,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7703
+      },
+      "seconds": 4.479,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
     },
     {
       "turn_id": 7,
       "action": {
         "expected": "inform",
-        "got": "none"
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "inform",
+        "got": "inform"
       },
       "facts": {
         "booking_found": {
@@ -291,7 +370,7 @@
         },
         "deposit_deducted_from_bill": {
           "expected": true,
-          "got": true
+          "got": null
         }
       },
       "state": {
@@ -306,10 +385,10 @@
         },
         "got": {
           "name": "Jean Dupont",
-          "party_size": 4,
-          "date": "2026-07-13",
-          "start_time": "20:30",
-          "product": "dinner",
+          "party_size": null,
+          "date": null,
+          "start_time": null,
+          "product": null,
           "phone": "+306940000003",
           "email": "jean@example.com"
         }
@@ -332,7 +411,12 @@
       ],
       "must_not_say": [
         {
-          "phrase": "cancelled",
+          "phrase": "has been cancelled",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "has already been cancelled",
           "appeared": false,
           "ok": true
         },
@@ -342,12 +426,12 @@
           "ok": true
         },
         {
-          "phrase": "15 July",
+          "phrase": "new booking for 15 July",
           "appeared": false,
           "ok": true
         },
         {
-          "phrase": "the 15th",
+          "phrase": "new booking for the 15th",
           "appeared": false,
           "ok": true
         },
@@ -358,13 +442,28 @@
         }
       ],
       "expected_utterance": "Understood - nothing has changed. Your booking is still 4 people, dinner, Monday 13 July at 20:30, and the EUR 200 you have already paid comes off the bill that night. There is nothing more to pay in advance.",
-      "got_message": "I understand - your booking for Monday 13 July at 20:30 for four remains as it is. No changes have been made.\n\nBest regards"
+      "got_message": "Understood \u2013 I have not cancelled anything, so your Monday 13 July booking stays as it is. You are all set for 4 people at 20:30 on that date. Is there anything else I can help you with?",
+      "usage": {
+        "input_tokens": 3244,
+        "output_tokens": 326,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7703
+      },
+      "seconds": 3.42,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
     },
     {
       "turn_id": 9,
       "action": {
         "expected": "none",
         "got": "none"
+      },
+      "intent": {
+        "expected": "bye",
+        "got": "bye"
       },
       "facts": {},
       "state": {
@@ -379,10 +478,10 @@
         },
         "got": {
           "name": "Jean Dupont",
-          "party_size": 4,
-          "date": "2026-07-13",
-          "start_time": "20:30",
-          "product": "dinner",
+          "party_size": null,
+          "date": null,
+          "start_time": null,
+          "product": null,
           "phone": "+306940000003",
           "email": "jean@example.com"
         }
@@ -400,7 +499,18 @@
       ],
       "must_not_say": [],
       "expected_utterance": "Thank you Mr Dupont. Please arrive about 15 minutes before 20:30. We look forward to seeing you on Monday.",
-      "got_message": "You're welcome, Jean. We look forward to seeing you on Monday. Please arrive about 15 minutes early.\n\nBest regards"
+      "got_message": "You're welcome! See you Monday at 20:30. Please arrive about 15 minutes early. Best regards, Venue X Reservations.",
+      "usage": {
+        "input_tokens": 3744,
+        "output_tokens": 259,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7703
+      },
+      "seconds": 2.878,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
     }
   ]
 }

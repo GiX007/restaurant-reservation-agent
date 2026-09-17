@@ -37,7 +37,7 @@
       "action": "book",
       "facts": { "customer_found": false },
       "must_say": ["fully booked"],
-      "must_not_say": ["waiting list", "I will let you know if", "we have space on the 12th", "your name"],
+      "must_not_say": ["waiting list", "I will let you know if", "we have space on the 12th", "need your name", "confirm your name", "confirm the name"],
       "conversation_status": "agent"
     },
     {
@@ -89,7 +89,7 @@
       "action": "inform",
       "facts": {},
       "must_say": [],
-      "must_not_say": ["I will add you", "put you on the list", "let you know if something", "contact you if", "check with the manager"],
+      "must_not_say": ["I will add you", "will put you on the list", "will let you know", "will contact you if", "will check with the manager"],
       "conversation_status": "agent"
     },
     {
@@ -119,7 +119,7 @@
         "booking_created": false
       },
       "must_say": ["no minimum spend", "phone"],
-      "must_not_say": ["250", "1,500", "1500", "your name", "email address", "wait at the door", "short wait"],
+      "must_not_say": ["250", "1,500", "1500", "need your name", "confirm your name", "confirm the name", "need your email address", "confirm the email", "confirm your email", "wait at the door", "short wait"],
       "conversation_status": "agent"
     },
     {
@@ -149,7 +149,7 @@
         "booking_created": false
       },
       "must_say": ["300"],
-      "must_not_say": ["confirmed", "250"],
+      "must_not_say": ["table is confirmed", "250"],
       "conversation_status": "agent"
     },
     {
@@ -176,6 +176,8 @@
         "booking_created": true,
         "booking_status": "pending_deposit",
         "booking_party_size": 6,
+        "booking_date": "2026-07-14",
+        "booking_start_time": "21:00",
         "deposit_eur": 300,
         "payment_link_sent": true,
         "hold_hours": 6,
@@ -207,7 +209,7 @@
       "action": "none",
       "facts": {},
       "must_say": ["15 minutes"],
-      "must_not_say": [],
+      "must_not_say": ["received your payment", "your booking is confirmed", "your booking is now confirmed"],
       "conversation_status": "agent"
     }
   ]

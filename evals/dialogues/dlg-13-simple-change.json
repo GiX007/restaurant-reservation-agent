@@ -1,0 +1,129 @@
+{
+  "dialogue_id": "DLG-13",
+  "goal": "A regular shrinks his party from 6 to 4, well outside the four day deadline. The change goes through, the minimum spend is recomputed, and because his record waives the deposit there is nothing to pay.",
+  "channel": "whatsapp",
+  "from": "+306940000005",
+  "language": "en",
+  "db": "seed_v1",
+  "now": "2026-07-06T11:00:00+03:00",
+  "policy_refs": [
+    "policy.md #1 which booking they mean",
+    "policy.md #7 minimum spend by start time",
+    "policy.md #8 the regular pays no deposit",
+    "policy.md #10 changing a booking"
+  ],
+  "turns": [
+    {
+      "turn_id": 0,
+      "speaker": "USER",
+      "utterance": "Hi, Yiannis here. Our bottle service on the 12th at 23:30 - can we make it 4 people instead of 6?",
+      "intent": "modify",
+      "state": {
+        "name": "Yiannis Alexiou",
+        "party_size": 4,
+        "date": "2026-07-12",
+        "start_time": "23:30",
+        "product": "bottle_service",
+        "phone": "+306940000005",
+        "email": "yiannis@example.com"
+      }
+    },
+    {
+      "turn_id": 1,
+      "speaker": "SYSTEM",
+      "utterance": "Hello Mr Alexiou. I have it - 12 July, 23:30, bottle service, 6 people. Four is no problem. The minimum spend becomes EUR 400 per person, EUR 1,600 for four, and your record waives the deposit, so there is nothing to pay now. Shall I make the change?",
+      "action": "modify",
+      "facts": {
+        "customer_found": true,
+        "booking_found": true,
+        "booking_status": "confirmed",
+        "modify_allowed": true,
+        "minimum_spend_pp": 400,
+        "minimum_spend_total": 1600,
+        "deposit_eur": 0
+      },
+      "must_say": [
+        "400"
+      ],
+      "must_not_say": [
+        "I have changed it",
+        "has been cancelled",
+        "is a new booking",
+        "too close to the date"
+      ],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 2,
+      "speaker": "USER",
+      "utterance": "yes, please",
+      "intent": "modify",
+      "state": {
+        "name": "Yiannis Alexiou",
+        "party_size": 4,
+        "date": "2026-07-12",
+        "start_time": "23:30",
+        "product": "bottle_service",
+        "phone": "+306940000005",
+        "email": "yiannis@example.com"
+      }
+    },
+    {
+      "turn_id": 3,
+      "speaker": "SYSTEM",
+      "utterance": "Done. Your booking on 12 July at 23:30 is now for 4 people, bottle service. The minimum spend is EUR 1,600 in total and no deposit is due.",
+      "action": "modify",
+      "facts": {
+        "booking_found": true,
+        "booking_status": "confirmed",
+        "booking_party_size": 4,
+        "booking_date": "2026-07-12",
+        "booking_start_time": "23:30",
+        "minimum_spend_pp": 400,
+        "minimum_spend_total": 1600,
+        "deposit_eur": 0
+      },
+      "must_say": [
+        "400"
+      ],
+      "must_not_say": [
+        "has been cancelled",
+        "is a new booking",
+        "goes back to pending",
+        "received your payment"
+      ],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 4,
+      "speaker": "USER",
+      "utterance": "great, thanks",
+      "intent": "bye",
+      "state": {
+        "name": "Yiannis Alexiou",
+        "party_size": 4,
+        "date": "2026-07-12",
+        "start_time": "23:30",
+        "product": "bottle_service",
+        "phone": "+306940000005",
+        "email": "yiannis@example.com"
+      }
+    },
+    {
+      "turn_id": 5,
+      "speaker": "SYSTEM",
+      "utterance": "Thank you Mr Alexiou. Please arrive about 15 minutes before 23:30. See you on the 12th.",
+      "action": "none",
+      "facts": {},
+      "must_say": [
+        "15 minutes"
+      ],
+      "must_not_say": [
+        "received your payment",
+        "the deposit has arrived",
+        "your booking is confirmed"
+      ],
+      "conversation_status": "agent"
+    }
+  ]
+}

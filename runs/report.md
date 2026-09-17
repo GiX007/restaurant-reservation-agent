@@ -50,26 +50,29 @@ Metric 9 (cost) is its own section below.
 
 ## Per-dialogue verdicts
 
-- DLG-01: passed 5 of 5
-- DLG-02: passed 5 of 5
-- DLG-03: passed 5 of 5
-- DLG-04: passed 3 of 5
+- DLG-01: passed 0 of 5
+- DLG-02: passed 0 of 5
+- DLG-03: passed 3 of 5
+- DLG-04: passed 2 of 5
 - DLG-05: passed 5 of 5
-- DLG-06: passed 4 of 5
+- DLG-06: passed 0 of 5
 - DLG-07: passed 0 of 5
 - DLG-08: passed 0 of 5
 - DLG-09: passed 5 of 5
-- DLG-10: passed 1 of 5
+- DLG-10: passed 0 of 5
 - DLG-11: passed 0 of 5
 
 ### Failures - first critical failure per dialogue
 
-DLG-04 failed 2 of 5 - turn 9: minimum_spend_pp 0, got 250
-DLG-06 failed 1 of 5 - turn 3: booking_status 'confirmed', got 'cancelled'
+DLG-01 failed 5 of 5 - turn 5: minimum_spend_pp expected 250, got null
+DLG-02 failed 5 of 5 - turn 3: alternative_dates expected ['2026-07-11', '2026-07-14'], got null
+DLG-03 failed 2 of 5 - turn 9: must_not_say 'is confirmed' appeared
+DLG-04 failed 3 of 5 - turn 3: minimum_spend_pp expected 250, got null
+DLG-06 failed 5 of 5 - turn 1: modify_allowed expected False, got null
 DLG-07 failed 5 of 5 - turn 3: booking_created True, got False
-DLG-08 failed 5 of 5 - turn 3: reply_language 'nl', got 'en'
-DLG-10 failed 4 of 5 - turn 3: escalated True, got False
-DLG-11 failed 5 of 5 - turn 5: payment_link_sent True, got False
+DLG-08 failed 5 of 5 - turn 1: customer_found expected False, got null
+DLG-10 failed 5 of 5 - turn 1: minimum_spend_pp expected 250, got null
+DLG-11 failed 5 of 5 - turn 3: booking_status expected 'confirmed', got null
 
 ## Silence temptation
 
@@ -77,26 +80,26 @@ On 5 of 6 silenced turns the model would have replied (run-01, --silence-probe).
 
 ## Reply wording
 
-Reply wording is not scored. must_say phrases were logged but are not part of any metric - there are many correct ways to say the same thing. Comparing the agent's wording against a reference answer is future work.
+must_say is still not scored: phrases were logged but are not part of any metric, since there are many correct ways to say the same thing. must_not_say is different - since phase 6b step 2, a phrase appearing is a critical failure (see the per-dialogue verdicts above), not just a log line. Comparing the agent's wording against a reference answer is future work.
 
-Some forbidden phrases are short enough to match innocent text, not just the thing they were written to catch: dlg-04 "no", dlg-07 "phone number", dlg-10 "your number". A hit there is worth reading in context before treating it as a real violation.
+must_not_say phrases were rewritten and replayed against all five saved runs in phase 6b step 1 (811 checks: every phrase, every SYSTEM turn, every run) - every known false positive was removed and no real catch was lost. A hit here is now treated as a real violation, not a fragment worth second-guessing, and counts as a critical failure below.
 
 | phrase | runs it appeared in (of 5) | where |
 |---|---|---|
-| 'let you know if something' | 4 | DLG-02 t5 |
-| 'no' | 4 | DLG-04 t9 |
-| 'phone number' | 3 | DLG-07 t1, DLG-10 t1 |
-| 'your booking is confirmed' | 3 | DLG-01 t15 |
-| 'cancelled' | 2 | DLG-06 t7 |
-| 'on top' | 2 | DLG-01 t11 |
-| '15 July' | 1 | DLG-06 t7 |
-| 'I will check' | 1 | DLG-06 t1 |
-| 'confirmed' | 1 | DLG-07 t1 |
-| 'your name' | 1 | DLG-02 t7 |
+| 'received your payment' | 5 | DLG-01 t17, DLG-02 t13 |
+| 'your booking is confirmed' | 5 | DLG-01 t15, DLG-02 t13, DLG-07 t12 |
+| 'your booking is now confirmed' | 3 | DLG-02 t13 |
+| 'is confirmed' | 2 | DLG-03 t9 |
+| 'confirm the phone number' | 1 | DLG-10 t1 |
+| 'deposit has been received' | 1 | DLG-07 t12 |
+| 'has already been cancelled' | 1 | DLG-06 t7 |
+| 'has been cancelled' | 1 | DLG-06 t7 |
+| 'new booking for 15 July' | 1 | DLG-06 t7 |
 
 ## Known limits
 
 - tool ground truth is derived from the dialogues by a model, not written by hand
+- tool accuracy on runs/run-01 .. run-05 still measures attempts, not successes - those files predate the ok/error field on each tool call (phase 6b step 2); it is accurate from the next run onward
 - escalation rests on 8 negative and 5 positive turns
 - the 6 silence turns are enforced by the engine, not chosen by the agent
 - latency measures the model plus a home connection, not a deployment

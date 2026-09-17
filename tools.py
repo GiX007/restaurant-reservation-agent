@@ -1,5 +1,5 @@
 ### tools.py
-"""The eight tools the agent may call.
+"""The ten tools the agent may call.
 
 Phase 4 fixes the signatures. Phase 5 writes the bodies.
 
@@ -14,6 +14,7 @@ happens inside a tool, never outside one.
 
 import json
 import math
+import re
 import sqlite3
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -23,6 +24,8 @@ from pathlib import Path
 DB_PATH = "db/venue.db"
 POLICY_PATH = "config/policy.json"
 TABLES_PATH = "config/tables.json"
+FAQ_PATH = "config/faq.md"
+POLICY_MD_PATH = "config/policy.md"
 ESCALATIONS_PATH = "runs/escalations.jsonl"
 
 # Shown to the guest wherever a real payment link would go. Phase 5 has no
@@ -78,6 +81,9 @@ class Booking:
              never has to work anything out itself.
     Note: modify_allowed and refund_if_cancelled_now are not stored in the
           database. They are computed against the `now` that was passed in.
+          deposit_extra_eur is 0 on a plain read - it is only ever nonzero
+          coming back from modify_booking, when the change just raised the
+          deposit due (policy.md #10).
     """
     id: int
     customer_id: int
@@ -90,6 +96,7 @@ class Booking:
     status: str
     hold_expires_at: str | None
     deposit_eur: int
+    deposit_extra_eur: int
     payment_link: str | None
     modify_allowed: bool
     refund_if_cancelled_now: int
@@ -198,6 +205,119 @@ def _days_before(date: str, now: str) -> int:
     day = datetime.strptime(date, "%Y-%m-%d").date()
     today = _parse_now(now).date()
     return (day - today).days
+
+
+def _in_season(date: str) -> bool:
+    """
+    Is this date within the open season at all? policy.md #3.
+
+    _season() only tells high from low WITHIN an open season - it does not
+    know about the closed months (6 Oct - 30 Apr). This does.
+
+    Params: date - "YYYY-MM-DD".
+    Return: True when the date falls between season_open and season_close.
+    """
+    month_day = date[5:]
+    calendar = POLICY["calendar"]
+    return calendar["season_open"] <= month_day <= calendar["season_close"]
+
+
+def _nearest_open_season_date(reference_date: str) -> str:
+    """
+    The nearest date on or after reference_date that falls in the open
+    season (policy.md #3) - for pointing a refused request at something
+    bookable, not a scheduling engine.
+
+    Params: reference_date - "YYYY-MM-DD".
+    Return: "YYYY-MM-DD" - reference_date itself if already in season, else
+            this year's or next year's season-opening date.
+    """
+    calendar = POLICY["calendar"]
+    year = int(reference_date[:4])
+    month_day = reference_date[5:]
+    if calendar["season_open"] <= month_day <= calendar["season_close"]:
+        return reference_date
+    if month_day < calendar["season_open"]:
+        return f"{year}-{calendar['season_open']}"
+    return f"{year + 1}-{calendar['season_open']}"
+
+
+def _nearest_half_hours(start_time: str) -> tuple[str, str]:
+    """
+    The two valid start times (on the hour or half hour) nearest an invalid
+    one, for a refusal message to offer. policy.md #5.
+
+    Params: start_time - "HH:MM", not itself on the hour or half hour.
+    Return: (rounded down, rounded up), both "HH:MM", wrapped past midnight.
+    """
+    hour, minute = (int(part) for part in start_time.split(":"))
+    lower = (hour * 60 + minute) // 30 * 30
+    upper = lower + 30
+
+    def fmt(total_minutes: int) -> str:
+        total_minutes %= 24 * 60
+        return f"{total_minutes // 60:02d}:{total_minutes % 60:02d}"
+
+    return fmt(lower), fmt(upper)
+
+
+def _validate_booking_request(
+    now: str,
+    date: str | None = None,
+    start_time: str | None = None,
+    party_size: int | None = None,
+) -> None:
+    """
+    Reject an impossible request before any tool acts on it. policy.md #5, #9.
+
+    A rule that lives only in the system prompt is a suggestion a model can
+    ignore; this makes it a refusal the model has to react to. Called at the
+    top of check_availability, quote_booking, create_booking and
+    modify_booking - each field is optional so modify_booking, which only
+    validates what the guest is actually changing, can call it too. A field
+    left None is not being changed and is skipped, not treated as invalid.
+
+    Params: now        - ISO 8601, for judging a past date.
+            date        - "YYYY-MM-DD", or None to skip the date checks.
+            start_time  - "HH:MM", or None to skip the start-time check.
+            party_size  - how many people, or None to skip the party check.
+    Return: None.
+    Raises: ValueError, with a message built to be read out to the guest or
+            acted on - the nearest valid times, the nearest open date, or
+            that this needs a person, not a booking.
+    """
+    if start_time is not None:
+        minute = int(start_time.split(":")[1])
+        if minute not in (0, 30):
+            earlier, later = _nearest_half_hours(start_time)
+            raise ValueError(
+                f"{start_time} is not a valid start time - bookings start on the hour "
+                f"or the half hour only. The nearest two are {earlier} and {later}."
+            )
+
+    if party_size is not None:
+        party_min = POLICY["party_size"]["min"]
+        party_escalate_above = POLICY["party_size"]["escalate_above"]
+        if party_size < party_min:
+            raise ValueError(
+                f"party_size {party_size} is below the minimum of {party_min} - "
+                "the smallest booking is 2 people."
+            )
+        if party_size > party_escalate_above:
+            raise ValueError(
+                f"party_size {party_size} is over {party_escalate_above} - this needs a "
+                "person, not a booking. Escalate (reason: party_over_20); do not quote "
+                "or book it."
+            )
+
+    if date is not None:
+        if _days_before(date, now) < 0:
+            today = _parse_now(now).date().isoformat()
+            nearest = _nearest_open_season_date(today)
+            raise ValueError(f"{date} has already passed. The nearest open date is {nearest}.")
+        if not _in_season(date):
+            nearest = _nearest_open_season_date(date)
+            raise ValueError(f"{date} is outside the season. The nearest open date is {nearest}.")
 
 
 def _modify_allowed(service_date: str, now: str) -> bool:
@@ -647,13 +767,45 @@ def find_customer(channel: str, handle: str) -> Customer | None:
     )
 
 
+def _booking_from_row(row: sqlite3.Row, now: str) -> Booking:
+    """
+    Build one Booking from a bookings row joined with its customer's
+    deposit_required - the read logic find_bookings and get_booking share.
+
+    Params: row - a sqlite3.Row carrying every bookings column plus
+                   customer_deposit_required.
+            now - ISO 8601, for modify_allowed and the refund figure.
+    Return: the Booking, as it reads right now.
+    """
+    per_person = POLICY["deposit"]["per_person"]
+    deposit_eur = row["party_size"] * per_person if row["customer_deposit_required"] else 0
+    return Booking(
+        id=row["id"],
+        customer_id=row["customer_id"],
+        service_date=row["service_date"],
+        start_at=_to_iso(row["start_at"]),
+        end_at=_to_iso(row["end_at"]),
+        party_size=row["party_size"],
+        product=row["product"],
+        area=row["area"],
+        status=row["status"],
+        hold_expires_at=_to_iso(row["hold_expires_at"]),
+        deposit_eur=deposit_eur,
+        deposit_extra_eur=0,
+        payment_link=PAYMENT_LINK_PLACEHOLDER if row["status"] == "pending_deposit" else None,
+        modify_allowed=_modify_allowed(row["service_date"], now),
+        refund_if_cancelled_now=_refund_if_cancelled_now(row["service_date"], now, deposit_eur),
+    )
+
+
 def find_bookings(customer_id: int, now: str) -> list[Booking]:
     """
     The guest's live bookings. policy.md #1, "Which booking they mean".
 
     Only this customer's rows, only confirmed and pending_deposit, only nights
     that have not finished. Empty list means they have none. More than one
-    means the agent must ask which - it never picks.
+    means the agent must ask which - it never picks. Once it knows, get_booking
+    reads that one cleanly instead of scanning the list again.
 
     Params:
         customer_id - from find_customer.
@@ -675,34 +827,151 @@ def find_bookings(customer_id: int, now: str) -> list[Booking]:
     conn.close()
 
     now_dt = _parse_now(now)
-    per_person = POLICY["deposit"]["per_person"]
-
     bookings = []
     for row in rows:
         end_dt = datetime.strptime(row["end_at"], "%Y-%m-%d %H:%M")
         if end_dt <= now_dt:
             continue  # the night is over, it does not count (policy.md #1)
-
-        deposit_eur = row["party_size"] * per_person if row["customer_deposit_required"] else 0
-        bookings.append(
-            Booking(
-                id=row["id"],
-                customer_id=row["customer_id"],
-                service_date=row["service_date"],
-                start_at=_to_iso(row["start_at"]),
-                end_at=_to_iso(row["end_at"]),
-                party_size=row["party_size"],
-                product=row["product"],
-                area=row["area"],
-                status=row["status"],
-                hold_expires_at=_to_iso(row["hold_expires_at"]),
-                deposit_eur=deposit_eur,
-                payment_link=PAYMENT_LINK_PLACEHOLDER if row["status"] == "pending_deposit" else None,
-                modify_allowed=_modify_allowed(row["service_date"], now),
-                refund_if_cancelled_now=_refund_if_cancelled_now(row["service_date"], now, deposit_eur),
-            )
-        )
+        bookings.append(_booking_from_row(row, now))
     return bookings
+
+
+def get_booking(booking_id: int, now: str) -> Booking:
+    """
+    Read one booking directly, by id. policy.md #1, "Which booking they mean".
+
+    For after find_bookings came back with more than one live booking and the
+    guest has since said which - the agent already has the id, so this reads
+    that one booking's own figures cleanly, instead of the ambiguous whole
+    list find_bookings would give it again.
+
+    Params: booking_id - which booking. From an earlier find_bookings call.
+            now         - ISO 8601, for modify_allowed and the refund figure.
+    Return: the Booking, as it stands right now.
+    Raises: ValueError - no booking has this id.
+    """
+    conn = _connect()
+    row = conn.execute(
+        """
+        SELECT bookings.*, customers.deposit_required AS customer_deposit_required
+        FROM bookings JOIN customers ON customers.id = bookings.customer_id
+        WHERE bookings.id = ?
+        """,
+        (booking_id,),
+    ).fetchone()
+    conn.close()
+    if row is None:
+        raise ValueError(f"no booking with id {booking_id}")
+    return _booking_from_row(row, now)
+
+
+_STOPWORDS = frozenset("""
+    a an the is are was were be been do does did can could will would should
+    have has had and or but if so not no to of in on for with about at by
+    from as this that these those it its i we you your my me us what when
+    where how who which there here please tell let know guest guests venue
+""".split())
+
+
+def _singular(word: str) -> str:
+    """
+    A crude singular for an ordinary plural - strip one trailing "s", but
+    not from a short word or one ending "ss" (business, glass), so an FAQ
+    entry written in the singular ("allergen") still matches a question
+    asked in the plural ("allergens"). Not a real stemmer - it does not
+    need to be, this only has to survive one letter of English plurals.
+
+    Params: word - already lowercase.
+    Return: the word, or the word with one trailing "s" removed.
+    """
+    if len(word) >= 4 and word.endswith("s") and not word.endswith("ss"):
+        return word[:-1]
+    return word
+
+
+def _keywords(text: str) -> set[str]:
+    """
+    The significant words in a piece of text - lowercase, alphabetic, three
+    letters or more, common words left out, ordinary plurals folded to
+    singular. Used to compare a question against a markdown section
+    without anything smarter than that.
+
+    Params: text - any text.
+    Return: the set of keywords found.
+    """
+    words = re.findall(r"[a-zA-Z]+", text.lower())
+    return {_singular(word) for word in words if len(word) >= 3 and word not in _STOPWORDS}
+
+
+def _md_sections(path: str) -> list[tuple[str, str]]:
+    """
+    Split a markdown file into (heading, body) sections, breaking on any
+    heading line. Text before the first heading is its own section with an
+    empty heading.
+
+    Params: path - the markdown file to read.
+    Return: [(heading, body), ...], in file order.
+    """
+    text = Path(path).read_text(encoding="utf-8")
+    sections = []
+    heading = ""
+    body_lines: list[str] = []
+    for line in text.splitlines():
+        if line.startswith("#"):
+            sections.append((heading, "\n".join(body_lines)))
+            heading = line.lstrip("#").strip()
+            body_lines = []
+        else:
+            body_lines.append(line)
+    sections.append((heading, "\n".join(body_lines)))
+    return sections
+
+
+def lookup_answer(question: str) -> dict:
+    """
+    Search config/faq.md and config/policy.md for a sourced answer.
+    policy.md #12, "the agent answers only from these sources".
+
+    Deterministic keyword matching, not a judgement call: a section counts
+    as an answer only when a strict MAJORITY of the question's own
+    significant words actually appear in it, not just a couple - two
+    incidental words in common (a "free car park" answering a "gluten
+    free" question, say) is exactly the kind of coincidence a low, fixed
+    hit count would wave through. A topically nearby paragraph, such as
+    the FAQ's general entry on food allergies, must still cover most of
+    the question's own words to count as answering a specific one, such
+    as whether one dish contains gluten. Venue X publishes no menu and no
+    allergen list (policy.md #12), so a specific food question is expected
+    to come back not found, every time, by design - that is this tool
+    doing its job, not failing to find one.
+
+    Params: question - the guest's question, in the agent's own words.
+    Return: {"found": True, "answer": the section's own text,
+             "source": "path#heading"}, or
+            {"found": False, "reason": "no_answer_in_sources"}.
+    """
+    question_keywords = _keywords(question)
+    if not question_keywords:
+        return {"found": False, "reason": "no_answer_in_sources"}
+
+    best_hits: set[str] = set()
+    best_match: tuple[str, str, str] | None = None
+    for path in (FAQ_PATH, POLICY_MD_PATH):
+        for heading, body in _md_sections(path):
+            if not heading:
+                continue
+            section_keywords = _keywords(heading + " " + body)
+            hits = question_keywords & section_keywords
+            if len(hits) > len(best_hits):
+                best_hits = hits
+                best_match = (path, heading, body.strip())
+
+    enough_overlap = len(best_hits) / len(question_keywords) > 0.5
+    if best_match is None or not enough_overlap:
+        return {"found": False, "reason": "no_answer_in_sources"}
+
+    path, heading, body = best_match
+    return {"found": True, "answer": body, "source": f"{path}#{heading}"}
 
 
 def check_availability(
@@ -729,7 +998,10 @@ def check_availability(
                             against itself (#6). None for a new booking.
     Return: fits, the area it fits in, whether the chair buffer was needed,
             and alternative dates when it does not fit.
+    Raises: ValueError - see _validate_booking_request. A party over 20 is
+            refused here too, not reported as "no table" (policy.md #9).
     """
+    _validate_booking_request(now, date=date, start_time=start_time, party_size=party_size)
     fits, area, needs_buffer = _fits(date, start_time, party_size, product, ignore_booking_id)
     if fits:
         return Availability(fits=True, area=area, needs_buffer=needs_buffer, alternative_dates=[])
@@ -744,6 +1016,7 @@ def quote_booking(
     product: str,
     area: str,
     deposit_required: bool,
+    now: str,
     existing_booking_id: int | None = None,
 ) -> Quote:
     """
@@ -759,12 +1032,16 @@ def quote_booking(
         area                - "main" or "bar". Dinner at the bar has no
                               minimum spend.
         deposit_required    - from the Customer record. A regular pays none.
+        now                 - ISO 8601, for the same request validation
+                              check_availability and create_booking do.
         existing_booking_id - when quoting a change, the booking being
                               changed, so deposit_extra_eur is the difference
                               and not the whole deposit again.
     Return: minimum spend per person and total, the deposit, what is due now,
             and the hold length.
+    Raises: ValueError - see _validate_booking_request.
     """
+    _validate_booking_request(now, date=date, start_time=start_time, party_size=party_size)
     per_person = POLICY["deposit"]["per_person"]
     new_deposit_full = party_size * per_person if deposit_required else 0
 
@@ -820,7 +1097,9 @@ def create_booking(
         area        - "main" or "bar", from check_availability.
         now         - ISO 8601. The hold counts from here.
     Return: the new Booking, with its id, status, hold and payment link.
+    Raises: ValueError - see _validate_booking_request.
     """
+    _validate_booking_request(now, date=date, start_time=start_time, party_size=party_size)
     conn = _connect()
     customer_row = conn.execute(
         "SELECT deposit_required FROM customers WHERE id = ?", (customer_id,)
@@ -879,6 +1158,7 @@ def create_booking(
         status=status,
         hold_expires_at=_to_iso(hold_expires_at),
         deposit_eur=deposit_eur,
+        deposit_extra_eur=0,
         payment_link=PAYMENT_LINK_PLACEHOLDER if status == "pending_deposit" else None,
         modify_allowed=_modify_allowed(date, now),
         refund_if_cancelled_now=_refund_if_cancelled_now(date, now, deposit_eur),
@@ -908,7 +1188,11 @@ def modify_booking(
         start_time - the new time, or None.
         product    - the new product, or None.
     Return: the booking as it now stands.
+    Raises: ValueError - see _validate_booking_request. Only the fields the
+            guest is actually changing are checked; None means unchanged and
+            is not re-validated.
     """
+    _validate_booking_request(now, date=date, start_time=start_time, party_size=party_size)
     conn = _connect()
     row = conn.execute(
         """
@@ -943,6 +1227,16 @@ def modify_booking(
     old_deposit = old_party_size * per_person if deposit_required else 0
     new_deposit_full = new_party_size * per_person if deposit_required else 0
     deposit_eur = max(old_deposit, new_deposit_full)
+    deposit_extra_eur = deposit_eur - old_deposit
+
+    if deposit_extra_eur > 0:
+        # A larger deposit is now due, whatever the booking's own status -
+        # a confirmed booking stays confirmed while it is unpaid, it is not
+        # put back to pending_deposit (policy.md #10), but the extra must
+        # still be collectable, so it gets a link regardless of status.
+        payment_link = PAYMENT_LINK_PLACEHOLDER
+    else:
+        payment_link = PAYMENT_LINK_PLACEHOLDER if row["status"] == "pending_deposit" else None
 
     return Booking(
         id=booking_id,
@@ -956,7 +1250,8 @@ def modify_booking(
         status=row["status"],
         hold_expires_at=_to_iso(row["hold_expires_at"]),
         deposit_eur=deposit_eur,
-        payment_link=PAYMENT_LINK_PLACEHOLDER if row["status"] == "pending_deposit" else None,
+        deposit_extra_eur=deposit_extra_eur,
+        payment_link=payment_link,
         modify_allowed=_modify_allowed(new_date, now),
         refund_if_cancelled_now=_refund_if_cancelled_now(new_date, now, deposit_eur),
     )
@@ -1016,6 +1311,7 @@ def cancel_booking(booking_id: int, reason: str, now: str) -> Cancellation:
         status="cancelled",
         hold_expires_at=None,
         deposit_eur=deposit_eur,
+        deposit_extra_eur=0,
         payment_link=None,
         modify_allowed=False,
         refund_if_cancelled_now=0,

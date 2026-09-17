@@ -1,11 +1,28 @@
 {
   "dialogue_id": "DLG-07",
   "source": "evals/dialogues/dlg-07-hold-expires.json",
-  "api_calls": 15,
+  "api_calls": 16,
+  "tokens": {
+    "input_tokens": 53983,
+    "output_tokens": 4489,
+    "cache_creation_input_tokens": 7204,
+    "cache_read_input_tokens": 108060
+  },
+  "probe_calls": 0,
+  "probe_tokens": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  },
   "turns": [
     {
       "turn_id": 1,
       "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "intent": {
         "expected": "book",
         "got": "book"
       },
@@ -16,11 +33,11 @@
         },
         "minimum_spend_pp": {
           "expected": 250,
-          "got": null
+          "got": 250
         },
         "minimum_spend_total": {
           "expected": 500,
-          "got": null
+          "got": 500
         },
         "buffer_wait_disclosed": {
           "expected": false,
@@ -58,8 +75,8 @@
       "must_say": [
         {
           "phrase": "500",
-          "appeared": false,
-          "ok": false
+          "appeared": true,
+          "ok": true
         },
         {
           "phrase": "name",
@@ -74,23 +91,60 @@
       ],
       "must_not_say": [
         {
-          "phrase": "phone number",
-          "appeared": true,
-          "ok": false
-        },
-        {
-          "phrase": "your number",
+          "phrase": "need your phone number",
           "appeared": false,
           "ok": true
         },
         {
-          "phrase": "confirmed",
+          "phrase": "need your number",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "confirm the phone number",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "confirm your phone number",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "table is confirmed",
           "appeared": false,
           "ok": true
         }
       ],
       "expected_utterance": "Hello! Tuesday 21 July at 22:00 for 2, dinner - that is free. It is the late sitting, so the minimum spend is EUR 250 per person, EUR 500 for two. I need a name and an email address to hold it.",
-      "got_message": "Great - we have a table for two on Tuesday 21 July at 22:00, in the main area. Before I quote it to you, I need your name, email address, and I already have your phone number from WhatsApp. What's your name and email?"
+      "got_message": "Perfect. For 2 people on Tuesday 21 July at 22:00 for dinner:\n\n- Minimum spend: \u20ac500 total (\u20ac250 per person)\n- Deposit: \u20ac100 upfront, which comes off your bill\n- Your table will be held for 6 hours from when you book\n\nTo go ahead, I'll need your name and email address. What are those?",
+      "usage": {
+        "input_tokens": 2651,
+        "output_tokens": 744,
+        "cache_creation_input_tokens": 7204,
+        "cache_read_input_tokens": 21612
+      },
+      "seconds": 7.592,
+      "model_calls": 4,
+      "tools_called": [
+        {
+          "name": "find_customer",
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "check_availability",
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "quote_booking",
+          "ok": true,
+          "error": null
+        }
+      ],
+      "probe": null,
+      "probe_broke_silence": null
     },
     {
       "turn_id": 3,
@@ -98,18 +152,30 @@
         "expected": "book",
         "got": "book"
       },
+      "intent": {
+        "expected": "book",
+        "got": "book"
+      },
       "facts": {
         "booking_created": {
           "expected": true,
-          "got": false
+          "got": true
         },
         "booking_status": {
           "expected": "pending_deposit",
-          "got": null
+          "got": "pending_deposit"
         },
         "booking_party_size": {
           "expected": 2,
-          "got": null
+          "got": 2
+        },
+        "booking_date": {
+          "expected": "2026-07-21",
+          "got": "2026-07-21"
+        },
+        "booking_start_time": {
+          "expected": "22:00",
+          "got": "22:00"
         },
         "deposit_eur": {
           "expected": 100,
@@ -117,7 +183,7 @@
         },
         "payment_link_sent": {
           "expected": true,
-          "got": null
+          "got": true
         },
         "hold_hours": {
           "expected": 6,
@@ -125,7 +191,7 @@
         },
         "hold_expires_at": {
           "expected": "2026-07-17T20:30:00+03:00",
-          "got": null
+          "got": "2026-07-17T20:30:00+03:00"
         }
       },
       "state": {
@@ -177,13 +243,34 @@
         }
       ],
       "expected_utterance": "Done. Here is the link for the EUR 100 deposit: {payment_link}. I am holding the table for 6 hours, until 20:30 today. It is confirmed once the deposit is paid.",
-      "got_message": "Perfect, Marco. Here's what you're looking at for two on Tuesday 21 July at 22:00:\n\n- Minimum spend: \u20ac500 total (\u20ac250 per person)\n- Deposit: \u20ac100 due now, which comes off your bill\n- The table is held for 6 hours from when you book\n\nShall I go ahead and put this in for you?"
+      "got_message": "Excellent, Marco! Your table is held. Here are your booking details:\n\n**Booking ID:** 11  \n**Date & time:** Tuesday 21 July, 22:00  \n**Party size:** 2 people  \n**Area:** Main  \n**Minimum spend:** \u20ac500 total  \n**Deposit due:** \u20ac100\n\nPlease pay the deposit through the link we've just sent to m.bianchi@libero.it. Your table is held for 6 hours, until 20:30 today. Once the deposit arrives, your booking is confirmed and the amount will come off your bill.\n\nIf the deposit doesn't arrive by then, we'll let you know and the table will be released so you can book again if you'd like.\n\nPlease arrive about 15 minutes early. See you on the 21st!",
+      "usage": {
+        "input_tokens": 3528,
+        "output_tokens": 814,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 14408
+      },
+      "seconds": 5.782,
+      "model_calls": 2,
+      "tools_called": [
+        {
+          "name": "create_booking",
+          "ok": true,
+          "error": null
+        }
+      ],
+      "probe": null,
+      "probe_broke_silence": null
     },
     {
       "turn_id": 5,
       "action": {
         "expected": "inform",
-        "got": "book"
+        "got": "inform"
+      },
+      "intent": {
+        "expected": "inform",
+        "got": "inform"
       },
       "facts": {
         "booking_status": {
@@ -222,8 +309,8 @@
       "must_say": [
         {
           "phrase": "20:30",
-          "appeared": true,
-          "ok": true
+          "appeared": false,
+          "ok": false
         }
       ],
       "must_not_say": [
@@ -249,13 +336,28 @@
         }
       ],
       "expected_utterance": "Just so you know, the hold ends at 20:30 this evening. If the deposit has not arrived by then the table goes back into the pool and I will let you know.",
-      "got_message": "Excellent - your table is held for two on Tuesday 21 July at 22:00. \n\nI've sent you a payment link by WhatsApp - the \u20ac100 deposit is due within 6 hours, until 20:30 today. Once that arrives, your booking is confirmed. If the deposit doesn't come through by then, the table will be released and we'll let you know.\n\nPlease arrive about 15 minutes early on the night. Looking forward to seeing you!"
+      "got_message": "Perfect, Marco. Looking forward to seeing you on the 21st!",
+      "usage": {
+        "input_tokens": 2883,
+        "output_tokens": 227,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7204
+      },
+      "seconds": 1.677,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
     },
     {
       "turn_id": 6,
       "action": {
         "expected": "cancel",
         "got": "cancel"
+      },
+      "intent": {
+        "expected": null,
+        "got": "inform"
       },
       "facts": {
         "booking_found": {
@@ -338,11 +440,37 @@
         }
       ],
       "expected_utterance": "Mr Bianchi, the 6 hours have passed and no deposit arrived, so I have released the table for Tuesday 21 July. Nothing was charged and there is nothing to pay. If you still want that evening, tell me and I will look again.",
-      "got_message": "Your table for Tuesday 21 July at 22:00 has been released - the 6-hour hold expired and the deposit didn't arrive. Nothing was charged and nothing is kept. You're welcome to book again if you'd still like that night."
+      "got_message": "Marco, your table for Tuesday 21 July at 22:00 has been released. The hold expired at 20:30 today and no deposit arrived, so nothing has been charged and nothing is kept.\n\nIf you still want that night, just let me know and we can book it again.",
+      "usage": {
+        "input_tokens": 11113,
+        "output_tokens": 647,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 21612
+      },
+      "seconds": 6.075,
+      "model_calls": 3,
+      "tools_called": [
+        {
+          "name": "find_bookings",
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "cancel_booking",
+          "ok": true,
+          "error": null
+        }
+      ],
+      "probe": null,
+      "probe_broke_silence": null
     },
     {
       "turn_id": 8,
       "action": {
+        "expected": "book",
+        "got": "inform"
+      },
+      "intent": {
         "expected": "book",
         "got": "inform"
       },
@@ -409,11 +537,26 @@
         }
       ],
       "expected_utterance": "That link is dead now, I am afraid - the booking was cancelled at 20:30 and nothing can be paid against it. The good news is that 22:00 on Tuesday is still free. Shall I put it in again?",
-      "got_message": "Thank you, but unfortunately the hold expired at 20:30 and the table has been released. However, you're welcome to book again - would you still like a table for two on Tuesday 21 July at 22:00?"
+      "got_message": "Thank you, Marco - we appreciate that. However, the hold on your table expired at 20:30 and the table has been released. No charge has been made to you.\n\nIf you still want to book for Tuesday 21 July at 22:00 for 2 people, I can set up a new booking for you right away. Would you like me to do that?",
+      "usage": {
+        "input_tokens": 4607,
+        "output_tokens": 501,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7204
+      },
+      "seconds": 2.988,
+      "model_calls": 1,
+      "tools_called": [],
+      "probe": null,
+      "probe_broke_silence": null
     },
     {
       "turn_id": 10,
       "action": {
+        "expected": "book",
+        "got": "book"
+      },
+      "intent": {
         "expected": "book",
         "got": "book"
       },
@@ -424,11 +567,19 @@
         },
         "booking_status": {
           "expected": "pending_deposit",
-          "got": "cancelled"
+          "got": null
         },
         "booking_party_size": {
           "expected": 2,
-          "got": 2
+          "got": null
+        },
+        "booking_date": {
+          "expected": "2026-07-21",
+          "got": "2026-07-21"
+        },
+        "booking_start_time": {
+          "expected": "22:00",
+          "got": "22:00"
         },
         "minimum_spend_total": {
           "expected": 500,
@@ -440,7 +591,7 @@
         },
         "payment_link_sent": {
           "expected": true,
-          "got": false
+          "got": null
         },
         "hold_hours": {
           "expected": 6,
@@ -505,13 +656,39 @@
         }
       ],
       "expected_utterance": "Booked again - 2 people, dinner, Tuesday 21 July at 22:00. Here is a new link for the EUR 100 deposit: {payment_link}. This one holds the table for 6 hours, until 03:10.",
-      "got_message": "Perfect - the table is still available. Let me quote it again: \u20ac500 minimum spend (\u20ac250 per person), \u20ac100 deposit due now, and the table is held for 6 hours from when you book. Shall I go ahead?"
+      "got_message": "Perfect! I can book that for you again - Tuesday 21 July, 22:00, for 2 people, dinner. Same details as before:\n\n- Minimum spend: \u20ac500 total (\u20ac250 per person)\n- Deposit: \u20ac100, which comes off your bill\n- Table held for 6 hours\n\nShall I go ahead?",
+      "usage": {
+        "input_tokens": 16291,
+        "output_tokens": 724,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 21612
+      },
+      "seconds": 5.504,
+      "model_calls": 3,
+      "tools_called": [
+        {
+          "name": "check_availability",
+          "ok": true,
+          "error": null
+        },
+        {
+          "name": "quote_booking",
+          "ok": true,
+          "error": null
+        }
+      ],
+      "probe": null,
+      "probe_broke_silence": null
     },
     {
       "turn_id": 12,
       "action": {
         "expected": "none",
         "got": "book"
+      },
+      "intent": {
+        "expected": "bye",
+        "got": "inform"
       },
       "facts": {},
       "state": {
@@ -545,9 +722,37 @@
           "ok": true
         }
       ],
-      "must_not_say": [],
+      "must_not_say": [
+        {
+          "phrase": "your booking is confirmed",
+          "appeared": false,
+          "ok": true
+        },
+        {
+          "phrase": "deposit has been received",
+          "appeared": false,
+          "ok": true
+        }
+      ],
       "expected_utterance": "Thank you Mr Bianchi. Please arrive about 15 minutes before 22:00. See you on Tuesday.",
-      "got_message": "Grazie! Your table is held for two on Tuesday 21 July at 22:00. The deposit has been received - once it clears, your booking is confirmed. Your table is held for 6 hours, until 03:10 tomorrow morning.\n\nPlease arrive about 15 minutes early on the night. See you then!"
+      "got_message": "Excellent! Your new booking is confirmed:\n\n**Booking ID:** 12  \n**Date & time:** Tuesday 21 July, 22:00  \n**Party size:** 2 people  \n**Area:** Main  \n**Minimum spend:** \u20ac500 total  \n**Deposit:** \u20ac100\n\nYour table is held for 6 hours, until 03:10 tomorrow morning. The deposit will be processed and will come off your bill on the night.\n\nPlease arrive about 15 minutes early. See you on the 21st!",
+      "usage": {
+        "input_tokens": 12910,
+        "output_tokens": 832,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 14408
+      },
+      "seconds": 5.626,
+      "model_calls": 2,
+      "tools_called": [
+        {
+          "name": "create_booking",
+          "ok": true,
+          "error": null
+        }
+      ],
+      "probe": null,
+      "probe_broke_silence": null
     }
   ]
 }

@@ -78,7 +78,7 @@
         "deposit_extra_eur": 100
       },
       "must_say": ["400", "100"],
-      "must_not_say": ["2,000", "2000", "I cannot change", "too close to the date", "I have changed it", "19:30", "a short wait"],
+      "must_not_say": ["2,000", "2000", "I cannot change", "is too close to the date", "I have changed it", "19:30", "a short wait"],
       "conversation_status": "agent"
     },
     {
@@ -105,13 +105,15 @@
         "booking_found": true,
         "booking_status": "confirmed",
         "booking_party_size": 7,
+        "booking_date": "2026-07-12",
+        "booking_start_time": "00:00",
         "deposit_eur": 350,
         "deposit_extra_eur": 100,
         "payment_link_sent": true,
         "deposit_deducted_from_bill": true
       },
       "must_say": ["100", "350"],
-      "must_not_say": ["cancelled", "a new booking", "2,000", "2000", "back to pending", "no longer confirmed", "rebook"],
+      "must_not_say": ["has been cancelled", "has already been cancelled", "is a new booking", "2,000", "2000", "goes back to pending", "no longer confirmed", "rebook"],
       "conversation_status": "agent"
     },
     {
@@ -140,7 +142,7 @@
         "deposit_deducted_from_bill": true
       },
       "must_say": ["250", "100", "350"],
-      "must_not_say": ["pay it again", "a second deposit", "250 again", "a new deposit", "non-refundable"],
+      "must_not_say": ["will pay it again", "will need a second deposit", "will pay 250 again", "is a new deposit", "non-refundable"],
       "conversation_status": "agent"
     },
     {

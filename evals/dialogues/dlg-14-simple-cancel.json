@@ -1,0 +1,122 @@
+{
+  "dialogue_id": "DLG-14",
+  "goal": "A guest cancels five days before, outside the four day refund deadline, so the deposit comes back in full. The agent states the consequence and asks before it acts, then cancels.",
+  "channel": "whatsapp",
+  "from": "+306940000004",
+  "language": "en",
+  "db": "seed_v1",
+  "now": "2026-05-05T11:00:00+03:00",
+  "policy_refs": [
+    "policy.md #1 which booking they mean",
+    "policy.md #11 cancelling and the refund deadline",
+    "policy.md #12 state the consequence before acting"
+  ],
+  "turns": [
+    {
+      "turn_id": 0,
+      "speaker": "USER",
+      "utterance": "Hello, this is Sofia. I need to cancel my dinner table for 2 on 10 May at 21:00, please.",
+      "intent": "cancel",
+      "state": {
+        "name": "Sofia Ricci",
+        "party_size": 2,
+        "date": "2026-05-10",
+        "start_time": "21:00",
+        "product": "dinner",
+        "phone": "+306940000004",
+        "email": "sofia@example.com"
+      }
+    },
+    {
+      "turn_id": 1,
+      "speaker": "SYSTEM",
+      "utterance": "Hello Mrs Ricci. I have it - 10 May, 21:00, dinner, 2 people. You are cancelling five days before, which is outside the deadline, so the EUR 100 deposit comes back to you in full. Shall I go ahead and cancel it?",
+      "action": "cancel",
+      "facts": {
+        "customer_found": true,
+        "booking_found": true,
+        "booking_status": "confirmed",
+        "deposit_eur": 100
+      },
+      "must_say": [
+        "100"
+      ],
+      "must_not_say": [
+        "has been cancelled",
+        "I have cancelled",
+        "the deposit is kept",
+        "non-refundable"
+      ],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 2,
+      "speaker": "USER",
+      "utterance": "yes, please cancel it",
+      "intent": "cancel",
+      "state": {
+        "name": "Sofia Ricci",
+        "party_size": 2,
+        "date": "2026-05-10",
+        "start_time": "21:00",
+        "product": "dinner",
+        "phone": "+306940000004",
+        "email": "sofia@example.com"
+      }
+    },
+    {
+      "turn_id": 3,
+      "speaker": "SYSTEM",
+      "utterance": "Cancelled. Your EUR 100 deposit will be refunded in full.",
+      "action": "cancel",
+      "facts": {
+        "booking_found": true,
+        "booking_status": "cancelled",
+        "cancel_reason": "guest_cancelled",
+        "refund_eur": 100,
+        "deposit_kept": false,
+        "booking_party_size": 2,
+        "booking_date": "2026-05-10"
+      },
+      "must_say": [
+        "100"
+      ],
+      "must_not_say": [
+        "the deposit is kept",
+        "non-refundable",
+        "is still booked"
+      ],
+      "conversation_status": "agent"
+    },
+    {
+      "turn_id": 4,
+      "speaker": "USER",
+      "utterance": "thank you",
+      "intent": "bye",
+      "state": {
+        "name": "Sofia Ricci",
+        "party_size": 2,
+        "date": "2026-05-10",
+        "start_time": "21:00",
+        "product": "dinner",
+        "phone": "+306940000004",
+        "email": "sofia@example.com"
+      }
+    },
+    {
+      "turn_id": 5,
+      "speaker": "SYSTEM",
+      "utterance": "Thank you Mrs Ricci. Sorry to miss you this time - you are welcome back whenever you like.",
+      "action": "none",
+      "facts": {},
+      "must_say": [],
+      "must_not_say": [
+        "received your payment",
+        "the deposit has arrived",
+        "your booking is confirmed",
+        "see you on"
+      ],
+      "conversation_status": "agent"
+    }
+  ]
+}

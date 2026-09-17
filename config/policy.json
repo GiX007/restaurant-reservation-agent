@@ -14,7 +14,13 @@
 
   "languages": {
     "supported": ["el", "en", "fr", "it"],
-    "unsupported_reply": "template",
+    "unsupported_reply": {
+      "en": "Venue X can help you in Greek, English, French or Italian. Please write to us in one of those languages.",
+      "nl": "Venue X kan u helpen in het Grieks, Engels, Frans of Italiaans. Schrijft u ons alstublieft in een van deze talen.",
+      "de": "Venue X kann Ihnen auf Griechisch, Englisch, Franzoesisch oder Italienisch helfen. Bitte schreiben Sie uns in einer dieser Sprachen.",
+      "es": "Venue X puede ayudarle en griego, ingles, frances o italiano. Por favor, escribanos en uno de esos idiomas."
+    },
+    "unsupported_reply_fallback": "en",
     "escalate_after_messages": 2
   },
 
